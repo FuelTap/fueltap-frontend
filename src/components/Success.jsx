@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import Lottie from 'lottie-react';
-import successAnim from '../../public/assets/success.json';
+import { successAnim } from './Imports';
 
 function RegistrationSuccess() {
   useEffect(() => {

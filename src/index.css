@@ -117,12 +117,23 @@
   /* font family */
   --font-pjs: 'Plus Jakarta Sans', sans-serif;
   --font-roboto: 'Roboto', sans-serif;
+  --color-neutra-500: #e0e1e2;
   --color-neutra-600: #c7c8c9;
+  --color-neutra-900: #707071;
+  --color-neutra-1000: #575858;
+  --color-green-50: #e7f8f2;
+  --color-green-400: #0d9467;
+
+  --color-yellow-100: #fff2e0;
+
+  --color-grey-800: #595a5a;
+
+  --color-error: #df1125;
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border outline-ring/50 font-pjs;
   }
   body {
     @apply bg-background text-foreground;
@@ -137,20 +148,17 @@
 
 /* custom styles */
 .text-lg-medium {
-  @apply font-pjs text-[18px] font-medium;
+  @apply font-pjs text-[12px] font-medium md:text-sm lg:text-[18px];
   line-height: 100%;
   letter-spacing: 0%;
 }
 .text-md-medium {
   @apply font-pjs font-medium text-white;
-  font-size: 16px;
-  line-height: 100%;
-  letter-spacing: 0%;
+  line-height: '100%';
+  letter-spacing: '0%';
 }
 .text-lg-regular {
-  font-family: Plus Jakarta Sans;
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 100%;
-  letter-spacing: 0%;
+  @apply text-[14px] font-[400];
+  line-height: '100%';
+  letter-spacing: '0%';
 }

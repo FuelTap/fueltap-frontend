@@ -1,3 +1,4 @@
+import Header from '@/components/Header';
 import Logo from '@/components/Logo';
 import { Progress } from '@/components/ui/progress';
 import RegisterForm from '@/features/register/RegisterForm';
@@ -41,9 +42,9 @@ const Onboarding = () => {
   return (
     <main className="flex h-screen w-screen justify-between overflow-hidden">
       <div className="mx-auto flex w-screen max-w-[512px] basis-full flex-col items-center sm:basis-1/2 lg:max-w-[720px]">
-        <header className="flex w-full items-center justify-center border-b px-10 py-[12px] lg:px-20 lg:py-4">
+        <Header>
           <Logo />
-        </header>
+        </Header>
 
         <div className="mx-auto mt-4 w-[95%] max-sm:h-[75%] md:mt-8 lg:max-w-[560px]">
           {indicatorData && (

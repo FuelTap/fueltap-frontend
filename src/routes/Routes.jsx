@@ -6,6 +6,8 @@ import VerifyEmail from '@/features/register/VerifyEmail';
 import RoleSelector from '@/features/register/RoleSelector';
 import RegistrationSuccess from '@/components/Success';
 import LoginForm from '@/features/login/LoginForm';
+import Dashboard from '@/pages/Dashboard';
+import User from '@/layouts/User';
 
 const routes = [
   {
@@ -44,7 +46,14 @@ const routes = [
   },
   {
     path: '/user',
-    children: [],
+    element: <User />,
+    children: [
+      {
+        index: true,
+        path: '',
+        element: <Dashboard />,
+      },
+    ],
   },
   {
     path: '/admin',

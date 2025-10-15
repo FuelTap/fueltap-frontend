@@ -1,13 +1,14 @@
 import { Button } from '@/components/ui/button';
 import React from 'react';
+import { Link } from 'react-router';
 
 const Home = () => {
   return (
     <div className="flex flex-col items-center">
       <p>This is our home page</p>
 
-      <Button variant={'destructive'} onClick={() => alert('how much bruv?')}>
-        Buy fuel
+      <Button variant={'link'}>
+        <Link to={'/role-selector'}>Onboarding pages</Link>
       </Button>
     </div>
   );
