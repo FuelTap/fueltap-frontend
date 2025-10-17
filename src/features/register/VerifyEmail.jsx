@@ -84,7 +84,7 @@ const VerifyEmail = () => {
           )}
         />
 
-        <div className="mb-4 justify-self-start max-sm:mt-auto">
+        <div className="mb-4 bg-white max-sm:fixed max-sm:bottom-0 max-sm:left-0 max-sm:w-full max-sm:p-4">
           <Button
             type="submit"
             size="full"

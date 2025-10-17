@@ -124,7 +124,9 @@
   --color-green-50: #e7f8f2;
   --color-green-400: #0d9467;
 
+  --color-primary-900: #061337;
   --color-yellow-100: #fff2e0;
+  --color-secondary-500: #ffc300;
 
   --color-grey-800: #595a5a;
 
@@ -143,7 +145,7 @@
   margin-inline: auto;
   padding-inline: 1rem;
   width: 100%;
-  max-width: 1440px;
+  max-width: 1280px;
 }
 
 /* custom styles */
@@ -159,6 +161,11 @@
 }
 .text-lg-regular {
   @apply text-[14px] font-[400];
+  line-height: '100%';
+  letter-spacing: '0%';
+}
+.text-xl-regular {
+  @apply text-[16px] font-[400] md:text-xl;
   line-height: '100%';
   letter-spacing: '0%';
 }

@@ -45,7 +45,7 @@ function RoleSelector() {
           Supplier
         </Button>
 
-        <div className="mt-auto mb-4 justify-self-end">
+        <div className="mb-4 bg-white max-sm:fixed max-sm:bottom-0 max-sm:left-0 max-sm:w-full max-sm:p-4 md:mt-10">
           <Button
             type="button"
             size={'full'}

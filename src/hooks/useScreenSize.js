@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 
-export function useScreenSize() {
+export function useScreenSize(width = 1024) {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 
   useEffect(() => {
     // Define the function that checks the screen width
     const checkScreenSize = () => {
-      if (window.innerWidth < 1024) {
+      if (window.innerWidth < Number(width)) {
         // Tailwind's lg = 1024px
         setIsSmallScreen(true);
       } else {

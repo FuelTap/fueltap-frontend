@@ -5,7 +5,7 @@ const User = () => {
   return (
     <div className="flex h-dvh w-dvw flex-col">
       <UserHeader />
-      <main className="container flex-1 overflow-y-scroll pb-6 leading-[100%] tracking-tight">
+      <main className="container mt-1 flex-1 overflow-y-scroll pb-6 leading-[100%] tracking-tight lg:mt-4">
         <Outlet />
       </main>
     </div>

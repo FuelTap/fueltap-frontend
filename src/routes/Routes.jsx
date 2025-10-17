@@ -37,9 +37,10 @@ const routes = [
         path: '/login',
         element: <LoginForm />,
       },
+      { path: '/success', element: <RegistrationSuccess /> },
     ],
   },
-  { path: '/success', element: <RegistrationSuccess /> },
+
   {
     path: '*',
     element: <div>404 Not Found</div>,

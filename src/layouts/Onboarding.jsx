@@ -1,6 +1,7 @@
 import Header from '@/components/Header';
 import Logo from '@/components/Logo';
 import { Progress } from '@/components/ui/progress';
+import { Skeleton } from '@/components/ui/skeleton';
 import RegisterForm from '@/features/register/RegisterForm';
 import React from 'react';
 import { RiArrowLeftSLine } from 'react-icons/ri';
@@ -59,7 +60,7 @@ const Onboarding = () => {
         </div>
       </div>
 
-      <div className="bg-neutra-600 hidden h-full w-1/2 border-2 md:block"></div>
+      <Skeleton className="bg-neutra-600 hidden h-full w-1/2 border-2 md:block" />
     </main>
   );
 };

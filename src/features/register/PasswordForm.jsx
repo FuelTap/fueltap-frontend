@@ -27,7 +27,7 @@ const PasswordForm = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { fullName, registerAs, email, phone } = location.state;
+  const { fullName, registerAs, email, phone } = location.state || '';
 
   async function onSubmit(data) {
     const payload = {
@@ -141,7 +141,7 @@ const PasswordForm = () => {
           )}
         />
 
-        <div className="max-sm:mt-auto">
+        <div className="mb-4 bg-white max-sm:fixed max-sm:bottom-0 max-sm:left-0 max-sm:w-full max-sm:p-4">
           <Button
             type="submit"
             size={'full'}

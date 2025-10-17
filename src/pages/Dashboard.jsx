@@ -16,7 +16,7 @@ const Dashboard = () => {
   const { isSmallScreen } = useScreenSize();
   return (
     <>
-      <div className="mt-12">
+      <div className="">
         <h1 className="font-pjs mb-2 text-2xl font-semibold md:text-3xl lg:text-5xl">
           Good afternoon Jola,
         </h1>
