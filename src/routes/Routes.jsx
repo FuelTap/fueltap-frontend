@@ -8,6 +8,8 @@ import RegistrationSuccess from '@/components/Success';
 import LoginForm from '@/features/login/LoginForm';
 import Dashboard from '@/pages/Dashboard';
 import User from '@/layouts/User';
+import TransactionHx from '@/pages/TransactionHx';
+import TransactionDetails from '@/features/transactions/TransactionDetails';
 
 const routes = [
   {
@@ -53,6 +55,10 @@ const routes = [
         index: true,
         path: '',
         element: <Dashboard />,
+      },
+      {
+        path: 'transaction-history',
+        element: <TransactionHx />,
       },
     ],
   },

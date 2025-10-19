@@ -123,11 +123,12 @@
   --color-neutra-1000: #575858;
   --color-green-50: #e7f8f2;
   --color-green-400: #0d9467;
-
+  --color-green-500: #0ea774;
   --color-primary-900: #061337;
   --color-yellow-100: #fff2e0;
   --color-secondary-500: #ffc300;
 
+  --color-gray-700: #888989;
   --color-grey-800: #595a5a;
 
   --color-error: #df1125;
@@ -165,7 +166,7 @@
   letter-spacing: '0%';
 }
 .text-xl-regular {
-  @apply text-[16px] font-[400] md:text-xl;
+  @apply text-[16px] font-[400];
   line-height: '100%';
   letter-spacing: '0%';
 }
