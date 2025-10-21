@@ -145,7 +145,7 @@ const PasswordForm = () => {
           <Button
             type="submit"
             size={'full'}
-            disabled={!form.formState.isValid || isSubmitting}
+            disabled={isSubmitting}
             className={'text-md-medium'}
           >
             {isSubmitting ? 'Creating...' : 'Next'}

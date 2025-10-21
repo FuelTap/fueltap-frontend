@@ -41,11 +41,11 @@ const history = [
 const TransactionBody = () => {
   const [selectedTxn, setSelectedTxn] = useState(null);
   return (
-    <div className="p-4">
+    <div className="md:p-4">
       {/* one transaction date */}
       {history.map(({ date, transactions }, index) => (
-        <div className="mt-2 md:p-4" key={index}>
-          <h4 className="border-b pb-4 text-2xl font-medium text-black">
+        <div className="mt-6 md:mt-4 md:p-4" key={index}>
+          <h4 className="border-b pb-2 font-medium text-black md:pb-4 md:text-2xl">
             {date}
           </h4>
           <ul className="flex flex-col">
@@ -55,24 +55,26 @@ const TransactionBody = () => {
                 onClick={() => {
                   setSelectedTxn({ id, tnxType, title, amt });
                 }}
-                className="flex items-center justify-between border-b px-2 py-4"
+                className="border-neutra-500 flex items-center justify-between border-b p-3 md:px-2 md:py-4"
                 key={idx}
               >
                 <div className="flex items-center gap-2">
                   {tnxType === 'Account Top-up' ? (
                     <span className="rounded-full bg-green-50 p-2">
-                      <LuPlus className="text-xl text-green-400" />
+                      <LuPlus className="text-green-400 md:text-xl" />
                     </span>
                   ) : (
                     <span className="rounded-full bg-red-50 p-2">
-                      <LuFuel className="text-error text-xl" />
+                      <LuFuel className="text-error md:text-xl" />
                     </span>
                   )}
 
                   <div className="space-y-2">
-                    <h4 className="text-lg-medium text-grey-800">{tnxType}</h4>
+                    <h4 className="text-lg-medium text-grey-800 max-sm:text-[16px]!">
+                      {tnxType}
+                    </h4>
                     <h6
-                      className={`${tnxType === 'Account Top-up' ? 'text-green-400' : 'text-error'} text-lg-regular`}
+                      className={`${tnxType === 'Account Top-up' ? 'text-green-400' : 'text-error'} text-lg-regular max-sm:text-[12px]!`}
                     >
                       {title}
                     </h6>
@@ -80,7 +82,7 @@ const TransactionBody = () => {
                 </div>
 
                 <h5
-                  className={`${tnxType === 'Account Top-up' ? 'text-green-500' : 'text-error'} text-xl-regular font-medium`}
+                  className={`${tnxType === 'Account Top-up' ? 'text-green-500' : 'text-error'} text-xl-regular font-medium max-sm:text-[16px]!`}
                 >
                   {formatCurrency(amt)}
                 </h5>

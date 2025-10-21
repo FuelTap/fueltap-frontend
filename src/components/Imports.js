@@ -1,4 +1,4 @@
-export const logoImg = '/assets/images/FuelTap Logo.svg';
+export const logoImg = '/assets/images/FuelTap-Logo.png';
 
 export // ✨ Array of link objects
 const links = [
