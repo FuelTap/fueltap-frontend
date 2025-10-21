@@ -5,12 +5,12 @@ import { Skeleton } from '@/components/ui/skeleton';
 import RegisterForm from '@/features/register/RegisterForm';
 import React from 'react';
 import { RiArrowLeftSLine } from 'react-icons/ri';
-import { Outlet, useLocation, useNavigate } from 'react-router';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router';
 
 const indicatorMap = {
   '/register': {
     progressValue: 40,
-    text: 'Secure your account',
+    text: 'Already using FuelTap?',
     title: 'Create an Account',
   },
   '/confirm-password': {
@@ -30,7 +30,7 @@ const indicatorMap = {
   },
   '/login': {
     progressValue: 50,
-    text: 'We’re glad to have you',
+    text: "Don't have an account?",
     title: 'Login to Continue',
   },
 };
@@ -79,7 +79,19 @@ function Indicator({ progressValue, title, text }) {
         />
         <div>
           <h1 className="text-primary font-pjs text-2xl font-[600]">{title}</h1>
-          <p className="text-lg-regular mt-1 mb-4 lg:mt-2 lg:mb-6">{text}</p>
+          <div className="mt-1 mb-4 flex items-center gap-1 lg:mt-2 lg:mb-6">
+            <p className="text-lg-regular">{text}</p>
+            {text === 'Already using FuelTap?' && (
+              <Link className="text-primary" to={'/login'}>
+                Sign in
+              </Link>
+            )}
+            {text === "Don't have an account?" && (
+              <Link className="text-primary" to={'/role-selector'}>
+                Sign in
+              </Link>
+            )}
+          </div>
         </div>
       </div>
       <Progress value={progressValue} />

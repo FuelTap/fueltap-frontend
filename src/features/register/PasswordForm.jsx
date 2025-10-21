@@ -38,7 +38,6 @@ const PasswordForm = () => {
       confirm_password: data.confirmPassword,
       role: registerAs,
     };
-    console.log(payload);
 
     try {
       setIsSubmitting(true);
@@ -52,7 +51,11 @@ const PasswordForm = () => {
 
       navigate('/verify-email', { state: { email } });
     } catch (error) {
-      toast.error(error.message);
+      if (error.code === 'ERR_NETWORK') {
+        toast.error(error.message);
+      } else {
+        toast.error(error.response.data.message || 'something went wrong');
+      }
       console.log(error);
     } finally {
       setIsSubmitting(false);
@@ -82,6 +85,7 @@ const PasswordForm = () => {
                 <div className="relative">
                   <Input
                     placeholder="create a password"
+                    autoComplete="new-password"
                     type={showPassword ? 'text' : 'password'}
                     {...field}
                   />
@@ -117,6 +121,7 @@ const PasswordForm = () => {
                 <div className="relative">
                   <Input
                     placeholder="Re-enter password"
+                    autoComplete="new-password"
                     {...field}
                     type={showConfPassword ? 'text' : 'password'}
                   />

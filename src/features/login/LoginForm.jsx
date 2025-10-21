@@ -16,13 +16,30 @@ import { Input } from '@/components/ui/input';
 
 import { useState } from 'react';
 import { loginSchema } from './loginSchema';
+import { login } from './api';
+import { toast } from 'sonner';
 
 const LoginForm = () => {
   const form = useForm({
     resolver: zodResolver(loginSchema),
   });
 
-  function onSubmit() {}
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  async function onSubmit(data) {
+    setIsSubmitting(true);
+    try {
+      const response = await login(data);
+      toast.success('Login successful!');
+      console.log('User data:', response);
+      // e.g. navigate('/dashboard');
+    } catch (error) {
+      const message =
+        error.response?.data?.message || error.message || 'Login failed';
+      toast.error(message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
 
   const [showPassword, setShowPassword] = useState(false);
   function handleToggle(setterFn) {
@@ -63,6 +80,7 @@ const LoginForm = () => {
                   <Input
                     placeholder="create a password"
                     type={showPassword ? 'text' : 'password'}
+                    autoComplete="new-password"
                     {...field}
                   />
                   {showPassword ? (
@@ -92,8 +110,9 @@ const LoginForm = () => {
             variant={'secondary'}
             size={'full'}
             className={'text-md-medium'}
+            disabled={isSubmitting}
           >
-            Next
+            {isSubmitting ? 'Logging you in...' : 'Next'}
           </Button>
         </div>
       </form>

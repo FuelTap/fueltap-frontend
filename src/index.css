@@ -134,6 +134,42 @@
   --color-error: #df1125;
 }
 
+/* globals.css */
+
+/* make sure these selectors are loaded after any sonner/shadcn defaults */
+[data-sonner-toaster] [data-sonner-toast][data-type='success'] {
+  background-color: hsl(142 63% 38%); /* green */
+  color: white;
+  border: 1px solid hsl(142 63% 30%);
+  box-shadow: 0 6px 24px rgba(16, 185, 129, 0.12);
+}
+
+[data-sonner-toaster] [data-sonner-toast][data-type='error'] {
+  background-color: hsl(0 75% 45%); /* red */
+  color: white;
+  border: 1px solid hsl(0 75% 35%);
+  box-shadow: 0 6px 24px rgba(239, 68, 68, 0.12);
+}
+
+[data-sonner-toaster] [data-sonner-toast][data-type='warning'] {
+  background-color: hsl(42 100% 50%); /* yellow */
+  color: #111;
+  border: 1px solid hsl(42 95% 40%);
+  box-shadow: 0 6px 24px rgba(249, 115, 22, 0.08);
+}
+
+[data-sonner-toaster] [data-sonner-toast][data-type='info'] {
+  background-color: hsl(210 100% 48%); /* blue */
+  color: white;
+  border: 1px solid hsl(210 90% 38%);
+  box-shadow: 0 6px 24px rgba(59, 130, 246, 0.12);
+}
+
+/* Optional: tweak icon color inside toast */
+[data-sonner-toaster] [data-sonner-toast] svg {
+  color: inherit;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50 font-pjs;
