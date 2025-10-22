@@ -6,6 +6,7 @@ import { IoNotificationsOutline, IoSearchOutline } from 'react-icons/io5';
 import { MdLogout } from 'react-icons/md';
 
 import { IoMdClose } from 'react-icons/io';
+import { FaCircleUser } from 'react-icons/fa6';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -19,6 +20,7 @@ import { links, PageLinks } from './Imports';
 import { Button } from './ui/button';
 import { useSelector } from 'react-redux';
 import { splitName } from '@/utils/helpers';
+import useLogout from '@/hooks/useLogout';
 
 const UserHeader = () => {
   const { user, isAuthenticated } = useSelector((store) => store.user);
@@ -26,6 +28,9 @@ const UserHeader = () => {
   const name = user?.full_name;
   // ✨ Get initials dynamically
   const initials = splitName?.(name);
+
+  // logout
+  const logout = useLogout();
   return (
     <Header center={false}>
       <Logo />
@@ -94,7 +99,7 @@ const UserHeader = () => {
 
             {isAuthenticated && (
               <div className="text-error flex items-center gap-2">
-                <MdLogout />
+                <MdLogout onClick={() => logout()} />
                 <span>Log Out</span>
               </div>
             )}
@@ -156,7 +161,14 @@ const UserHeader = () => {
 export default UserHeader;
 
 export function HomeHeader() {
+  const { isAuthenticated, user } = useSelector((store) => store.user);
+
+  const name = user?.full_name;
+  // ✨ Get initials dynamically
+  const initials = splitName?.(name);
   const navigate = useNavigate();
+  // logout
+  const logout = useLogout();
   return (
     <Header center={false}>
       <Logo />
@@ -176,10 +188,14 @@ export function HomeHeader() {
                 </button>
               </SheetClose>
               <Logo />
-              <Avatar className="lg:hidden">
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>{'og'}</AvatarFallback>
-              </Avatar>
+              {!isAuthenticated ? (
+                <FaCircleUser size={28} onClick={() => navigate('/login')} />
+              ) : (
+                <Avatar className="lg:hidden" onClick={() => navigate('/user')}>
+                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarFallback>{initials}</AvatarFallback>
+                </Avatar>
+              )}
             </div>
           </SheetHeader>
 
@@ -223,10 +239,12 @@ export function HomeHeader() {
               <FaBug />
             </div>
 
-            <div className="text-error flex items-center gap-2">
-              <MdLogout />
-              <span>Log Out</span>
-            </div>
+            {isAuthenticated && (
+              <div className="text-error flex items-center gap-2">
+                <MdLogout onClick={() => logout()} />
+                <span>Log Out</span>
+              </div>
+            )}
           </div>
         </SheetContent>
       </Sheet>
@@ -266,10 +284,14 @@ export function HomeHeader() {
       </div>
 
       {/* ===== Small Screens Avatar ===== */}
-      <Avatar className="lg:hidden">
-        <AvatarImage src="https://github.com/shadcn.png" />
-        <AvatarFallback>{'og'}</AvatarFallback>
-      </Avatar>
+      {!isAuthenticated ? (
+        <FaCircleUser size={28} onClick={() => navigate('/login')} />
+      ) : (
+        <Avatar className="lg:hidden" onClick={() => navigate('/user')}>
+          <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarFallback>{initials}</AvatarFallback>
+        </Avatar>
+      )}
     </Header>
   );
 }
