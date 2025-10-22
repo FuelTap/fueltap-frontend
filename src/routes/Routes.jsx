@@ -10,6 +10,7 @@ import Dashboard from '@/pages/Dashboard';
 import User from '@/layouts/User';
 import TransactionHx from '@/pages/TransactionHx';
 import TransactionDetails from '@/features/transactions/TransactionDetails';
+import ProtectedRoute from './ProtectedRoute';
 
 const routes = [
   {
@@ -49,7 +50,11 @@ const routes = [
   },
   {
     path: '/user',
-    element: <User />,
+    element: (
+      <ProtectedRoute>
+        <User />
+      </ProtectedRoute>
+    ),
     children: [
       {
         index: true,

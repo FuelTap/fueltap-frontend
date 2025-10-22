@@ -18,11 +18,18 @@ import { useState } from 'react';
 import { loginSchema } from './loginSchema';
 import { login } from './api';
 import { toast } from 'sonner';
+import { useDispatch } from 'react-redux';
+import { setUserData } from './userSlice';
+import { useNavigate } from 'react-router';
+import { saveToLocalStorage } from '@/utils/helpers';
 
 const LoginForm = () => {
   const form = useForm({
     resolver: zodResolver(loginSchema),
   });
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   async function onSubmit(data) {
@@ -30,11 +37,28 @@ const LoginForm = () => {
     try {
       const response = await login(data);
       toast.success('Login successful!');
-      console.log('User data:', response);
-      // e.g. navigate('/dashboard');
+      if (response.data) {
+        const { user, accessToken, refreshToken } = response.data;
+
+        // dispatching to redux store
+        dispatch(
+          setUserData({
+            accessToken,
+            refreshToken,
+            user,
+          })
+        );
+        // persist
+        saveToLocalStorage('userData', {
+          accessToken,
+          refreshToken,
+          user,
+        });
+        navigate('/user');
+      }
     } catch (error) {
       const message =
-        error.response?.data?.message || error.message || 'Login failed';
+        error.response.data.message || error?.message || 'Login failed';
       toast.error(message);
     } finally {
       setIsSubmitting(false);

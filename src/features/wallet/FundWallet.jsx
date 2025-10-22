@@ -22,7 +22,7 @@ import { useEffect, useState } from 'react';
 import { LiaTimesSolid } from 'react-icons/lia';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { amountSchema } from './amountschema';
+import { amountSchema } from './schemas';
 import './FundWallet.css';
 
 const FundWallet = ({ onClose }) => {

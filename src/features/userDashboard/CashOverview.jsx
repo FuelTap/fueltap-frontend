@@ -3,10 +3,13 @@ import { useState } from 'react';
 import { BsEye, BsPlus } from 'react-icons/bs';
 import { FiArrowRight } from 'react-icons/fi';
 import FundWallet from '../wallet/FundWallet';
+import { useNavigate } from 'react-router';
+import { formatCurrency } from '@/utils/helpers';
 
 function CashOverview() {
   const [showAddFunds, setShowAddFunds] = useState(false);
 
+  const navigate = useNavigate();
   return (
     <>
       <div className="bg-primary lg: rounded-[20px] px-4 py-5 lg:px-7 lg:py-10">
@@ -24,6 +27,7 @@ function CashOverview() {
           <Button
             size={'sm'}
             variant={'ghost'}
+            onClick={() => navigate('transaction-history')}
             className={'md:rounded-2x rounded-xl max-sm:text-[12px]'}
           >
             <span>View history </span>
@@ -34,7 +38,9 @@ function CashOverview() {
         <div className="flex items-center justify-between text-white">
           <div className="md:gap2 flex flex-col gap-1">
             <p className="text-lg-medium">Wallet Balance</p>
-            <h3 className="font-pjs text-3xl font-bold lg:text-5xl">N0</h3>
+            <h3 className="font-pjs text-3xl font-bold lg:text-5xl">
+              {formatCurrency(0)}
+            </h3>
           </div>
           <BsEye />
         </div>

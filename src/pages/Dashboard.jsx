@@ -7,18 +7,22 @@ import QuickStats from '@/features/userDashboard/QuickStats';
 import UserLinks from '@/features/userDashboard/UserLinks';
 import { useScreenSize } from '@/hooks/useScreenSize';
 import React from 'react';
-import { BsEye, BsPlus } from 'react-icons/bs';
-import { FiArrowRight } from 'react-icons/fi';
+import { useSelector } from 'react-redux';
 
 const Dashboard = () => {
   const isVerified = false;
 
   const { isSmallScreen } = useScreenSize();
+
+  const { user } = useSelector((state) => state.user);
+
+  const firstName = user?.full_name?.split(' ')[0];
+
   return (
     <>
       <div className="">
         <h1 className="font-pjs mb-2 text-2xl font-semibold md:text-3xl lg:text-5xl">
-          Good afternoon Jola,
+          Good afternoon {firstName},
         </h1>
         <p className="text-accent mb-2 text-[18px] lg:text-2xl">
           How’s your day going?

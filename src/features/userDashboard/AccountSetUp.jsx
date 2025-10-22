@@ -11,6 +11,7 @@ const AccountSetUp = () => {
           Finish setting up your account
         </p>
 
+        {/* kyc */}
         <Link className="mb-4 flex items-center justify-between rounded-[20px] bg-green-50 p-4 md:px-5 md:py-6">
           <div>
             <h3 className="font-pjs mb-3 font-semibold text-green-400 lg:text-2xl">
@@ -22,7 +23,7 @@ const AccountSetUp = () => {
           </div>
           <IoPersonCircleOutline className="text-3xl text-green-400 lg:text-5xl" />
         </Link>
-
+        {/* bank account */}
         <div
           className="mb-4 flex cursor-pointer items-center justify-between rounded-[20px] bg-yellow-100 p-4 md:px-5 md:py-6"
           onClick={() => setBankSetup(true)}

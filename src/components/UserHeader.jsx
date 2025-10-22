@@ -17,17 +17,15 @@ import {
 } from '@/components/ui/sheet';
 import { links, PageLinks } from './Imports';
 import { Button } from './ui/button';
-
-const name = 'Ochife Ogechukwu';
-
-// ✨ Get initials dynamically
-const initials = name
-  .split(' ')
-  .map((word) => word.charAt(0).toUpperCase())
-  .join('')
-  .slice(0, 2); // ensures max 2 chars
+import { useSelector } from 'react-redux';
+import { splitName } from '@/utils/helpers';
 
 const UserHeader = () => {
+  const { user, isAuthenticated } = useSelector((store) => store.user);
+
+  const name = user?.full_name;
+  // ✨ Get initials dynamically
+  const initials = splitName?.(name);
   return (
     <Header center={false}>
       <Logo />
@@ -94,10 +92,12 @@ const UserHeader = () => {
               <FaBug />
             </div>
 
-            <div className="text-error flex items-center gap-2">
-              <MdLogout />
-              <span>Log Out</span>
-            </div>
+            {isAuthenticated && (
+              <div className="text-error flex items-center gap-2">
+                <MdLogout />
+                <span>Log Out</span>
+              </div>
+            )}
           </div>
         </SheetContent>
       </Sheet>
@@ -178,7 +178,7 @@ export function HomeHeader() {
               <Logo />
               <Avatar className="lg:hidden">
                 <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>{initials}</AvatarFallback>
+                <AvatarFallback>{'og'}</AvatarFallback>
               </Avatar>
             </div>
           </SheetHeader>
@@ -259,7 +259,7 @@ export function HomeHeader() {
         </Button>
         <Button
           className={'h-[40px] w-[120px] rounded-3xl px-4 py-3'}
-          onClick={() => navigate('/register')}
+          onClick={() => navigate('/role-selector')}
         >
           Get Started
         </Button>
@@ -268,7 +268,7 @@ export function HomeHeader() {
       {/* ===== Small Screens Avatar ===== */}
       <Avatar className="lg:hidden">
         <AvatarImage src="https://github.com/shadcn.png" />
-        <AvatarFallback>{initials}</AvatarFallback>
+        <AvatarFallback>{'og'}</AvatarFallback>
       </Avatar>
     </Header>
   );

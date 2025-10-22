@@ -3,6 +3,8 @@ import { LuFuel } from 'react-icons/lu';
 import { Link } from 'react-router';
 import { Button } from '@/components/ui/button';
 import { useScreenSize } from '@/hooks/useScreenSize';
+import { MdLogout } from 'react-icons/md';
+import useLogout from '@/hooks/useLogout';
 
 const links = [
   {
@@ -38,7 +40,7 @@ const links = [
   {
     title: 'Log Out',
     to: '',
-    icon: <LuFuel size={44} />,
+    icon: <MdLogout size={44} />,
   },
 ];
 const UserLinks = () => {
@@ -46,30 +48,63 @@ const UserLinks = () => {
   const linksToUse = isSmallScreen
     ? links.filter((_, index) => index !== 0 && index !== 5)
     : links;
+
+  const logout = useLogout();
   return (
     <div className="w-full md:max-w-[47%]">
       {linksToUse.map(({ icon, to, title }, index) => (
-        <Link
-          className="border-neutra-500 group flex items-center justify-between border-b p-2 transition md:px-4 md:py-5"
-          key={index}
-        >
-          <div className="flex items-center gap-3">
-            <Button
-              className={
-                'bg-green-100/90 p-2 text-green-400/90 group-hover:bg-green-100 group-hover:text-green-400'
-              }
-              variant={'icon'}
-              size={'icon'}
+        <>
+          {title === 'Log Out' ? (
+            <div
+              className="border-neutra-500 group flex cursor-pointer items-center justify-between border-b p-2 transition md:px-4 md:py-5"
+              key={index}
+              onClick={() => logout()}
             >
-              {icon}
-            </Button>
-            <p className="text-neutra-1000 font-[400] lg:text-xl">{title}</p>
-          </div>
-          <RiArrowRightSLine
-            size={20}
-            className="transform transition-transform duration-300 group-hover:translate-x-2"
-          />
-        </Link>
+              <div className="flex items-center gap-3">
+                <Button
+                  className={
+                    'bg-red-100/90 p-2 text-red-400/90 group-hover:bg-red-200 group-hover:text-red-400'
+                  }
+                  variant={'icon'}
+                  size={'icon'}
+                >
+                  {icon}
+                </Button>
+                <p className="text-neutra-1000 font-[400] lg:text-xl">
+                  {title}
+                </p>
+              </div>
+              <RiArrowRightSLine
+                size={20}
+                className="transform transition-transform duration-300 group-hover:translate-x-2"
+              />
+            </div>
+          ) : (
+            <Link
+              className="border-neutra-500 group flex items-center justify-between border-b p-2 transition md:px-4 md:py-5"
+              key={index}
+            >
+              <div className="flex items-center gap-3">
+                <Button
+                  className={
+                    'bg-green-100/90 p-2 text-green-400/90 group-hover:bg-green-100 group-hover:text-green-400'
+                  }
+                  variant={'icon'}
+                  size={'icon'}
+                >
+                  {icon}
+                </Button>
+                <p className="text-neutra-1000 font-[400] lg:text-xl">
+                  {title}
+                </p>
+              </div>
+              <RiArrowRightSLine
+                size={20}
+                className="transform transition-transform duration-300 group-hover:translate-x-2"
+              />
+            </Link>
+          )}
+        </>
       ))}
     </div>
   );
