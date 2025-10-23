@@ -34,12 +34,48 @@ const LinkBank = ({ onClose }) => {
   });
 
   const axiosPrivate = useAxiosPrivate();
+  // code to check when bankname and number has been selected and fetch account name
+
+  const [isResolving, setIsResolving] = useState(false);
+  const [resolved, setResolved] = useState(false);
+
+  const bankName = form.watch('bankName');
+  const accountNumber = form.watch('accountNumber');
+  useEffect(() => {
+    async function fetchAccountName() {
+      if (bankName && accountNumber?.length === 10) {
+        setIsResolving(true);
+      }
+      try {
+        console.log(bankName, accountNumber);
+        const res = await axiosPrivate.post('v1/account/verify-bank', {
+          bankName,
+          accountNumber,
+        });
+        console.log(res.data);
+        // const fetchedName = res.data?.accountName;
+        // form.setValue('accountName', fetchedName);
+        setResolved(true);
+
+        toast.success('success');
+      } catch (error) {
+        console.log(error);
+        toast.error(error.response.data.error);
+        setResolved(false);
+      } finally {
+        setIsResolving(false);
+      }
+    }
+
+    if (bankName && accountNumber?.length === 10) fetchAccountName();
+  }, [bankName, accountNumber, axiosPrivate, form]);
+
   const onSubmit = async (data) => {
     try {
       console.log(data);
-      const response = await axiosPrivate.post('v1/account/add-bank', data);
+      // const response = await axiosPrivate.post('v1/account/add-bank', data);
 
-      console.log(response.data.data);
+      // console.log(response.data.data);
     } catch (error) {
       const message =
         error.response?.data?.data.message ||
@@ -113,8 +149,13 @@ const LinkBank = ({ onClose }) => {
               <FormControl>
                 <Input
                   type="text"
-                  placeholder="Enter your account name"
+                  placeholder={
+                    isResolving
+                      ? 'Verifying...'
+                      : 'Account name will appear here'
+                  }
                   {...field}
+                  disabled
                 />
               </FormControl>
               <FormMessage />
@@ -122,8 +163,8 @@ const LinkBank = ({ onClose }) => {
           )}
         />
 
-        <Button size="full" type="submit">
-          Continue
+        <Button size="full" type="submit" disabled={!resolved || isResolving}>
+          {isResolving ? 'Verifying...' : 'Continue'}
         </Button>
       </form>
     </Form>

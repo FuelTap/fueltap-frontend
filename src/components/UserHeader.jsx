@@ -165,7 +165,7 @@ export function HomeHeader() {
 
   const name = user?.full_name;
   // ✨ Get initials dynamically
-  const initials = splitName?.(name);
+
   const navigate = useNavigate();
   // logout
   const logout = useLogout();
@@ -193,7 +193,7 @@ export function HomeHeader() {
               ) : (
                 <Avatar className="lg:hidden" onClick={() => navigate('/user')}>
                   <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>{initials}</AvatarFallback>
+                  <AvatarFallback>{splitName(name)}</AvatarFallback>
                 </Avatar>
               )}
             </div>
@@ -289,7 +289,7 @@ export function HomeHeader() {
       ) : (
         <Avatar className="lg:hidden" onClick={() => navigate('/user')}>
           <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>{initials}</AvatarFallback>
+          <AvatarFallback>{splitName(name)}</AvatarFallback>
         </Avatar>
       )}
     </Header>
