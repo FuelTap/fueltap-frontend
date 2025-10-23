@@ -168,7 +168,7 @@ export function HomeHeader() {
 
   const navigate = useNavigate();
   // logout
-  const logout = useLogout();
+  const logout = useLogout;
   return (
     <Header center={false}>
       <Logo />
@@ -285,7 +285,11 @@ export function HomeHeader() {
 
       {/* ===== Small Screens Avatar ===== */}
       {!isAuthenticated ? (
-        <FaCircleUser size={28} onClick={() => navigate('/login')} />
+        <FaCircleUser
+          size={28}
+          className="md:hidden"
+          onClick={() => navigate('/login')}
+        />
       ) : (
         <Avatar className="lg:hidden" onClick={() => navigate('/user')}>
           <AvatarImage src="https://github.com/shadcn.png" />
