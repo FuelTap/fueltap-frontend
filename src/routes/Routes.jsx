@@ -11,6 +11,7 @@ import User from '@/layouts/User';
 import TransactionHx from '@/pages/TransactionHx';
 import TransactionDetails from '@/features/transactions/TransactionDetails';
 import ProtectedRoute from './ProtectedRoute';
+import AccountSettings from '@/pages/AccountSettings';
 
 const routes = [
   {
@@ -60,6 +61,10 @@ const routes = [
         index: true,
         path: '',
         element: <Dashboard />,
+      },
+      {
+        path: 'account-settings',
+        element: <AccountSettings />,
       },
       {
         path: 'transaction-history',

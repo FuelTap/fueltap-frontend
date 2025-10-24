@@ -78,9 +78,9 @@ const UserHeader = () => {
                 key={link.path}
                 to={link.path}
                 className={({ isActive }) =>
-                  `rounded-lg py-2 pl-4 text-[15px] capitalize transition-all ${
+                  `rounded-lg rounded-l-none py-2 pl-4 text-[15px] capitalize transition-all ${
                     isActive
-                      ? 'border-primary bg-primary/10 text-primary border-l-4 font-medium'
+                      ? 'border-primary text-primary border-l-8 font-medium'
                       : 'text-neutral-700 hover:text-black'
                   }`
                 }

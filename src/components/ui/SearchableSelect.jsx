@@ -22,7 +22,7 @@ export function SearchableSelect({ items = [], value, onChange, placeholder }) {
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
+      <PopoverTrigger asChild className={'h-12 px-3 py-1'}>
         <Button
           variant="outline"
           role="combobox"

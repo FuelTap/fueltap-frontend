@@ -3,8 +3,11 @@ import { LuFuel } from 'react-icons/lu';
 import { Link } from 'react-router';
 import { Button } from '@/components/ui/button';
 import { useScreenSize } from '@/hooks/useScreenSize';
-import { MdLogout } from 'react-icons/md';
+import { MdLogout, MdOutlineSupportAgent } from 'react-icons/md';
 import useLogout from '@/hooks/useLogout';
+import { GoClock, GoGear } from 'react-icons/go';
+import { CiUser } from 'react-icons/ci';
+import { FaSave } from 'react-icons/fa';
 
 const links = [
   {
@@ -14,32 +17,32 @@ const links = [
   },
   {
     title: 'Transation History',
-    to: '',
-    icon: <LuFuel size={44} />,
+    to: '/user/transaction-history',
+    icon: <GoClock size={44} />,
   },
   {
     title: 'Personal Details',
     to: '',
-    icon: <LuFuel size={44} />,
+    icon: <CiUser size={44} />,
   },
   {
     title: 'Account Settings',
-    to: '',
-    icon: <LuFuel size={44} />,
+    to: '/user/account-settings',
+    icon: <GoGear size={44} />,
   },
   {
     title: 'Update Bank Account',
     to: '',
-    icon: <LuFuel size={44} />,
+    icon: <FaSave size={44} />,
   },
   {
     title: 'Help & Support',
     to: '',
-    icon: <LuFuel size={44} />,
+    icon: <MdOutlineSupportAgent size={44} />,
   },
   {
     title: 'Log Out',
-    to: '',
+
     icon: <MdLogout size={44} />,
   },
 ];
@@ -82,6 +85,7 @@ const UserLinks = () => {
           ) : (
             <Link
               className="border-neutra-500 group flex items-center justify-between border-b p-2 transition md:px-4 md:py-5"
+              to={to}
               key={index}
             >
               <div className="flex items-center gap-3">

@@ -52,12 +52,12 @@ const LinkBank = ({ onClose }) => {
           bankName,
           accountNumber,
         });
-        console.log(res.data);
-        // const fetchedName = res.data?.accountName;
-        // form.setValue('accountName', fetchedName);
+        console.log(res.data.data.data.account_name);
+        const fetchedName = res.data.data.data.account_name;
+        form.setValue('accountName', fetchedName);
         setResolved(true);
 
-        toast.success('success');
+        toast.success(res.data.data.message);
       } catch (error) {
         console.log(error);
         toast.error(error.response.data.error);
@@ -73,9 +73,9 @@ const LinkBank = ({ onClose }) => {
   const onSubmit = async (data) => {
     try {
       console.log(data);
-      // const response = await axiosPrivate.post('v1/account/add-bank', data);
+      const response = await axiosPrivate.post('v1/account/add-bank', data);
 
-      // console.log(response.data.data);
+      console.log(response.data.data);
     } catch (error) {
       const message =
         error.response?.data?.data.message ||
