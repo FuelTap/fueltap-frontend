@@ -75,6 +75,7 @@ const UserHeader = () => {
           <div className="mt-2 flex flex-col gap-1">
             {links.map((link) => (
               <NavLink
+                end
                 key={link.path}
                 to={link.path}
                 className={({ isActive }) =>
@@ -111,6 +112,7 @@ const UserHeader = () => {
       <nav className="hidden items-center gap-8 lg:flex">
         {links.map((link) => (
           <NavLink
+            end
             key={link.path}
             to={link.path}
             className={({ isActive }) =>

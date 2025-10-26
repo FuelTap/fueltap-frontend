@@ -14,6 +14,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { formSchema } from './formsSchemas';
 import { useLocation, useNavigate } from 'react-router';
+import { MdKeyboardArrowDown } from 'react-icons/md';
 
 const RegisterForm = () => {
   // 1. Define your form.
@@ -83,7 +84,11 @@ const RegisterForm = () => {
               <FormLabel className={'text-lg-medium'}>Phone Number</FormLabel>
               <FormControl>
                 <div className="flex">
-                  <span className="h-full w-12 bg-blue-600"></span>
+                  <div className="text-primary-400 bg-primary-50 flex items-center justify-center gap-2 rounded-l px-2">
+                    <span className="text-xl">NGN</span>
+                    <MdKeyboardArrowDown />
+                  </div>
+
                   <Input
                     placeholder="90 22473 2723"
                     inputMode="numeric"

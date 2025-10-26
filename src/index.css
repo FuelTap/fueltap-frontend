@@ -125,13 +125,16 @@
   --color-green-400: #0d9467;
   --color-green-500: #0ea774;
 
+  --color-primary-50: #ebedfc;
   --color-primary-400: #4e71e8;
   --color-blue-600: #1e3a8a;
   --color-primary-900: #061337;
   --color-secondary-50: #fff8f0;
   --color-yellow-100: #fff2e0;
   --color-secondary-500: #ffc300;
+  --color-secondary-600: #c99901;
 
+  --color-gray-100: #f3f4f4;
   --color-gray-700: #888989;
   --color-grey-800: #595a5a;
 
@@ -176,7 +179,7 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50 font-pjs;
+    @apply border-border outline-ring/50 font-pjs antialiased;
   }
   body {
     @apply bg-background text-foreground;

@@ -12,6 +12,8 @@ import TransactionHx from '@/pages/TransactionHx';
 import TransactionDetails from '@/features/transactions/TransactionDetails';
 import ProtectedRoute from './ProtectedRoute';
 import AccountSettings from '@/pages/AccountSettings';
+import PriceComparison from '@/pages/PriceComparison';
+import Orders from '@/pages/Orders';
 
 const routes = [
   {
@@ -69,6 +71,14 @@ const routes = [
       {
         path: 'transaction-history',
         element: <TransactionHx />,
+      },
+      {
+        path: 'prices',
+        element: <PriceComparison />,
+      },
+      {
+        path: 'orders',
+        element: <Orders />,
       },
     ],
   },
