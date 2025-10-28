@@ -21,6 +21,7 @@ import { Button } from './ui/button';
 import { useSelector } from 'react-redux';
 import { splitName } from '@/utils/helpers';
 import useLogout from '@/hooks/useLogout';
+import { useState } from 'react';
 
 const UserHeader = () => {
   const { user, isAuthenticated } = useSelector((store) => store.user);
@@ -31,29 +32,42 @@ const UserHeader = () => {
 
   // logout
   const logout = useLogout();
+
+  const [open, setOpen] = useState(false);
   return (
     <Header center={false}>
       <Logo />
 
       {/* ===== Mobile Sheet (Sidebar) ===== */}
-      <Sheet>
-        <SheetTrigger className="-order-1 lg:hidden">
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetTrigger
+          className="-order-1 lg:hidden"
+          onClick={() => setOpen(true)}
+        >
           <FaBars size={22} />
         </SheetTrigger>
 
-        <SheetContent side="left" className="pt-6">
+        <SheetContent side="left" className="pt-6 [&>button]:hidden">
           <SheetHeader className="border-b pb-4">
-            <div className="flex items-center gap-3">
-              <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>{initials}</AvatarFallback>
-              </Avatar>
-              <div>
-                <h5 className="text-[15px] font-medium text-black capitalize">
-                  {name}
-                </h5>
-                <p className="text-sm text-neutral-500">Premium member</p>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Avatar>
+                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarFallback>{initials}</AvatarFallback>
+                </Avatar>
+                <div>
+                  <h5 className="text-[15px] font-medium text-black capitalize">
+                    {name}
+                  </h5>
+                  <p className="text-sm text-neutral-500">Premium member</p>
+                </div>
               </div>
+              <button
+                className="rounded-md p-2 hover:bg-gray-100"
+                onClick={() => setOpen(false)}
+              >
+                <IoMdClose size={22} />
+              </button>
             </div>
           </SheetHeader>
 
@@ -75,6 +89,7 @@ const UserHeader = () => {
           <div className="mt-2 flex flex-col gap-1">
             {links.map((link) => (
               <NavLink
+                onClick={() => setOpen(false)}
                 end
                 key={link.path}
                 to={link.path}
@@ -171,13 +186,17 @@ export function HomeHeader() {
   const navigate = useNavigate();
   // logout
   const logout = useLogout;
+  const [open, setOpen] = useState(false);
   return (
     <Header center={false}>
       <Logo />
 
       {/* ===== Mobile Sheet (Sidebar) ===== */}
-      <Sheet>
-        <SheetTrigger className="-order-1 lg:hidden">
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetTrigger
+          className="-order-1 lg:hidden"
+          onClick={() => setOpen(true)}
+        >
           <FaBars size={22} />
         </SheetTrigger>
 
@@ -220,6 +239,7 @@ export function HomeHeader() {
             {PageLinks.map((link) => (
               <NavLink
                 key={link.path}
+                onClick={() => setOpen(false)}
                 to={link.path}
                 className={({ isActive }) =>
                   `rounded-lg py-2 pl-4 text-[15px] capitalize transition-all ${

@@ -12,7 +12,10 @@ const AccountSetUp = () => {
         </p>
 
         {/* kyc */}
-        <Link className="mb-4 flex items-center justify-between rounded-[20px] bg-green-50 p-4 md:px-5 md:py-6">
+        <Link
+          className="mb-4 flex items-center justify-between rounded-[20px] bg-green-50 p-4 md:px-5 md:py-6"
+          to={'/user/verify'}
+        >
           <div>
             <h3 className="font-pjs mb-3 font-semibold text-green-400 lg:text-2xl">
               KYC Verification

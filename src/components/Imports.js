@@ -1,4 +1,6 @@
 export const logoImg = '/assets/images/FuelTap-Logo.png';
+export const kycImage = '/assets/images/kyc-image.png';
+export const filemage = '/assets/images/file.png';
 
 export // ✨ Array of link objects
 const links = [

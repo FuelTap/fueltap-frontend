@@ -14,6 +14,7 @@ import ProtectedRoute from './ProtectedRoute';
 import AccountSettings from '@/pages/AccountSettings';
 import PriceComparison from '@/pages/PriceComparison';
 import Orders from '@/pages/Orders';
+import KYC from '@/pages/KYC';
 
 const routes = [
   {
@@ -79,6 +80,10 @@ const routes = [
       {
         path: 'orders',
         element: <Orders />,
+      },
+      {
+        path: 'verify',
+        element: <KYC />,
       },
     ],
   },

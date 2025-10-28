@@ -135,6 +135,7 @@
   --color-secondary-600: #c99901;
 
   --color-gray-100: #f3f4f4;
+  --color-grey-600: #bbbcbc;
   --color-gray-700: #888989;
   --color-grey-800: #595a5a;
 
@@ -204,7 +205,7 @@
   letter-spacing: '0%';
 }
 .text-lg-regular {
-  @apply text-[14px] font-[400];
+  @apply text-[14px] font-[400] md:text-[18px];
   line-height: '100%';
   letter-spacing: '0%';
 }

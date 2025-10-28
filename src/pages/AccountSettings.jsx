@@ -1,141 +1,107 @@
-import { formSchema } from '@/features/register/formsSchemas';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+// import { formSchema } from '@/features/register/formsSchemas';
+// import { zodResolver } from '@hookform/resolvers/zod';
+// import { useForm } from 'react-hook-form';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { splitName } from '@/utils/helpers';
-import { useSelector } from 'react-redux';
+
+// import { useSelector } from 'react-redux';
 import { GoClock } from 'react-icons/go';
 import { IoKeyOutline, IoShieldOutline } from 'react-icons/io5';
 import { RiDeleteBin5Line } from 'react-icons/ri';
+import { FaRegClock } from 'react-icons/fa6';
+import AccountHeader from '@/features/accountSettings/AccountHeader';
+import ProfileSettings from '@/features/accountSettings/ProfileSettings';
+import Jsx from '@/features/accountSettings/Jsx';
+
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+import ChangePassword from '@/features/accountSettings/ChangePassword';
 
 const AccountSettings = () => {
-  const { user } = useSelector((store) => store.user);
+  // const { user } = useSelector((store) => store.user);
 
-  const form = useForm({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      fullName: user.full_name,
-      phone: user.phone_number,
-    },
-  });
+  // const form = useForm({
+  //   resolver: zodResolver(formSchema),
+  //   defaultValues: {
+  //     fullName: user.full_name,
+  //     phone: user.phone_number,
+  //   },
+  // });
 
-  function onSubmit() {}
-
-  const name = user.full_name;
   return (
     <div>
-      <h1 className="text-4xl font-semibold text-blue-600">Account Settings</h1>
-      <p className="text-grey-800 text-xl font-[400]">
-        Manage your account information, security settings, and preferences
-      </p>
+      <AccountHeader />
 
-      <article className="bg-secondary-50 mt-8 p-8">
-        <div className="mb-6 space-y-0.5">
-          <h4 className="title">Profile Information</h4>
-          <p className="text-lg-regular text-gray-800">
-            Update your personal details and profile photo
-          </p>
-        </div>
+      <ProfileSettings />
 
-        <div className="flex gap-12">
-          <div className="flex flex-col gap-1">
-            <Avatar className="size-23 text-2xl">
-              <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>{splitName(name)}</AvatarFallback>
-            </Avatar>
-            <small className="text-primary-400 text-sm font-medium">
-              Change photo
-            </small>
-          </div>
-          {/* form part */}
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="w-full space-y-9"
+      {/* setting options for mobiles */}
+      <div className="lg:hidden">
+        <Accordion type="single" collapsible>
+          {[
+            {
+              icon: <FaRegClock />,
+              title: 'Change  Password',
+              jsx: <ChangePassword />,
+            },
+            {
+              icon: <FaRegClock />,
+              title: 'Add Transaction Pin',
+              jsx: <Jsx />,
+            },
+          ].map(({ title, icon, jsx }, index) => (
+            <AccordionItem
+              value={`item-${index + 1}`}
+              key={index + 1}
+              className={'last:border-b-1'}
             >
-              <div className="flex items-center justify-between">
-                <FormField
-                  control={form.control}
-                  name="fullName"
-                  render={({ field }) => (
-                    <FormItem className={'basis-[49%]'}>
-                      <FormLabel className={'text-lg-medium'}>
-                        Full Name
-                      </FormLabel>
-                      <FormControl>
-                        <Input placeholder="Ochife Ogechukwu" {...field} />
-                      </FormControl>
-
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="phone"
-                  render={({ field }) => (
-                    <FormItem className={'basis-[49%]'}>
-                      <FormLabel className={'text-lg-medium'}>
-                        Phone Number
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="90 22473 2723"
-                          inputMode="numeric"
-                          onInput={(e) => {
-                            e.target.value = e.target.value.replace(
-                              /[^0-9]/g,
-                              ''
-                            );
-                          }}
-                          className={
-                            'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:border-l-0 focus-visible:ring-[1px]'
-                          }
-                          {...field}
-                        />
-                      </FormControl>
-
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="flex items-center gap-4">
-                <Button
-                  type="submit"
-                  variant={'secondary'}
-                  className="text-md-medium"
+              <AccordionTrigger className={''}>
+                <div
+                  className={
+                    'text-md-medium text-grey-800! flex items-center gap-2'
+                  }
                 >
-                  Save Changes
-                </Button>
-                <Button
-                  type="button"
-                  className="text-md-medium bg-transparent text-black hover:text-white"
-                >
-                  Cancel
-                </Button>
-              </div>
-            </form>
-          </Form>
+                  <span
+                    className={
+                      'flex h-8 w-8 items-center justify-center rounded-full bg-green-100/90 p-2 text-green-400/90 group-hover:bg-green-200 group-hover:text-green-400'
+                    }
+                  >
+                    {icon}
+                  </span>
+                  {title}
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className={'text-md-medium text-neutra-1000'}>
+                {jsx}
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+        <div className="flex items-center gap-2 py-4">
+          <span
+            className={
+              'flex h-8 w-8 items-center justify-center rounded-full bg-red-100/90 p-2 text-red-400/90 group-hover:bg-red-200 group-hover:text-red-400'
+            }
+          >
+            <RiDeleteBin5Line />
+          </span>
+          <p className="text-md-medium text-error!">Delete Account</p>
         </div>
-      </article>
+      </div>
 
-      <div className="flex justify-between">
-        <div className="basis-[49%] p-8">
+      {/* <span
+                className={
+                  'flex h-12 w-12 items-center justify-center rounded-full bg-red-100/90 p-2 text-red-400/90 group-hover:bg-red-200 group-hover:text-red-400'
+                }
+              >
+                <RiDeleteBin5Line />
+              </span> */}
+
+      <div className="hidden flex-col justify-between md:flex-row lg:flex">
+        <div className="basis-full p-8 md:basis-[49%]">
           <div className="mb-6 space-y-0.5">
             <h4 className="title">Security Settings</h4>
             <p className="text-lg-regular text-lg text-gray-800">
@@ -221,7 +187,7 @@ const AccountSettings = () => {
         </div>
 
         {/* preference */}
-        <div className="basis-[49%] p-8">
+        <div className="basis-full p-8 md:basis-[49%]">
           <div className="mb-6 space-y-0.5">
             <h4 className="title">Preferences</h4>
             <p className="text-lg-regular text-lg text-gray-800">
@@ -283,14 +249,14 @@ const AccountSettings = () => {
 
       {/* delete my account */}
 
-      <div className="border-error/40 mt-12 rounded-xl border-[0.1px] p-8">
+      <div className="border-error/40 mt-12 hidden rounded-xl border-[0.1px] p-8 lg:block">
         <div className="mb-6 space-y-0.5">
           <h4 className="title">Delete My Account</h4>
           <p className="text-lg-regular text-lg text-gray-800">
             Permanent actions that cannot be undone
           </p>
           <div className="mt-4 flex flex-col gap-8 p-4">
-            <div className="flex items-center justify-between gap-6">
+            <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="flex items-center gap-4">
                 <span
                   className={
