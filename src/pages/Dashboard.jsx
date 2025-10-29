@@ -1,3 +1,5 @@
+import Alert from '@/components/Alert';
+import { warn } from '@/components/Imports';
 import Logo from '@/components/Logo';
 import { Button } from '@/components/ui/button';
 import AccountSetUp from '@/features/userDashboard/AccountSetUp';
@@ -23,7 +25,7 @@ const Dashboard = () => {
     const hour = new Date().getHours();
     if (hour < 12) {
       setTimeOfDay('Morning');
-    } else if (hour < 18) {
+    } else if (hour < 17) {
       setTimeOfDay('Afternoon');
     } else {
       setTimeOfDay('Evening');
@@ -40,8 +42,13 @@ const Dashboard = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const [showCancelAlert, setShowCancelAlert] = useState(false);
+
   return (
     <>
+      <Alert open={showCancelAlert} onClose={() => setShowCancelAlert(false)}>
+        <CancelOrder onClose={() => setShowCancelAlert(false)} />
+      </Alert>
       <div className="">
         <h1 className="font-pjs mb-2 text-2xl font-semibold md:text-3xl lg:text-5xl">
           Good {timeOfDay} {firstName},
@@ -50,6 +57,7 @@ const Dashboard = () => {
           How’s your day going?
         </p>
       </div>
+      <button onClick={() => setShowCancelAlert(true)}>Cancel order</button>
       <div className="mt-4 flex flex-col items-start justify-between md:mt-8 md:flex-row">
         {/* money overview */}
         <div className="w-full md:max-w-[47%]">
@@ -72,3 +80,22 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+function CancelOrder({ onClose }) {
+  return (
+    <div className="flex flex-col items-center justify-center gap-8 text-center">
+      <img src={warn} alt="cancel order!" />
+      <div>
+        <h3 className="mb-2 text-xl">Cancel Order</h3>
+        <p>Are you sure you want to cancel your order</p>
+      </div>
+
+      <Button
+        className={'text-error hover:bg-error bg-red-100 hover:text-white'}
+        onClick={onClose}
+      >
+        Cancel Order
+      </Button>
+    </div>
+  );
+}

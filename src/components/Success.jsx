@@ -11,7 +11,11 @@ import {
 } from '@/components/ui/dialog';
 import { useScreenSize } from '@/hooks/useScreenSize';
 
-function RegistrationSuccess({ time = 3000, link = '/user' }) {
+function RegistrationSuccess({
+  time = 3000,
+  link = '/user',
+  info = '  Registration successful!',
+}) {
   const navigate = useNavigate();
 
   // ✅ Detect small screens (<768px)
@@ -43,9 +47,7 @@ function RegistrationSuccess({ time = 3000, link = '/user' }) {
           loop={false}
           className="h-40 w-40"
         />
-        <h2 className="mt-4 text-lg font-semibold text-green-700">
-          Registration successful!
-        </h2>
+        <h2 className="mt-4 text-lg font-semibold text-green-700">{info}</h2>
         <p className="text-gray-500">Redirecting shortly...</p>
       </div>
     );
@@ -68,7 +70,7 @@ function RegistrationSuccess({ time = 3000, link = '/user' }) {
                 className="h-40 w-40"
               />
               <h2 className="mt-4 text-lg font-semibold text-green-700">
-                Registration successful!
+                {info}
               </h2>
               <p className="text-gray-500">Redirecting shortly...</p>
             </div>

@@ -15,12 +15,14 @@ import AccountSettings from '@/pages/AccountSettings';
 import PriceComparison from '@/pages/PriceComparison';
 import Orders from '@/pages/Orders';
 import KYC from '@/pages/KYC';
+import LivenessCheck from '@/features/kyc/LivenessCheck';
 
 const routes = [
   {
     path: '/',
     element: <Home />,
   },
+  { path: '/success', element: <RegistrationSuccess /> },
   {
     element: <Onboarding />,
     children: [
@@ -44,7 +46,6 @@ const routes = [
         path: '/login',
         element: <LoginForm />,
       },
-      { path: '/success', element: <RegistrationSuccess /> },
     ],
   },
 
@@ -84,6 +85,10 @@ const routes = [
       {
         path: 'verify',
         element: <KYC />,
+      },
+      {
+        path: 'verify/liveness',
+        element: <LivenessCheck />,
       },
     ],
   },
