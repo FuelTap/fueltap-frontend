@@ -45,7 +45,7 @@ const RegisterForm = () => {
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit((data) => console.log(data))}
         className="flex h-[65vh] flex-col space-y-6 md:h-full"
       >
         <FormField

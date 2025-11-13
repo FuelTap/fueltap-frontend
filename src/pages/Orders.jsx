@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button';
-import { useState } from 'react';
 import { RiArrowLeftSLine, RiDeleteBin5Line } from 'react-icons/ri';
 import { useNavigate, useSearchParams } from 'react-router';
 import { GrLocation } from 'react-icons/gr';
@@ -136,7 +135,10 @@ const Orders = () => {
             </div>
           </>
         )}
-        <span className="bg-primary fixed right-[10%] bottom-[7%] z-50! cursor-pointer rounded-full p-2 text-4xl text-white md:right-26 md:bottom-24">
+        <span
+          className="bg-primary fixed right-[10%] bottom-[7%] z-50! cursor-pointer rounded-full p-2 text-4xl text-white md:right-26 md:bottom-24"
+          onClick={() => navigate('/order')}
+        >
           <LuPlus />
         </span>
       </main>

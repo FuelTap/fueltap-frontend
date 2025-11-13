@@ -16,6 +16,9 @@ import PriceComparison from '@/pages/PriceComparison';
 import Orders from '@/pages/Orders';
 import KYC from '@/pages/KYC';
 import LivenessCheck from '@/features/kyc/LivenessCheck';
+import Order from '@/layouts/Order';
+import OrderStep1 from '@/features/order/OrderStep1';
+import OrderStep2 from '@/features/order/OrderStep2';
 
 const routes = [
   {
@@ -89,6 +92,24 @@ const routes = [
       {
         path: 'verify/liveness',
         element: <LivenessCheck />,
+      },
+    ],
+  },
+  {
+    path: '/order',
+    element: (
+      <ProtectedRoute>
+        <Order />
+      </ProtectedRoute>
+    ),
+    children: [
+      {
+        index: true,
+        element: <OrderStep1 />,
+      },
+      {
+        path: 'step-2',
+        element: <OrderStep2 />,
       },
     ],
   },

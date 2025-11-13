@@ -129,8 +129,10 @@
   --color-primary-400: #4e71e8;
   --color-blue-600: #1e3a8a;
   --color-primary-900: #061337;
-  --color-secondary-50: #fff8f0;
   --color-yellow-100: #fff2e0;
+  --color-yellow-600: #c99901;
+  --color-secondary-50: #fff8f0;
+  --color-secondary-400: #0d9467;
   --color-secondary-500: #ffc300;
   --color-secondary-600: #c99901;
 
@@ -176,6 +178,12 @@
 /* Optional: tweak icon color inside toast */
 [data-sonner-toaster] [data-sonner-toast] svg {
   color: inherit;
+}
+input[type='time'] {
+  color: #222; /* text color (when showing the chosen time) */
+  background: #f9f9f9; /* background */
+  border: 1px solid #ccc;
+  font-size: 16px;
 }
 
 @layer base {
@@ -280,4 +288,8 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+.leaflet-container {
+  height: 100dvh;
 }
