@@ -13,7 +13,6 @@ const Order = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const orderType = searchParams.get('orderType') || 'personal';
-  console.log(orderType);
 
   const [address, setAddress] = useState('');
   function handleAddressChange(e) {

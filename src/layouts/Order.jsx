@@ -1,24 +1,34 @@
 import { Outlet } from 'react-router';
 import { useGeolocation } from '@/hooks/useGeolocation';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import { useOrder } from '@/contexts/OrderContext';
 
 const Order = () => {
   const { isLoading, position, error, getPosition } = useGeolocation();
-  const [mapPosition, setMapPosition] = useState([20, 67]);
+  const { mapPosition, setMapPosition } = useOrder();
 
-  //   useEffect(() => {
-  //     getPosition();
-  //     if (position) {
-  //       setMapPosition([position.lat, position.lng]);
-  //     }
-  //   }, [position, getPosition]);
+  useEffect(() => {
+    getPosition();
+  }, []);
+
+  useEffect(() => {
+    if (position) {
+      console.log(position);
+      setMapPosition([position.lat, position.lng]);
+    }
+  }, [position, setMapPosition]);
 
   return (
     <div className="relative h-dvh overflow-hidden">
-      <MapContainer center={mapPosition} zoom={14}>
+      <MapContainer
+        key={mapPosition.join(',')}
+        center={mapPosition}
+        zoom={14}
+        className="h-full w-full"
+      >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

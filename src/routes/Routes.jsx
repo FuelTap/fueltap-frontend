@@ -19,6 +19,7 @@ import LivenessCheck from '@/features/kyc/LivenessCheck';
 import Order from '@/layouts/Order';
 import OrderStep1 from '@/features/order/OrderStep1';
 import OrderStep2 from '@/features/order/OrderStep2';
+import { OrderProvider } from '@/contexts/OrderContext';
 
 const routes = [
   {
@@ -99,7 +100,9 @@ const routes = [
     path: '/order',
     element: (
       <ProtectedRoute>
-        <Order />
+        <OrderProvider>
+          <Order />
+        </OrderProvider>
       </ProtectedRoute>
     ),
     children: [

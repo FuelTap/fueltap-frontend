@@ -23,7 +23,8 @@ import { LuAlarmClockCheck } from 'react-icons/lu';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import { useLocation } from 'react-router';
 import { formSchema } from '../register/formsSchemas';
-import { da } from 'zod/v4/locales';
+import TimePicker from '@/components/TimePicker';
+import { FaRegCalendarAlt } from 'react-icons/fa';
 
 const orderFrequency = [
   {
@@ -49,6 +50,7 @@ const OrderStep2 = () => {
   const [type, setType] = useState('Petrol');
   const [amount, setAmount] = useState(10);
 
+  const [time, setTime] = useState({ hour: '10', minute: '30' });
   const [activeDay, setActiveDay] = useState('Monday');
 
   const form = useForm({
@@ -166,13 +168,24 @@ const OrderStep2 = () => {
               <h4 className="text-sm">Set date and time</h4>
               <div>
                 <input type="time" min="09:00" max="17:00" />
+
+                <TimePicker
+                  value={time}
+                  onChange={setTime}
+                  disabledTimes={[
+                    { hour: '18', minute: '00' },
+                    { hour: '18', minute: '30' },
+                    { hour: '19', minute: '00' },
+                    { hour: '19', minute: '30' },
+                  ]}
+                />
               </div>
 
               <div className="bg-secondary-400/10 rounded-2xl p-3">
                 {/* here */}
-                <div className="flex items-center justify-between space-y-1">
+                <div className="mb-1 flex items-center justify-between">
                   <h4 className="text-sm">Every {activeDay}</h4>
-                  <p>icon</p>
+                  <FaRegCalendarAlt />
                 </div>
                 <div className="flex items-center justify-between">
                   {weeks.map(({ day, label }) => (

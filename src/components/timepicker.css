@@ -1,0 +1,51 @@
+.tp-container {
+  display: flex;
+  gap: 12px;
+  position: relative;
+  width: 260px;
+  margin: 0 auto;
+}
+
+.tp-wheel {
+  width: 70px;
+  height: 120px;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  position: relative;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.tp-wheel::-webkit-scrollbar {
+  display: none;
+}
+
+.tp-item {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: #374151; /* gray-700 */
+}
+
+.tp-active {
+  color: #facc15 !important; /* yellow-400 */
+  font-weight: 600;
+}
+
+.tp-disabled {
+  color: #9ca3af !important; /* gray-400 */
+  pointer-events: none;
+}
+
+.tp-highlight {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: 0;
+  height: 40px;
+  border-top: 2px solid #9ca3af; /* gray-400 */
+  border-bottom: 2px solid #9ca3af; /* gray-400 */
+  pointer-events: none;
+}
