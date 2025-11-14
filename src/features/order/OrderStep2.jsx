@@ -21,7 +21,7 @@ import { BiTargetLock } from 'react-icons/bi';
 import { HiOutlineCube } from 'react-icons/hi2';
 import { LuAlarmClockCheck } from 'react-icons/lu';
 import { MdKeyboardArrowDown } from 'react-icons/md';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { formSchema } from '../register/formsSchemas';
 import TimePicker from '@/components/TimePicker';
 import { FaRegCalendarAlt } from 'react-icons/fa';
@@ -42,6 +42,7 @@ const orderFrequency = [
 const OrderStep2 = () => {
   const location = useLocation();
   const { address, orderType } = location.state;
+  const navigate = useNavigate();
 
   const [typeSelected, setTypeSelected] = useState(orderType);
   console.log(typeSelected);
@@ -60,20 +61,36 @@ const OrderStep2 = () => {
       phone: '',
     },
   });
+
+  const onSubmit = (values) => {
+    const payload = {
+      ...values,
+      typeSelected,
+      frequency,
+      type,
+      amount,
+      time,
+      activeDay,
+      address,
+    };
+
+    // navigate to the searching route and pass the payload in location state
+    navigate('searching');
+  };
   return (
-    <div className="max-h-[588px] w-screen max-w-[762px] p-6 hover:overflow-y-scroll">
+    <div className="h-[85dvh] w-screen max-w-[762px] overflow-hidden px-3 py-6 hover:overflow-y-scroll md:h-[90dvh] md:p-6">
       <div className="flex items-center justify-between">
         <h5 className="text-lg-medium">{address || 'empty'}</h5>
         <BiTargetLock className="text-2xl text-yellow-700" />
       </div>
 
       <Form {...form}>
-        <form>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="mt-[20px] flex items-center gap-3">
             {orderOptions.map(({ key, label, icon }) => (
               <button
                 type="button"
-                className={`flex w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-lg p-3 text-lg ${typeSelected === key ? 'border-primary-400 text-primary-400 border' : ''}`}
+                className={`flex w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border p-3 text-lg ${typeSelected === key ? 'border-primary-400 text-primary-400' : ''}`}
                 key={key}
                 onClick={() => {
                   setTypeSelected(key);
@@ -88,7 +105,7 @@ const OrderStep2 = () => {
             // frequency
             <div className="mt-[20px]">
               <p>Frequency</p>
-              <div className="flex items-center gap-3">
+              <div className="flex flex-col gap-3 md:flex-row md:items-center">
                 {orderFrequency.map(({ description, label, icon }) => (
                   <button
                     type="button"
@@ -244,6 +261,9 @@ const OrderStep2 = () => {
           {/* submit */}
           <div className="mt-6">
             <Button
+              // type="submit"
+              type="button"
+              onClick={() => navigate('/order/searching')}
               variant={'secondary'}
               className={`h-[52px] w-full rounded-3xl p-6 text-white`}
             >

@@ -20,6 +20,7 @@ import Order from '@/layouts/Order';
 import OrderStep1 from '@/features/order/OrderStep1';
 import OrderStep2 from '@/features/order/OrderStep2';
 import { OrderProvider } from '@/contexts/OrderContext';
+import Searching from '@/features/order/Searching';
 
 const routes = [
   {
@@ -113,6 +114,10 @@ const routes = [
       {
         path: 'step-2',
         element: <OrderStep2 />,
+      },
+      {
+        path: 'searching',
+        element: <Searching />,
       },
     ],
   },

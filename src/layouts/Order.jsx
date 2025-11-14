@@ -26,7 +26,7 @@ const Order = () => {
       <MapContainer
         key={mapPosition.join(',')}
         center={mapPosition}
-        zoom={14}
+        zoom={18}
         className="h-full w-full"
       >
         <TileLayer
@@ -34,7 +34,7 @@ const Order = () => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
       </MapContainer>
-      <div className="absolute top-1/2 left-1/2 z-[1000] -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-white">
+      <div className="absolute z-[1000] rounded-2xl bg-white max-sm:bottom-0 max-sm:left-0 md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2">
         <Outlet />
       </div>
     </div>

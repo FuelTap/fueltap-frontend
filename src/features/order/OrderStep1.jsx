@@ -1,8 +1,7 @@
 import { Input } from '@/components/ui/input';
 import { GoClock } from 'react-icons/go';
 import { Navigate, useNavigate, useSearchParams } from 'react-router';
-import { useGeolocation } from '@/hooks/useGeolocation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -20,13 +19,13 @@ const Order = () => {
   }
   const navigate = useNavigate();
   return (
-    <div className="w-[400px] p-6">
+    <div className="w-screen px-3 py-6 max-sm:h-[50dvh] md:w-[400px] md:p-6 lg:w-[478px] lg:px-8 lg:py-12">
       <h2 className="mb-4 text-xl">Ready for a refil?</h2>
 
-      <div className="mb-4 flex">
+      <div className="mb-4 flex items-center">
         {orderOptions.map(({ key, label, icon }) => (
           <button
-            className={`flex w-full max-w-[170px] cursor-pointer flex-col items-center justify-center gap-2 rounded-lg p-3 text-lg ${orderType === key ? 'border-primary-400 text-primary-400 border' : ''}`}
+            className={`flex w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border p-3 text-lg ${orderType === key ? 'border-primary-400 text-primary-400' : ''}`}
             key={key}
             onClick={() => {
               searchParams.set('orderType', key);
