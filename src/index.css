@@ -120,6 +120,7 @@
   --color-neutra-500: #e0e1e2;
   --color-neutra-600: #c7c8c9;
   --color-neutra-900: #707071;
+  --color-neutra-800: #959697;
   --color-neutra-1000: #575858;
   --color-green-50: #e7f8f2;
   --color-green-400: #0d9467;
@@ -141,6 +142,7 @@
   --color-gray-700: #888989;
   --color-grey-800: #595a5a;
 
+  --color-green-500: #0ea774;
   --color-error: #df1125;
 }
 
@@ -224,7 +226,7 @@ input[type='time'] {
 }
 
 .title {
-  @apply text-2xl font-semibold text-black;
+  @apply font-semibold text-black md:text-lg lg:text-2xl;
 }
 
 /* The switch - the box around the slider */

@@ -21,6 +21,8 @@ import OrderStep1 from '@/features/order/OrderStep1';
 import OrderStep2 from '@/features/order/OrderStep2';
 import { OrderProvider } from '@/contexts/OrderContext';
 import Searching from '@/features/order/Searching';
+import SuppliersFound from '@/features/order/SuppliersFound';
+import OrderSummary from '@/features/order/OrderSummary';
 
 const routes = [
   {
@@ -116,8 +118,12 @@ const routes = [
         element: <OrderStep2 />,
       },
       {
-        path: 'searching',
-        element: <Searching />,
+        path: 'suppliers-found',
+        element: <SuppliersFound />,
+      },
+      {
+        path: 'summary',
+        element: <OrderSummary />,
       },
     ],
   },

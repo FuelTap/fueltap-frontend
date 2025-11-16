@@ -34,7 +34,7 @@ const Order = () => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
       </MapContainer>
-      <div className="absolute z-[1000] rounded-2xl bg-white max-sm:bottom-0 max-sm:left-0 md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2">
+      <div className="absolute z-[200] rounded-2xl bg-white max-sm:bottom-0 max-sm:left-0 md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2">
         <Outlet />
       </div>
     </div>

@@ -25,6 +25,7 @@ import { useLocation, useNavigate } from 'react-router';
 import { formSchema } from '../register/formsSchemas';
 import TimePicker from '@/components/TimePicker';
 import { FaRegCalendarAlt } from 'react-icons/fa';
+import Searching from './Searching';
 
 const orderFrequency = [
   {
@@ -54,6 +55,8 @@ const OrderStep2 = () => {
   const [time, setTime] = useState({ hour: '10', minute: '30' });
   const [activeDay, setActiveDay] = useState('Monday');
 
+  const [searching, setSearching] = useState(false);
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -77,6 +80,8 @@ const OrderStep2 = () => {
     // navigate to the searching route and pass the payload in location state
     navigate('searching');
   };
+
+  if (searching) return <Searching />;
   return (
     <div className="h-[85dvh] w-screen max-w-[762px] overflow-hidden px-3 py-6 hover:overflow-y-scroll md:h-[90dvh] md:p-6">
       <div className="flex items-center justify-between">
@@ -263,7 +268,13 @@ const OrderStep2 = () => {
             <Button
               // type="submit"
               type="button"
-              onClick={() => navigate('/order/searching')}
+              onClick={() => {
+                setSearching(true);
+                setTimeout(() => {
+                  setSearching(false);
+                  navigate('/order/suppliers-found');
+                }, 3000);
+              }}
               variant={'secondary'}
               className={`h-[52px] w-full rounded-3xl p-6 text-white`}
             >
