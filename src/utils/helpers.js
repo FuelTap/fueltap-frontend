@@ -52,3 +52,11 @@ export const preventInvalidKeys = (e) => {
     e.preventDefault();
   }
 };
+
+export async function geocodeAddress(address) {
+  const res = await fetch(
+    `https://nominatim.openstreetmap.org/search?format=json&q=${address}`
+  );
+  const data = await res.json();
+  return data[0]; // best match
+}

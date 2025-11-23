@@ -26,6 +26,7 @@ import { formSchema } from '../register/formsSchemas';
 import TimePicker from '@/components/TimePicker';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 import Searching from './Searching';
+import { useOrder } from '@/contexts/OrderContext';
 
 const orderFrequency = [
   {
@@ -41,8 +42,10 @@ const orderFrequency = [
 ];
 
 const OrderStep2 = () => {
-  const location = useLocation();
-  const { address, orderType } = location.state;
+  // const location = useLocation();
+  // const { address, orderType } = location.state;
+  const { selectedAddress, orderType } = useOrder();
+  console.log('address :', selectedAddress);
   const navigate = useNavigate();
 
   const [typeSelected, setTypeSelected] = useState(orderType);
@@ -74,7 +77,6 @@ const OrderStep2 = () => {
       amount,
       time,
       activeDay,
-      address,
     };
 
     // navigate to the searching route and pass the payload in location state
@@ -85,7 +87,9 @@ const OrderStep2 = () => {
   return (
     <div className="h-[85dvh] w-screen max-w-[762px] overflow-hidden px-3 py-6 hover:overflow-y-scroll md:h-[90dvh] md:p-6">
       <div className="flex items-center justify-between">
-        <h5 className="text-lg-medium">{address || 'empty'}</h5>
+        <h5 className="text-lg-medium">
+          {selectedAddress?.display_name || 'empty'}
+        </h5>
         <BiTargetLock className="text-2xl text-yellow-700" />
       </div>
 

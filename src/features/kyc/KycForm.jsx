@@ -19,6 +19,7 @@ import { kycSchema } from '@/features/kyc/kycSchema';
 import useAxiosPrivate from '@/hooks/useAxiosPrivate';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router';
+import MyDropzone from '@/components/MyDropzone';
 const KycForm = () => {
   const [useBVN, setUseBVN] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -35,6 +36,7 @@ const KycForm = () => {
   const navigate = useNavigate();
 
   async function onSubmit(values) {
+    console.log(values);
     setLoading(true);
     try {
       const identifier = useBVN ? values.bvn : values.nin;
@@ -55,7 +57,9 @@ const KycForm = () => {
       // 2️⃣ Upload proof of address (image)
       const formData = new FormData();
       formData.append('file', values.proofOfAddress[0]);
-
+      for (let pair of formData.entries()) {
+        console.log(pair[0], pair[1]);
+      }
       const addressRes = await axiosPrivate.post(
         'v1/kyc/proof-of-address',
         formData,
@@ -77,6 +81,7 @@ const KycForm = () => {
       navigate('/user/verify/liveness');
     } catch (err) {
       console.error(err);
+      console.log(err.message);
       const message =
         err.response?.data.data?.message ||
         '⚠️ Something went wrong. Please try again.';
@@ -196,13 +201,15 @@ const KycForm = () => {
                       >
                         Upload image of a valid ID. e.g NIN, Driver’s license,
                         international passport.
-                        <img
+                        {/* <img
                           src={filemage}
                           alt="click to upload"
                           className="mt-1 cursor-pointer"
-                        />
+                        /> */}
                       </Label>
-                      <small className="mt-2 text-gray-500">
+
+                      <MyDropzone onChange={(files) => field.onChange(files)} />
+                      {/* <small className="mt-2 text-gray-500">
                         Supported formats include PNG, JPEG, PDF.
                       </small>
                       <Input
@@ -211,7 +218,7 @@ const KycForm = () => {
                         accept=".jpg,.jpeg,.png,.pdf"
                         onChange={(e) => field.onChange(e.target.files)}
                         className="invisible"
-                      />
+                      /> */}
                     </div>
                   </FormControl>
                   <FormMessage />

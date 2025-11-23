@@ -23,6 +23,15 @@ const PasswordForm = () => {
     resolver: zodResolver(passwordSchema),
   });
 
+  const password = form.watch('password') || '';
+
+  const rules = {
+    length: password.length > 7 && password.length <= 20,
+    uppercase: /[A-Z]/.test(password),
+    lowercase: /[a-z]/.test(password),
+    number: /[0-9]/.test(password),
+    special: /[^A-Za-z0-9]/.test(password),
+  };
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigate = useNavigate();
@@ -71,7 +80,7 @@ const PasswordForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex h-[65vh] flex-col space-y-6 md:h-full"
+        className="flex h-[65vh] flex-col space-y-4 md:h-full"
       >
         <FormField
           control={form.control}
@@ -84,6 +93,7 @@ const PasswordForm = () => {
               <FormControl>
                 <div className="relative">
                   <Input
+                    className={''}
                     placeholder="create a password"
                     autoComplete="new-password"
                     type={showPassword ? 'text' : 'password'}
@@ -145,6 +155,30 @@ const PasswordForm = () => {
             </FormItem>
           )}
         />
+
+        {/* messages */}
+
+        <ul className="list-disc space-y-1">
+          <li className={rules.length ? 'text-green-600' : 'text-gray-500'}>
+            Password should be 8-20 characters long
+          </li>
+
+          <li className={rules.uppercase ? 'text-green-600' : 'text-gray-500'}>
+            At least one uppercase letter
+          </li>
+
+          <li className={rules.lowercase ? 'text-green-600' : 'text-gray-500'}>
+            At least one lowercase letter
+          </li>
+
+          <li className={rules.number ? 'text-green-600' : 'text-gray-500'}>
+            At least one number
+          </li>
+
+          <li className={rules.special ? 'text-green-600' : 'text-gray-500'}>
+            At least one special character: @ ! # $ % & =
+          </li>
+        </ul>
 
         <div className="mb-4 bg-white max-sm:fixed max-sm:bottom-0 max-sm:left-0 max-sm:w-full max-sm:p-4">
           <Button

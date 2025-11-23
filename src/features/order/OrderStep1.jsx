@@ -1,22 +1,21 @@
 import { Input } from '@/components/ui/input';
 import { GoClock } from 'react-icons/go';
-import { Navigate, useNavigate, useSearchParams } from 'react-router';
-import { useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router';
 
-import { MapContainer, TileLayer } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
 import { FaSearch } from 'react-icons/fa';
 import { orderOptions } from '@/components/Imports';
+import SearchAddressInput from '@/components/ui/SearchAddress';
+import { useOrder } from '@/contexts/OrderContext';
 
 const Order = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const {
+    selectedAddress,
+    setSelectedAddress,
+    orderType,
+    setSearchParams,
+    searchParams,
+  } = useOrder();
 
-  const orderType = searchParams.get('orderType') || 'personal';
-
-  const [address, setAddress] = useState('');
-  function handleAddressChange(e) {
-    setAddress(e.target.value);
-  }
   const navigate = useNavigate();
   return (
     <div className="w-screen px-3 py-6 max-sm:h-[50dvh] md:w-[400px] md:p-6 lg:w-[478px] lg:px-8 lg:py-12">
@@ -39,18 +38,18 @@ const Order = () => {
       </div>
 
       <div className="relative">
-        <Input
-          placeholder="Enter delivery address"
-          value={address}
-          onChange={handleAddressChange}
-        />
+        <SearchAddressInput />
         <FaSearch className="text-grey-600 absolute top-1/2 right-0 -translate-1/2" />
       </div>
       <div
         className="mt-4 flex items-center gap-3"
-        onClick={() =>
-          navigate('/order/step-2', { state: { orderType, address } })
-        }
+        onClick={() => {
+          setSelectedAddress((prev) => ({
+            ...prev,
+            display_name: '15 ikoyi street',
+          }));
+          navigate('/order/step-2');
+        }}
       >
         <GoClock />
         <div>

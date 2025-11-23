@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import useAxiosPrivate from '@/hooks/useAxiosPrivate';
 import { useNavigate } from 'react-router';
+import { useSelector } from 'react-redux';
 
 function LivenessCheck() {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ function LivenessCheck() {
   const chunksRef = useRef([]);
   const intervalRef = useRef(null);
 
+  const { user } = useSelector((store) => store.user);
   const stopRecording = () => {
     try {
       if (
@@ -116,8 +118,10 @@ function LivenessCheck() {
       setLoading(true);
       const blob = new Blob(chunksRef.current, { type: 'video/mp4' });
       const formData = new FormData();
-      formData.append('video', blob, 'liveness.mp4');
-
+      formData.append('video', blob, `${user.full_name}-liveness.mp4`);
+      for (let pair of formData.entries()) {
+        console.log(pair[0], pair[1]);
+      }
       const response = await axiosPrivate.post('v1/kyc/liveness', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
