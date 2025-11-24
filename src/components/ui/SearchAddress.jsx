@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router';
 import { useOrder } from '@/contexts/OrderContext';
 
 // debounce helper
-function debounce(fn, delay = 400) {
+function debounce(fn, delay = 2000) {
   let timeout;
   return (...args) => {
     clearTimeout(timeout);
@@ -41,7 +41,7 @@ export default function SearchAddressInput() {
     setLoading(false);
   };
 
-  const debouncedSearch = debounce(search, 500);
+  const debouncedSearch = debounce(search, 2500);
 
   useEffect(() => {
     if (query.trim() !== '') {
