@@ -20,6 +20,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import ChangePassword from '@/features/accountSettings/ChangePassword';
+import SetPinDrawer from '@/features/wallet/SetPinDrawer';
 
 const AccountSettings = () => {
   // const { user } = useSelector((store) => store.user);
@@ -151,11 +152,7 @@ const AccountSettings = () => {
                     </p>
                   </div>
                 </div>
-                <Button
-                  className={'bg-transparent text-black hover:text-white'}
-                >
-                  Set PIN
-                </Button>
+                <SetPinDrawer />
               </div>
 
               {/* 3 */}

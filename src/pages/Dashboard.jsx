@@ -12,11 +12,10 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 const Dashboard = () => {
-  const isVerified = false;
+  const { user } = useSelector((state) => state.user);
+  const isVerified = user.kyc && user.bankExists;
 
   const { isSmallScreen } = useScreenSize();
-
-  const { user } = useSelector((state) => state.user);
 
   const firstName = user?.full_name?.split(' ')[0];
   const [timeOfDay, setTimeOfDay] = useState('');
@@ -42,13 +41,13 @@ const Dashboard = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const [showCancelAlert, setShowCancelAlert] = useState(false);
+  // const [showCancelAlert, setShowCancelAlert] = useState(false);
 
   return (
     <>
-      <Alert open={showCancelAlert} onClose={() => setShowCancelAlert(false)}>
+      {/* <Alert open={showCancelAlert} onClose={() => setShowCancelAlert(false)}>
         <CancelOrder onClose={() => setShowCancelAlert(false)} />
-      </Alert>
+      </Alert> */}
       <div className="">
         <h1 className="font-pjs mb-2 text-2xl font-semibold md:text-3xl lg:text-5xl">
           Good {timeOfDay} {firstName},
@@ -57,7 +56,8 @@ const Dashboard = () => {
           How’s your day going?
         </p>
       </div>
-      <button onClick={() => setShowCancelAlert(true)}>Cancel order</button>
+      {/* <button onClick={() => setShowCancelAlert(true)}>Cancel order</button> */}
+
       <div className="mt-4 flex flex-col items-start justify-between md:mt-8 md:flex-row">
         {/* money overview */}
         <div className="w-full md:max-w-[47%]">
@@ -81,21 +81,21 @@ const Dashboard = () => {
 
 export default Dashboard;
 
-function CancelOrder({ onClose }) {
-  return (
-    <div className="flex flex-col items-center justify-center gap-8 text-center">
-      <img src={warn} alt="cancel order!" />
-      <div>
-        <h3 className="mb-2 text-xl">Cancel Order</h3>
-        <p>Are you sure you want to cancel your order</p>
-      </div>
+// function CancelOrder({ onClose }) {
+//   return (
+//     <div className="flex flex-col items-center justify-center gap-8 text-center">
+//       <img src={warn} alt="cancel order!" />
+//       <div>
+//         <h3 className="mb-2 text-xl">Cancel Order</h3>
+//         <p>Are you sure you want to cancel your order</p>
+//       </div>
 
-      <Button
-        className={'text-error hover:bg-error bg-red-100 hover:text-white'}
-        onClick={onClose}
-      >
-        Cancel Order
-      </Button>
-    </div>
-  );
-}
+//       <Button
+//         className={'text-error hover:bg-error bg-red-100 hover:text-white'}
+//         onClick={onClose}
+//       >
+//         Cancel Order
+//       </Button>
+//     </div>
+//   );
+// }

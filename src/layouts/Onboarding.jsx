@@ -33,6 +33,16 @@ const indicatorMap = {
     text: "Don't have an account?",
     title: 'Login to Continue',
   },
+  '/forgot-password': {
+    progressValue: 50,
+    text: 'Enter the email associated with your account, and we will email you a reset password link.',
+    title: 'Forgot Password?',
+  },
+  '/reset-password': {
+    progressValue: 90,
+    text: 'Please do not reuse an old password',
+    title: 'Enter New Password',
+  },
 };
 
 const Onboarding = () => {
@@ -80,7 +90,7 @@ function Indicator({ progressValue, title, text }) {
         <div>
           <h1 className="text-primary font-pjs text-2xl font-[600]">{title}</h1>
           <div className="mt-1 mb-4 flex items-center gap-1 lg:mt-2 lg:mb-6">
-            <p className="text-lg-regular">{text}</p>
+            <p className="text-lg-regular text-grey-600">{text}</p>
             {text === 'Already using FuelTap?' && (
               <Link className="text-primary" to={'/login'}>
                 Sign in

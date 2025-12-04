@@ -42,7 +42,7 @@ const VerifyEmail = () => {
     try {
       setIsSubmitting(true);
       const otpResponse = await axiosInstance.post(
-        '/v1/auth/account-verification',
+        'v1/auth/account-verification',
         payload
       );
 

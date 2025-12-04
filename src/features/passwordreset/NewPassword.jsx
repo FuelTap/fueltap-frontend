@@ -6,19 +6,18 @@ import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { passwordSchema } from './formsSchemas';
+import { passwordSchema } from '../register/formsSchemas';
 import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 import { axiosInstance } from '@/api/axios';
 import { toast } from 'sonner';
-const PasswordForm = () => {
+const NewPassword = () => {
   const form = useForm({
     resolver: zodResolver(passwordSchema),
   });
@@ -35,30 +34,29 @@ const PasswordForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigate = useNavigate();
-  const location = useLocation();
-  const { fullName, registerAs, email, phone } = location.state || '';
+  const [searchParams, setSearchParams] = useSearchParams();
 
+  const token = searchParams.get('token');
+  const email = searchParams.get('email');
+  console.log(email, token);
   async function onSubmit(data) {
     const payload = {
-      full_name: fullName,
-      email: email,
-      phone_number: phone,
-      password: data.password,
+      new_password: data.password,
       confirm_password: data.confirmPassword,
-      role: registerAs,
+      token,
+      email,
     };
-
     try {
       setIsSubmitting(true);
-      const registerResponse = await axiosInstance.post(
-        'v1/auth/register',
+      const response = await axiosInstance.post(
+        'v1/auth/reset-password',
         payload
       );
 
-      const { message } = registerResponse.data;
+      const { message } = response.data;
       toast.success(message);
 
-      navigate('/verify-email', { state: { email } });
+      navigate('/login');
     } catch (error) {
       if (error.code === 'ERR_NETWORK') {
         toast.error(error.message);
@@ -195,4 +193,4 @@ const PasswordForm = () => {
   );
 };
 
-export default PasswordForm;
+export default NewPassword;

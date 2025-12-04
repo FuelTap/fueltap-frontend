@@ -20,7 +20,7 @@ import { login } from './api';
 import { toast } from 'sonner';
 import { useDispatch } from 'react-redux';
 import { setUserData } from './userSlice';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { saveToLocalStorage } from '@/utils/helpers';
 
 const LoginForm = () => {
@@ -96,13 +96,11 @@ const LoginForm = () => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className={'text-lg-medium'}>
-                Create Password
-              </FormLabel>
+              <FormLabel className={'text-lg-medium'}>Enter password</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input
-                    placeholder="create a password"
+                    placeholder="Enter Password"
                     type={showPassword ? 'text' : 'password'}
                     autoComplete="new-password"
                     {...field}
@@ -127,6 +125,9 @@ const LoginForm = () => {
             </FormItem>
           )}
         />
+        <Link className="text-primary -mt-5" to={'/forgot-password'}>
+          Forgot Password?
+        </Link>
 
         <div className="mb-4 justify-self-start max-sm:mt-auto">
           <Button

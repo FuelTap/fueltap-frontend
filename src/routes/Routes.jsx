@@ -23,6 +23,8 @@ import { OrderProvider } from '@/contexts/OrderContext';
 import Searching from '@/features/order/Searching';
 import SuppliersFound from '@/features/order/SuppliersFound';
 import OrderSummary from '@/features/order/OrderSummary';
+import ForgotPassword from '@/features/passwordreset/ForgotPassword';
+import NewPassword from '@/features/passwordreset/NewPassword';
 
 const routes = [
   {
@@ -52,6 +54,14 @@ const routes = [
       {
         path: '/login',
         element: <LoginForm />,
+      },
+      {
+        path: '/forgot-password',
+        element: <ForgotPassword />,
+      },
+      {
+        path: '/reset-password',
+        element: <NewPassword />,
       },
     ],
   },

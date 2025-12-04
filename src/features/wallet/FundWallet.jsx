@@ -24,6 +24,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { amountSchema } from './schemas';
 import './FundWallet.css';
+import useAxiosPrivate from '@/hooks/useAxiosPrivate';
+import { toast } from 'sonner';
 
 const FundWallet = ({ onClose }) => {
   // 1. Define your form.
@@ -33,9 +35,24 @@ const FundWallet = ({ onClose }) => {
       amount: 0,
     },
   });
-  function onSubmit() {
-    alert('sent');
-    onClose();
+
+  const axiosPrivate = useAxiosPrivate();
+  async function onSubmit(data) {
+    try {
+      const response = await axiosPrivate.post('v1/wallet/add-funds', data);
+
+      console.log(response.data);
+      const { message, status, data: paymentData } = response.data;
+      if (status === 'success') {
+        toast.success(message);
+        const { authorization_url, access_code, referecne } = paymentData;
+        window.location.href = authorization_url;
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+
+    // onClose();
   }
   const { isSmallScreen } = useScreenSize(500);
   const [open, setOpen] = useState(true);
