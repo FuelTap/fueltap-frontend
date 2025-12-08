@@ -20,18 +20,18 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import ChangePassword from '@/features/accountSettings/ChangePassword';
-import SetPinDrawer from '@/features/wallet/SetPinDrawer';
-
+import SetPinDrawer from '@/features/wallet/SetPinDialog';
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import { useState } from 'react';
+import DeleteAccount from '@/features/accountSettings/DeleteAccount';
+import SetPinDialog from '@/features/wallet/SetPinDialog';
 const AccountSettings = () => {
-  // const { user } = useSelector((store) => store.user);
-
-  // const form = useForm({
-  //   resolver: zodResolver(formSchema),
-  //   defaultValues: {
-  //     fullName: user.full_name,
-  //     phone: user.phone_number,
-  //   },
-  // });
+  const [openDialog, setOpenDialog] = useState(false);
+  const [openPinDialog, setOpenPinDialog] = useState(false);
 
   return (
     <div>
@@ -51,7 +51,7 @@ const AccountSettings = () => {
             {
               icon: <FaRegClock />,
               title: 'Add Transaction Pin',
-              jsx: <Jsx />,
+              jsx: <SetPinDrawer />,
             },
           ].map(({ title, icon, jsx }, index) => (
             <AccordionItem
@@ -89,7 +89,16 @@ const AccountSettings = () => {
           >
             <RiDeleteBin5Line />
           </span>
-          <p className="text-md-medium text-error!">Delete Account</p>
+          <AlertDialog>
+            <AlertDialogTrigger>
+              <Button className={'bg-error hover:bg-error text-white'}>
+                Delete Account
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <DeleteAccount />
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </div>
 
@@ -127,11 +136,18 @@ const AccountSettings = () => {
                     </p>
                   </div>
                 </div>
-                <Button
-                  className={'bg-transparent text-black hover:text-white'}
-                >
-                  Change
-                </Button>
+                <AlertDialog open={openDialog} onOpenChange={setOpenDialog}>
+                  <AlertDialogTrigger>
+                    <Button
+                      className={'bg-transparent text-black hover:text-white'}
+                    >
+                      Change
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <ChangePassword onCancel={() => setOpenDialog(false)} />
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
               {/* 2 */}
               <div className="flex items-center justify-between gap-6">
@@ -152,7 +168,11 @@ const AccountSettings = () => {
                     </p>
                   </div>
                 </div>
-                <SetPinDrawer />
+                <Button onClick={() => setOpenPinDialog(true)}>Set PIN</Button>
+                <SetPinDialog
+                  open={openPinDialog}
+                  onOpenChange={setOpenPinDialog}
+                />
               </div>
 
               {/* 3 */}
@@ -268,9 +288,16 @@ const AccountSettings = () => {
                   </h5>
                 </div>
               </div>
-              <Button className={'bg-error hover:bg-error text-white'}>
-                Delete Account
-              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger>
+                  <Button className={'bg-error hover:bg-error text-white'}>
+                    Delete Account
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <DeleteAccount />
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           </div>
         </div>

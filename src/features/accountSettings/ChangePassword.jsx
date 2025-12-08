@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
 import { changePasswordSchema } from './schema';
-const ChangePassword = () => {
+const ChangePassword = ({ onCancel }) => {
   const form = useForm({
     resolver: zodResolver(changePasswordSchema),
     defaultValues: {},
@@ -140,14 +140,21 @@ const ChangePassword = () => {
           )}
         />
 
-        <div className="mb-4 bg-white max-sm:fixed max-sm:bottom-0 max-sm:left-0 max-sm:w-full max-sm:p-4">
+        <div className="">
+          <Button
+            type="button"
+            onClick={onCancel}
+            className={'bg-transparent text-black hover:bg-transparent'}
+          >
+            Cancel
+          </Button>
           <Button
             type="submit"
-            size={'full'}
+            variant={'secondary'}
             // disabled={isSubmitting}
             className={'text-md-medium'}
           >
-            Change
+            Update
           </Button>
         </div>
       </form>

@@ -1,4 +1,3 @@
-import Logo from '@/components/Logo';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -16,7 +15,6 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { useScreenSize } from '@/hooks/useScreenSize';
 import { useEffect, useState } from 'react';
 import { LiaTimesSolid } from 'react-icons/lia';
@@ -26,8 +24,12 @@ import { amountSchema } from './schemas';
 import './FundWallet.css';
 import useAxiosPrivate from '@/hooks/useAxiosPrivate';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router';
+import SetPinDialog from './SetPinDialog';
 
 const FundWallet = ({ onClose }) => {
+  const [openPinDialog, setOpenPinDialog] = useState(false);
+
   // 1. Define your form.
   const form = useForm({
     resolver: zodResolver(amountSchema),
@@ -36,6 +38,7 @@ const FundWallet = ({ onClose }) => {
     },
   });
 
+  const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   async function onSubmit(data) {
     try {
@@ -49,7 +52,16 @@ const FundWallet = ({ onClose }) => {
         window.location.href = authorization_url;
       }
     } catch (error) {
-      toast.error(error.message);
+      console.log(error);
+      const message = error.response.data.message || error.message;
+
+      if (
+        message ===
+        'Wallet not found, Kindly set your transaction pin to create a wallet'
+      ) {
+        toast.error(message);
+        setOpenPinDialog(true);
+      }
     }
 
     // onClose();
@@ -120,6 +132,7 @@ const FundWallet = ({ onClose }) => {
             </Form>
           </div>
         </div>
+        <SetPinDialog open={openPinDialog} onOpenChange={setOpenPinDialog} />
       </>
     );
   }
@@ -132,15 +145,17 @@ const FundWallet = ({ onClose }) => {
           className="w-[480px] text-center md:rounded-xl"
         >
           <DialogHeader>
-            <DialogTitle className="flex items-center justify-between">
-              <h5 className="text-primary">Fund Your Wallet</h5>
+            <div className="flex items-center justify-between">
+              <DialogTitle className="text-primary">
+                Fund Your Wallet
+              </DialogTitle>
               <div className="flex items-center gap-2">
                 <LiaTimesSolid
                   onClick={onClose}
                   className="cursor-pointer text-sm"
                 />
               </div>
-            </DialogTitle>
+            </div>
 
             <DialogDescription className="mt-8">
               <Form {...form}>
@@ -182,6 +197,7 @@ const FundWallet = ({ onClose }) => {
           </DialogHeader>
         </DialogContent>
       </Dialog>
+      <SetPinDialog open={openPinDialog} onOpenChange={setOpenPinDialog} />
     </>
   );
 };

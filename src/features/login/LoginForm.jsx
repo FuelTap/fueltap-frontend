@@ -60,6 +60,7 @@ const LoginForm = () => {
       const message =
         error.response.data.message || error?.message || 'Login failed';
       toast.error(message);
+      console.log(error);
     } finally {
       setIsSubmitting(false);
     }
