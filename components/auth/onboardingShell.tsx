@@ -3,6 +3,7 @@
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { Progress } from "../animate-ui/components/base/progress";
 
 const indicatorMap: Record<
   string,
@@ -75,14 +76,16 @@ function Indicator({
     <div className="mt-6 mb-4 flex flex-col lg:mt-0 lg:items-center">
       <div className="flex items-center gap-4 rounded-2xl">
         <ChevronLeft
-          size={32}
+          size={16}
           className={"bg-gray-100 sm:hidden"}
           onClick={() => router.back()}
         />
         <div>
-          <h1 className="text-primary font-pjs text-2xl font-semi">{title}</h1>
+          <h1 className="text-primary font-pjs text-xl md:text-3xl font-semi">
+            {title}
+          </h1>
           <div className="mt-1 mb-4 flex items-center gap-1 lg:mt-2 lg:mb-6">
-            <p className="text-lg-regular text-grey-600">{text}</p>
+            <p className="text-sm text-neutra-1000">{text}</p>
             {text === "Already using FuelTap?" && (
               <Link className="text-primary" href={"/login"}>
                 Sign in
@@ -96,7 +99,7 @@ function Indicator({
           </div>
         </div>
       </div>
-      {/* <Progress value={progressValue} /> */}
+      <Progress value={progressValue} />
     </div>
   );
 }

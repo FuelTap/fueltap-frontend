@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import {
   Field,
   FieldLabel,
-  FieldDescription,
   FieldGroup,
   FieldError,
 } from "@/components/ui/field";
@@ -20,14 +19,13 @@ import { toast } from "sonner";
 // import { setUserData } from './userSlice';
 // import { saveToLocalStorage } from '@/utils/helpers';
 import { useRouter } from "next/navigation";
-import { LoginInput, loginSchema } from "@/lib/validators/loginSchema";
+import { LoginInput, loginSchema } from "@/lib/validators/authSchema";
 import Link from "next/link";
-import { Eye, EyeOff } from "lucide-react"; // Note: changed EyeClosed to EyeOff (standard Lucide icon)
+import { Eye, EyeOff } from "lucide-react";
 
 export default function LoginForm() {
   const form = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
-    // ✅ Always provide defaultValues when using Controller to prevent "uncontrolled to controlled" errors
     defaultValues: {
       email: "",
       password: "",
@@ -82,6 +80,7 @@ export default function LoginForm() {
       id="login-form"
       onSubmit={form.handleSubmit(onSubmit)}
       className="flex h-[65vh] flex-col space-y-6"
+      autoComplete="off"
     >
       <FieldGroup>
         <Controller
@@ -89,11 +88,14 @@ export default function LoginForm() {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="email">Email Address</FieldLabel>
+              <FieldLabel htmlFor="email" className={"text-lg-medium"}>
+                Email Address
+              </FieldLabel>
 
               <Input
                 placeholder="example@mail.com"
                 id="email"
+                className="p-3 rounded-lg border border-neutra-500 h-10 placeholder:text-neutra-700 placeholder:font-normal"
                 aria-invalid={fieldState.invalid}
                 autoComplete="off"
                 {...field}
@@ -121,11 +123,11 @@ export default function LoginForm() {
                   placeholder="Enter Password"
                   type={showPassword ? "text" : "password"}
                   autoComplete="new-password"
-                  className="pr-10" // ✅ Add padding to ensure the text doesn't overlap the icon
+                  className="p-3 rounded-lg border border-neutra-500 h-10 placeholder:text-neutra-700 placeholder:font-normal  pr-10"
                   {...field}
                 />
                 <button
-                  type="button" // ✅ Crucial: prevents button from accidentally triggering form submit
+                  type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-neutral-500 hover:text-neutral-700"
                 >
@@ -139,14 +141,11 @@ export default function LoginForm() {
           )}
         />
 
-        <Link
-          className="text-primary -mt-5 inline-block text-sm"
-          href="/forgot-password"
-        >
+        <Link className="text-primary -mt-3  text-sm" href="/forgot-password">
           Forgot Password?
         </Link>
 
-        <div className="mb-4 justify-self-start max-sm:mt-auto w-full">
+        <div className="mb-4 justify-self-start mt-10 max-sm:mt-auto w-full">
           <Button
             type="submit"
             variant="secondary"

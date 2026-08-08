@@ -40,10 +40,8 @@ export default function Navbar() {
         <DrawerContent className="fixed inset-y-0 left-0 mt-0 h-full w-75 rounded-r-xl rounded-l-none pt-6 [&>button]:hidden flex flex-col">
           <DrawerHeader className="border-b pb-4">
             <div className="flex items-center justify-between gap-3">
-              <DrawerClose>
-                <button className="rounded-md p-2 hover:bg-gray-100">
-                  <X size={22} />
-                </button>
+              <DrawerClose className="rounded-md p-2 hover:bg-gray-100">
+                <X size={22} />
               </DrawerClose>
               {/* <Logo /> */}
 
