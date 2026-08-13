@@ -145,7 +145,7 @@ export default function ResetPassword() {
           control={form.control}
           name="confirmPassword"
           render={({ field, fieldState }) => (
-            <Field>
+            <Field data-invalid={fieldState.invalid}>
               <FieldLabel className="text-lg-medium">
                 Confirm Password
               </FieldLabel>

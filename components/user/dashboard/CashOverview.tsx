@@ -52,11 +52,11 @@ export default function CashOverview() {
           </Button>
 
           <Link
-            href="/user/dashboard/transaction-history"
-            className={`${buttonVariants({ variant: "ghost", size: "sm" })}  rounded-xl max-sm:text-[12px] `}
+            href="/user/transaction-history"
+            className={`${buttonVariants({ variant: "ghost", size: "sm" })} group  rounded-xl max-sm:text-[12px] `}
           >
             View history
-            <ChevronRight />
+            <ChevronRight className="transform transition-transform duration-300 group-hover:translate-x-0.5" />
           </Link>
         </div>
 

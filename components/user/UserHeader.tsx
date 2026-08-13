@@ -12,6 +12,7 @@ import { Bell, Bug, Menu, Search, X } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { links } from "@/lib/data/exports";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function UserHeader() {
   const name = "ochife ogechukwu";
@@ -21,6 +22,7 @@ export default function UserHeader() {
   //   // logout
   //   const logout = useLogout();
 
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   return (
     <header className="flex items-center justify-between ">
@@ -81,9 +83,9 @@ export default function UserHeader() {
                 key={link.path}
                 href={link.path}
                 className={`rounded-lg rounded-l-none py-2 pl-4 text-[15px] capitalize transition-all ${
-                  false
+                  pathname == link.path
                     ? "border-primary text-primary border-l-8 font-medium"
-                    : "text-neutral-700 hover:text-black"
+                    : "text-neutra-800 hover:text-black"
                 }`}
               >
                 {link.name}
@@ -115,9 +117,9 @@ export default function UserHeader() {
             key={link.path}
             href={link.path}
             className={
-              false
+              pathname == link.path
                 ? "text-lg-medium text-black transition-all"
-                : "text-lg-regular text-neutral-700 transition-all hover:text-black"
+                : "text-lg-regular text-neutra-800 transition-all hover:text-black"
             }
           >
             {link.name}
@@ -127,12 +129,12 @@ export default function UserHeader() {
 
       {/* ===== Right Section (Desktop) ===== */}
       <div className="hidden items-center gap-6 lg:flex">
-        <Search size={21} className="cursor-pointer text-neutral-700" />
-        <Bell size={21} className="cursor-pointer text-neutral-700" />
+        <Search size={21} className="cursor-pointer text-neutra-800" />
+        <Bell size={21} className="cursor-pointer text-neutra-800" />
         <div className="flex items-center gap-2">
           <div>
             <h5 className="text-[14px] text-black capitalize">{name}</h5>
-            <h5 className="text-[14px] text-neutral-900 capitalize">
+            <h5 className="text-[14px] text-neutra-900 capitalize">
               Premium member
             </h5>
           </div>

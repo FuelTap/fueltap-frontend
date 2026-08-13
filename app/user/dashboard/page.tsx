@@ -1,24 +1,20 @@
 "use client";
+import AccountSetUp from "@/components/user/dashboard/AccountSetUp";
 import CashOverview from "@/components/user/dashboard/CashOverview";
-// import Alert from '@/components/Alert';
-// import { warn } from '@/components/Imports';
-// // import Logo from '@/components/Logo';
-// import AccountSetUp from "@/features/userDashboard/AccountSetUp";
-// import CashOverview from "@/features/userDashboard/CashOverview";
-// import QuickActions from "@/features/userDashboard/QuickActions";
-// import QuickStats from '@/features/userDashboard/QuickStats';
-// import UserLinks from '@/features/userDashboard/UserLinks';
+import QuickActions from "@/components/user/dashboard/QuickActions";
+import QuickStats from "@/components/user/dashboard/QuickStats";
+import UserLinks from "@/components/user/dashboard/UserLinks";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import React, { useEffect, useState } from "react";
 // import { useSelector } from 'react-redux';
 
+export const user = {
+  full_name: "Ochife oge",
+  kyc: true,
+  bankExists: true,
+};
 const Dashboard = () => {
   //   const { user } = useSelector((state) => state.user);
-  const user = {
-    full_name: "Ochife oge",
-    kyc: false,
-    bankExists: false,
-  };
   const isVerified = user.kyc && user.bankExists;
 
   const { isSmallScreen } = useScreenSize();
@@ -70,16 +66,16 @@ const Dashboard = () => {
           <CashOverview />
 
           {/* show quick actions when kyc is verified */}
-          {/* {isVerified && <QuickActions />} */}
+          {isVerified && <QuickActions />}
           {/* Quick stats */}
-          {/* {!isSmallScreen && <QuickStats />} */}
+          {!isSmallScreen && <QuickStats />}
 
           {/*show  Finish account setup if kyc is unverified */}
 
-          {/* {!isVerified && <AccountSetUp />} */}
+          {!isVerified && <AccountSetUp />}
         </div>
         {/* other section */}
-        {/* <UserLinks /> */}
+        <UserLinks />
       </div>
     </>
   );

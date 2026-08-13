@@ -8,7 +8,7 @@ export const warn = "/assets/images/warn.png";
 
 export // ✨ Array of link objects
 const links = [
-  { name: "Home", path: "/user" },
+  { name: "Home", path: "/user/dashboard" },
   { name: "Orders", path: "/user/orders" },
   { name: "Price Display", path: "/user/prices" },
   { name: "Wallet", path: "/user/wallet" },
