@@ -19,7 +19,8 @@ import {
 import { useState, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 // import { axiosInstance } from "@/api/axios";
-import { toast } from "sonner";
+import { resetPassword } from "@/lib/server/auth";
+import { toast } from "../ui/toast";
 
 interface ErrorWithResponse extends Error {
   code?: string;
@@ -60,31 +61,50 @@ export default function ResetPassword() {
     const payload = {
       new_password: data.password,
       confirm_password: data.confirmPassword,
-      token,
-      email,
+      token: token!,
+      email: email!,
     };
 
     console.log(payload);
 
-    // startTransition(async () => {
-    //   try {
-    //     const response = await axiosInstance.post(
-    //       "v1/auth/reset-password",
-    //       payload,
-    //     );
-    //     const { message } = response.data;
-    //     toast.success(message);
-    //     router.push("/login");
-    //   } catch (error) {
-    //     const err = error as ErrorWithResponse;
-    //     if (err.code === "ERR_NETWORK") {
-    //       toast.error(err.message);
-    //     } else {
-    //       toast.error(err.response?.data?.message || "something went wrong");
-    //     }
-    //     console.error(err);
-    //   }
-    // });
+    startTransition(async () => {
+      try {
+        if (!token || !email) {
+          toast.add({
+            title: "Error",
+            description: "Token and email are required",
+            type: "error",
+          });
+          return router.push("/forgot-password");
+        }
+        const response = await resetPassword(payload);
+        const { message, success } = response;
+        if (success) {
+          toast.add({
+            title: "Success",
+            description: message,
+            type: "success",
+          });
+        }
+        router.push("/login");
+      } catch (error) {
+        const err = error as ErrorWithResponse;
+        if (err.code === "ERR_NETWORK") {
+          toast.add({
+            title: "Error",
+            description: err.message,
+            type: "error",
+          });
+        } else {
+          toast.add({
+            title: "Error",
+            description: err.response?.data?.message || "something went wrong",
+            type: "error",
+          });
+        }
+        console.error(err);
+      }
+    });
   }
 
   const [showPassword, setShowPassword] = useState(false);

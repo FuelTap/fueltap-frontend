@@ -11,20 +11,18 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { formatCurrency } from "@/lib/helpers/help";
 
-export default function CashOverview() {
+interface Props {
+  balance: number;
+}
+
+export default function CashOverview({ balance }: Props) {
   const [showAddFunds, setShowAddFunds] = useState(false);
   const [showFunds, setShowFunds] = useState(false);
 
   //   const { data: walletBalance, error, isLoading } = useBalance();
 
-  const walletBalance = {
-    data: {
-      balance: 100000,
-    },
-  };
   const error = "dld";
   const isLoading = false;
-  const balance = walletBalance?.data?.balance;
 
   // FIX: amount should NOT depend on async state initially
   const [amount, setAmount] = useState(0);

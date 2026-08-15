@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 
 import {
   Progress as ProgressPrimitive,
@@ -10,8 +10,8 @@ import {
   type ProgressTrackProps as ProgressTrackPrimitiveProps,
   type ProgressLabelProps as ProgressLabelPrimitiveProps,
   type ProgressValueProps as ProgressValuePrimitiveProps,
-} from '@/components/animate-ui/primitives/base/progress';
-import { cn } from '@/lib/utils';
+} from "@/components/animate-ui/primitives/base/progress";
+import { cn } from "@/lib/utils";
 
 type ProgressProps = ProgressPrimitiveProps;
 
@@ -25,12 +25,12 @@ function ProgressTrack({ className, ...props }: ProgressTrackProps) {
   return (
     <ProgressTrackPrimitive
       className={cn(
-        'bg-primary/20 relative h-2 w-full overflow-hidden rounded-full',
+        "bg-primary/20 relative h-2 w-full overflow-hidden rounded-full",
         className,
       )}
       {...props}
     >
-      <ProgressIndicatorPrimitive className="bg-primary rounded-full h-full w-full flex-1" />
+      <ProgressIndicatorPrimitive className="bg-accent rounded-full h-full w-full flex-1" />
     </ProgressTrackPrimitive>
   );
 }

@@ -16,12 +16,9 @@ import {
   registerationSchema,
   registrationInput,
 } from "@/lib/validators/authSchema";
-import { useRouter } from "next/navigation";
-// import { useLocation, useNavigate } from 'react-router';
-// import { MdKeyboardArrowDown } from 'react-icons/md';
+import { useRouter, useSearchParams } from "next/navigation";
 
 const RegisterForm = () => {
-  // 1. Define your form.
   const form = useForm<registrationInput>({
     resolver: zodResolver(registerationSchema),
     defaultValues: {
@@ -30,18 +27,24 @@ const RegisterForm = () => {
       phone: "",
     },
   });
-  //   const location = useLocation();
-  //   console.log(location);
-  //   const { registerAs } = location.state || 'customer';
+  const searchParams = useSearchParams();
+  const registerAs = searchParams.get("registerAs") || "customer";
 
   const router = useRouter();
   function onSubmit(data: registrationInput) {
     const cleanedPhone = data.phone.startsWith("0")
       ? data.phone.slice(1)
       : data.phone;
-    // navigate('/confirm-password', {
-    //   state: { ...data, phone: cleanedPhone, registerAs },
-    // });
+    localStorage.setItem(
+      "registration_flow",
+      JSON.stringify({
+        ...data,
+        phone: cleanedPhone,
+        registerAs: registerAs,
+      }),
+    );
+    // console.log(localStorage.getItem("registration_flow"));
+    router.push("/confirm-password");
   }
 
   return (

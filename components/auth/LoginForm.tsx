@@ -13,15 +13,12 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { useState } from "react";
-// import { login } from './api';
-import { toast } from "sonner";
-// import { useDispatch } from 'react-redux';
-// import { setUserData } from './userSlice';
-// import { saveToLocalStorage } from '@/utils/helpers';
 import { useRouter } from "next/navigation";
 import { LoginInput, loginSchema } from "@/lib/validators/authSchema";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
+import { loginAction } from "@/lib/server/auth";
+import { toast } from "../ui/toast";
 
 export default function LoginForm() {
   const form = useForm<LoginInput>({
@@ -32,45 +29,49 @@ export default function LoginForm() {
     },
   });
 
-  const navigate = useRouter();
+  const { push } = useRouter();
   // const dispatch = useDispatch();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function onSubmit(data: LoginInput) {
-    console.log(data);
     setIsSubmitting(true);
-    // try {
-    //   const response = await login(data);
-    //   toast.success("Login successful!");
-    //   if (response.data) {
-    //     const { user, accessToken, refreshToken } = response.data;
-    //
-    //     dispatch(
-    //       setUserData({
-    //         accessToken,
-    //         refreshToken,
-    //         user,
-    //       })
-    //     );
-    //     saveToLocalStorage('userData', {
-    //       accessToken,
-    //       refreshToken,
-    //       user,
-    //     });
-    //     navigate.push('/user'); // ✅ Next.js uses router.push instead of navigate()
-    //   }
-    // } catch (error: any) {
-    //   const message =
-    //     error.response?.data?.message || error?.message || "Login failed";
-    //   toast.error(message);
-    //   console.log(error);
-    // } finally {
-    //   setIsSubmitting(false);
-    // }
-
-    // Simulate API delay for testing since it's commented out
-    setTimeout(() => setIsSubmitting(false), 1000);
+    try {
+      const response = await loginAction(data);
+      if (response.success) {
+        toast.add({
+          title: "Login successful!",
+          type: "success",
+        });
+      } else {
+        toast.add({
+          title: "Login failed!",
+          description: response.error,
+          type: "error",
+        });
+      }
+      if (response.data) {
+        console.log(response);
+        // const { user, accessToken, refreshToken } = response.data;
+        push("/user/dashboard");
+        // saveToLocalStorage('userData', {
+        //   accessToken,
+        //   refreshToken,
+        //   user,
+        // });
+      }
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message || error?.message || "Login failed";
+      toast.add({
+        title: "Login failed!",
+        description: message,
+        type: "error",
+      });
+      console.log(error);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   const [showPassword, setShowPassword] = useState(false);

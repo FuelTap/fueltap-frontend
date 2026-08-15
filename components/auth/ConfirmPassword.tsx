@@ -9,8 +9,9 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
 import { PasswordInput, passwordSchema } from "@/lib/validators/authSchema";
-// import { useLocation, useNavigate } from 'react-router';
-// import { axiosInstance } from '@/api/axios';
+import { useRouter } from "next/navigation";
+import { toast } from "../ui/toast";
+import { Register } from "@/lib/server/auth";
 export default function ConfirmPassword() {
   const form = useForm<PasswordInput>({
     resolver: zodResolver(passwordSchema),
@@ -27,38 +28,44 @@ export default function ConfirmPassword() {
   };
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  //   const navigate = useNavigate();
-  //   const location = useLocation();
-  //   const { fullName, registerAs, email, phone } = location.state || '';
+  const { push } = useRouter();
 
   async function onSubmit(data: PasswordInput) {
-    // const payload = {
-    //   full_name: fullName,
-    //   email: email,
-    //   phone_number: phone,
-    //   password: data.password,
-    //   confirm_password: data.confirmPassword,
-    //   role: registerAs,
-    // };
-    // try {
-    //   setIsSubmitting(true);
-    //   const registerResponse = await axiosInstance.post(
-    //     'v1/auth/register',
-    //     payload
-    //   );
-    //   const { message } = registerResponse.data;
-    //   toast.success(message);
-    //   navigate('/verify-email', { state: { email } });
-    // } catch (error) {
-    //   if (error.code === 'ERR_NETWORK') {
-    //     toast.error(error.message);
-    //   } else {
-    //     toast.error(error.response.data.message || 'something went wrong');
-    //   }
-    //   console.log(error);
-    // } finally {
-    //   setIsSubmitting(false);
-    // }
+    const registration_data = JSON.parse(
+      localStorage.getItem("registration_flow") || "{}",
+    );
+
+    if (!registration_data || !Object.keys(registration_data).length) {
+      push("/register");
+      return;
+    }
+    const { fullName, registerAs, email, phone } = registration_data;
+    const payload = {
+      full_name: fullName,
+      email: email,
+      phone_number: phone,
+      password: data.password,
+      confirm_password: data.confirmPassword,
+      role: registerAs,
+    };
+    try {
+      setIsSubmitting(true);
+      const registerResponse = await Register(payload);
+      const { message } = registerResponse;
+      toast.add({ title: "Success", description: message, type: "success" });
+      push("/verify-email");
+    } catch (error: any) {
+      if (error.code === "ERR_NETWORK") {
+        toast.add({ description: error.message, type: "error" });
+      } else {
+        toast.add({
+          description: error.response.data.message || "something went wrong",
+          type: "error",
+        });
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   const [showPassword, setShowPassword] = useState(false);

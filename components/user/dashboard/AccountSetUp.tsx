@@ -1,23 +1,23 @@
 "use client";
 import { useState, useRef } from "react";
 // import LinkBank from '../wallet/LinkBank';
-// import { useSelector } from 'react-redux';
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import Link from "next/link";
-import { user } from "@/app/user/dashboard/page";
 import { TriangleAlert, UserRound } from "lucide-react";
+import { useAuth } from "@/context/AuthProvider";
 
 const AccountSetUp = () => {
   const [bankSetup, setBankSetup] = useState(false);
   //   const { user } = useSelector((store) => store.user);
 
+  const { user } = useAuth();
   const kycRef = useRef(null);
   const bankRef = useRef(null);
 
   // animate KYC pulsing
   useGSAP(() => {
-    if (!user.kyc && kycRef.current) {
+    if (!user?.kyc && kycRef.current) {
       gsap.fromTo(
         kycRef.current,
         { scale: 1 },
@@ -30,11 +30,11 @@ const AccountSetUp = () => {
         },
       );
     }
-  }, [user.kyc]);
+  }, [user?.kyc]);
 
   // animate Bank pulsing
   useGSAP(() => {
-    if (bankRef.current && !user.bankExists) {
+    if (bankRef.current && !user?.bankExists) {
       gsap.fromTo(
         bankRef.current,
         { scale: 1 },
@@ -48,7 +48,7 @@ const AccountSetUp = () => {
         },
       );
     }
-  }, [user.bankExists]);
+  }, [user?.bankExists]);
 
   return (
     <>
@@ -58,7 +58,7 @@ const AccountSetUp = () => {
         </p>
 
         {/* KYC */}
-        {!user.kyc && (
+        {!user?.kyc && (
           <Link
             ref={kycRef}
             className="-z-10 mb-4 flex items-center justify-between rounded-[20px] bg-green-50 p-4 md:px-5 md:py-6"
@@ -77,7 +77,7 @@ const AccountSetUp = () => {
         )}
 
         {/* Bank Account */}
-        {!user.bankExists && (
+        {!user?.bankExists && (
           <div
             ref={bankRef}
             className="mb-4 flex cursor-pointer items-center justify-between rounded-[20px] bg-yellow-100 p-4 md:px-5 md:py-6"

@@ -17,6 +17,8 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { type otpInput, otpSchema } from "@/lib/validators/authSchema";
 import SuccessAnimation from "../web/SuccessAnimation";
+import { toast } from "../ui/toast";
+import { verifyOtpAction } from "@/lib/server/auth";
 
 interface ErrorWithMessage {
   message: string;
@@ -36,29 +38,45 @@ const VerifyEmail = () => {
   const [showSuccess, setShowSuccess] = useState(false);
   const currentOtp = form.watch("otp") || "";
 
+  const { push } = useRouter();
+
   const onSubmit = async (data: otpInput) => {
-    console.log("data: ", data);
     setShowSuccess(true);
 
-    // startTransition(async () => {
-    //   const payload = {
-    //     email: "user@example.com", // Pull from context/state/params as needed
-    //     otp: data.otp,
-    //   };
-    //   try {
-    //     const otpResponse = await axiosInstance.post(
-    //       'v1/auth/account-verification',
-    //       payload
-    //     );
-    //     const { message } = otpResponse.data;
-    //     toast.success(message);
-    //     router.push('/success');
-    //   } catch (error) {
-    //     const err = error as ErrorWithMessage;
-    //     toast.error(err.message || "Verification failed");
-    //     console.error(err);
-    //   }
-    // });
+    startTransition(async () => {
+      const registration_data = JSON.parse(
+        localStorage.getItem("registration_flow") || "{}",
+      );
+      if (!registration_data || !Object.keys(registration_data).length) {
+        push("/register");
+        return;
+      }
+      const payload = {
+        email: registration_data.email,
+        otp: data.otp,
+      };
+      try {
+        const otpResponse = await verifyOtpAction(payload);
+        const { message, success } = otpResponse;
+        if (success) {
+          toast.add({
+            title: "Success",
+            description: message,
+            type: "success",
+          });
+          localStorage.removeItem("registration_flow");
+        }
+      } catch (error: any) {
+        if (error.code === "ERR_NETWORK") {
+          toast.add({ description: error.message, type: "error" });
+        } else {
+          toast.add({
+            description: error.response.data.message || "Verification failed",
+            type: "error",
+          });
+        }
+      }
+    });
   };
 
   return (
@@ -104,7 +122,7 @@ const VerifyEmail = () => {
           </div>
         </FieldGroup>
       </form>
-      {showSuccess && <SuccessAnimation />}
+      {showSuccess && <SuccessAnimation link="/login" />}
     </>
   );
 };

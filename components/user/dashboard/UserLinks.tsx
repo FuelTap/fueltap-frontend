@@ -12,6 +12,7 @@ import { Clock2 } from "@/components/animate-ui/icons/clock-2";
 import { UserRound } from "@/components/animate-ui/icons/user-round";
 import { Settings } from "@/components/animate-ui/icons/settings";
 import Link from "next/link";
+import { useAuth } from "@/context/AuthProvider";
 
 const links = [
   {
@@ -51,12 +52,12 @@ const links = [
   },
 ];
 const UserLinks = () => {
+  const { logout } = useAuth();
   const { isSmallScreen } = useScreenSize();
   const linksToUse = isSmallScreen
     ? links.filter((_, index) => index !== 0 && index !== 5)
     : links;
 
-  //   const logout = useLogout();
   return (
     <div className="w-full md:max-w-[47%]">
       {linksToUse.map(({ icon, to, title }, index) => (
@@ -65,7 +66,7 @@ const UserLinks = () => {
             <div
               className="border-neutra-500 group flex cursor-pointer items-center justify-between border-b p-2 transition md:px-4 md:py-5"
               key={index}
-              //   onClick={() => logout()}
+              onClick={() => logout()}
             >
               <div className="flex items-center gap-3">
                 <Button

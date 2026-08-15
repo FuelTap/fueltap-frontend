@@ -3,7 +3,11 @@
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Progress } from "../animate-ui/components/base/progress";
+import {
+  Progress,
+  ProgressTrack,
+  ProgressValue,
+} from "../animate-ui/components/base/progress";
 
 const indicatorMap: Record<
   string,
@@ -84,7 +88,7 @@ function Indicator({
           <h1 className="text-primary font-pjs text-xl md:text-3xl font-semi">
             {title}
           </h1>
-          <div className="mt-1 mb-4 flex items-center gap-1 lg:mt-2 lg:mb-6">
+          <div className="mt-1 mb-4 flex items-center justify-center gap-1 lg:mt-2 lg:mb-6">
             <p className="text-sm text-neutra-1000">{text}</p>
             {text === "Already using FuelTap?" && (
               <Link className="text-primary" href={"/login"}>
@@ -99,7 +103,9 @@ function Indicator({
           </div>
         </div>
       </div>
-      <Progress value={progressValue} />
+      <Progress className={"w-full "} value={progressValue}>
+        <ProgressTrack />
+      </Progress>
     </div>
   );
 }

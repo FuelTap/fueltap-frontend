@@ -69,7 +69,7 @@ export const registerationSchema = z.object({
     .string({
       message: "field can not be empty!.",
     })
-    .regex(/^(?:0?[789]\d{9})$/, {
+    .regex(/^(?:\+?234|0)?([789]\d{9})$/, {
       message: "Please enter a valid Nigerian phone number.",
     }),
 });
