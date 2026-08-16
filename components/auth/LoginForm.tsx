@@ -38,6 +38,7 @@ export default function LoginForm() {
     setIsSubmitting(true);
     try {
       const response = await loginAction(data);
+      console.log(response);
       if (response.success) {
         toast.add({
           title: "Login successful!",
@@ -46,20 +47,11 @@ export default function LoginForm() {
       } else {
         toast.add({
           title: "Login failed!",
-          description: response.error,
+          description: response.message,
           type: "error",
         });
       }
-      if (response.data) {
-        console.log(response);
-        // const { user, accessToken, refreshToken } = response.data;
-        push("/user/dashboard");
-        // saveToLocalStorage('userData', {
-        //   accessToken,
-        //   refreshToken,
-        //   user,
-        // });
-      }
+      // push("/user/dashboard");
     } catch (error: any) {
       const message =
         error.response?.data?.message || error?.message || "Login failed";

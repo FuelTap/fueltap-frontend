@@ -8,19 +8,16 @@ import {
   DrawerHeader,
   DrawerTrigger,
 } from "../ui/drawer";
-import { Bell, Bug, Menu, Search, X } from "lucide-react";
+import { Bell, Bug, LogOut, Menu, Search, X } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { links } from "@/lib/data/exports";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAuth } from "@/context/AuthProvider";
 
 export default function UserHeader() {
-  const name = "ochife ogechukwu";
-  // ✨ Get initials dynamically
-  const initials = splitName?.(name);
-
-  //   // logout
-  //   const logout = useLogout();
+  const { user, logout } = useAuth();
+  const initials = splitName?.(user?.full_name || "user");
 
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -47,7 +44,7 @@ export default function UserHeader() {
                 </Avatar>
                 <div>
                   <h5 className="text-[15px] font-medium text-black capitalize">
-                    {name}
+                    {user?.full_name}
                   </h5>
                   <p className="text-sm text-neutral-500">Premium member</p>
                 </div>
@@ -102,7 +99,7 @@ export default function UserHeader() {
 
             {true && (
               <div className="text-error flex items-center gap-2">
-                {/* <MdLogout onClick={() => logout()} /> */}
+                <LogOut onClick={() => logout()} />
                 <span>Log Out</span>
               </div>
             )}
@@ -133,7 +130,9 @@ export default function UserHeader() {
         <Bell size={21} className="cursor-pointer text-neutra-800" />
         <div className="flex items-center gap-2">
           <div>
-            <h5 className="text-[14px] text-black capitalize">{name}</h5>
+            <h5 className="text-[14px] text-black capitalize">
+              {user?.full_name}
+            </h5>
             <h5 className="text-[14px] text-neutra-900 capitalize">
               Premium member
             </h5>

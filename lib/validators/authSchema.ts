@@ -75,3 +75,42 @@ export const registerationSchema = z.object({
 });
 
 export type registrationInput = z.infer<typeof registerationSchema>;
+
+// for authenticated users to update their password
+export const changePasswordSchema = z
+  .object({
+    current_password: z
+      .string({
+        message: "field can not be empty!.",
+      })
+      .min(8, "Password must be at least 8 characters long.")
+      .regex(/[A-Z]/, "Password must contain at least one uppercase letter.")
+      .regex(/[a-z]/, "Password must contain at least one lowercase letter.")
+      .regex(/[0-9]/, "Password must contain at least one number.")
+      .regex(
+        /[^A-Za-z0-9]/,
+        "Password must contain at least one special character.",
+      ),
+    new_password: z
+      .string({
+        message: "field can not be empty!.",
+      })
+      .min(8, "Password must be at least 8 characters long.")
+      .regex(/[A-Z]/, "Password must contain at least one uppercase letter.")
+      .regex(/[a-z]/, "Password must contain at least one lowercase letter.")
+      .regex(/[0-9]/, "Password must contain at least one number.")
+      .regex(
+        /[^A-Za-z0-9]/,
+        "Password must contain at least one special character.",
+      ),
+
+    confirm_password: z.string({
+      message: "field can not be empty!.",
+    }),
+  })
+  .refine((data) => data.new_password === data.confirm_password, {
+    message: "Passwords do not match.",
+    path: ["confirmPassword"], // attaches the error to confirmPassword field
+  });
+
+export type ChangePasswordSchemaInput = z.infer<typeof changePasswordSchema>;

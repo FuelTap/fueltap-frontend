@@ -26,7 +26,7 @@ export default async function UserLayout({
           <UserHeader />
         </header>
 
-        <div className="mt-1 flex-1 pb-6 leading-[100%] tracking-tight lg:mt-26">
+        <div className="flex-1 pb-6 leading-[100%] tracking-tight mt-18 lg:mt-26">
           {children}
         </div>
       </main>

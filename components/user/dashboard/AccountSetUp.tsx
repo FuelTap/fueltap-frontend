@@ -61,7 +61,7 @@ const AccountSetUp = () => {
         {!user?.kyc && (
           <Link
             ref={kycRef}
-            className="-z-10 mb-4 flex items-center justify-between rounded-[20px] bg-green-50 p-4 md:px-5 md:py-6"
+            className="-z-10! mb-4 flex items-center justify-between rounded-[20px] bg-green-50 p-4 md:px-5 md:py-6"
             href={"/user/verify"}
           >
             <div>

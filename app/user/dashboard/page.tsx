@@ -9,9 +9,5 @@ export const metadata: Metadata = {
 export default async function DashboardPage() {
   const res = await getWalletBalance();
 
-  if (!res.success) {
-    throw new Error(res.message);
-  }
-
   return <Dashboard balance={res.data?.balance ?? 0} />;
 }
