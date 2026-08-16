@@ -1,6 +1,10 @@
 "use server";
 
-import { LoginInput } from "../validators/authSchema";
+import {
+  changePasswordSchema,
+  ChangePasswordSchemaInput,
+  LoginInput,
+} from "../validators/authSchema";
 import setCookieParser from "set-cookie-parser";
 import { cookies } from "next/headers";
 import { apiRequest } from "../helpers/fetch/typedFetchWrapper";
@@ -111,10 +115,13 @@ export async function loginAction(credentials: LoginInput) {
     },
   );
 
-  if (result.success) {
-    await syncBackendCookies(response);
+  if (!result.success) {
+    console.log(result);
+    return result;
   }
-  return result;
+  await syncBackendCookies(response);
+  // return result;
+  redirect("/user/dashboard");
 }
 
 // ============================================LOGOUT=========================================
@@ -231,7 +238,53 @@ export async function resetPassword(data: {
   }
 }
 
-async function fetchHelper() {}
+// ==========================================CHANGE/UPDATE PASSWORD===========================================
+
+export async function changePassword(payload: ChangePasswordSchemaInput) {
+  const vaildate = changePasswordSchema.safeParse(payload);
+
+  if (!vaildate.success) {
+    console.log(vaildate.error?.message);
+    return {
+      success: false,
+      message: "failed to validate user password details",
+      error: vaildate.error?.message || "Invalid password",
+    };
+  }
+
+  return await authenticatedApiRequest<
+    ChangePasswordSchemaInput,
+    {
+      status: string;
+      message: string;
+    }
+  >("/api/v1/auth/change-password", "PATCH", vaildate.data);
+}
+
+// ========================================== DELETE ACCOUNT===========================================
+
+export async function deleteAccount() {
+  // const valdiate = deleteAccountSchema.safeParse(payload);
+
+  // if (!valdiate.success) {
+  //   console.log(valdiate.error?.message);
+  //   return {
+  //     success: false,
+  //     message: "failed to validate user account details",
+  //     error: valdiate.error?.message || "Invalid account details",
+  //   };
+  // }
+
+  return await authenticatedApiRequest<
+    void,
+    {
+      status: string;
+      message: string;
+    }
+  >("/api/v1/auth/delete-account", "DELETE");
+}
+
+// ==========================================UPDATE COOKIES===========================================
 
 async function updateAuthCookies(response: Response) {
   const rawCookies = response.headers.getSetCookie();

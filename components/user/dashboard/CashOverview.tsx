@@ -2,9 +2,7 @@
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useState, useEffect } from "react";
-// import FundWallet from '../wallet/FundWallet';
-// import { useNavigate } from 'react-router';
-// import useBalance from '@/hooks/useBalance';
+import FundWallet from "../wallet/FundWallet";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ChevronRight, Eye, EyeClosed, Plus } from "lucide-react";
 import Link from "next/link";
@@ -88,7 +86,7 @@ export default function CashOverview({ balance }: Props) {
         </div>
       </div>
 
-      {/* {showAddFunds && <FundWallet onClose={() => setShowAddFunds(false)} />} */}
+      {showAddFunds && <FundWallet onClose={() => setShowAddFunds(false)} />}
     </>
   );
 }
