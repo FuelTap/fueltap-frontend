@@ -11,11 +11,18 @@ import {
   AlertDialogPopup,
 } from "../animate-ui/components/base/alert-dialog";
 
+interface SuccessAnimationProps {
+  children?: React.ReactNode;
+  time?: number;
+  link?: string;
+  info?: string;
+}
 export default function SuccessAnimation({
+  children,
   time = 3000,
   link = "/role-selector",
-  info = "  Registration successful!",
-}) {
+  info = "",
+}: SuccessAnimationProps) {
   const router = useRouter();
 
   const { isSmallScreen } = useScreenSize(768);
@@ -53,7 +60,7 @@ export default function SuccessAnimation({
   // ✅ Medium & large screens → dialog modal
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogPopup className="bg-primary-900 focus:outline-none  border-0! text-center text-white md:rounded-2xl">
+      <AlertDialogPopup className="bg-primary-900 focus:outline-none  border-0! text-center z-2000! text-white md:rounded-2xl">
         <div className="flex flex-col items-center justify-center py-6 text-center">
           <Lottie
             animationData={successAnim}
@@ -63,7 +70,7 @@ export default function SuccessAnimation({
           <AlertDialogHeader className="mt-4 text-lg font-semibold text-green-700">
             {info}
           </AlertDialogHeader>
-
+          {children}
           <p className="text-white">Redirecting shortly...</p>
         </div>
       </AlertDialogPopup>

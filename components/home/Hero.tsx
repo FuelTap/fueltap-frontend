@@ -1,5 +1,6 @@
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -13,9 +14,13 @@ const Hero = () => {
         <p className="text-grey-800 text-xl-regular">
           Let’s get you refilled in seconds.
         </p>
-        <Button size={"pill"} className={"self-start"}>
+
+        <Link
+          href={"/role-selector"}
+          className={`${buttonVariants({ size: "pill" })} self-start`}
+        >
           Order Now
-        </Button>
+        </Link>
       </div>
 
       <Skeleton className=" h-62 w-full md:h-[40vh] md:basis-1/2" />

@@ -1,12 +1,5 @@
-// import { RiArrowRightSLine } from 'react-icons/ri';
-// import { LuFuel } from 'react-icons/lu';
 import { Button } from "@/components/ui/button";
 import { useScreenSize } from "@/hooks/useScreenSize";
-// import { MdLogout, MdOutlineSupportAgent } from 'react-icons/md';
-// import useLogout from '@/hooks/useLogout';
-// import { GoClock, GoGear } from 'react-icons/go';
-// import { CiUser } from 'react-icons/ci';
-// import { FaSave } from 'react-icons/fa';
 import { ChevronRight, Fuel, LifeBuoy, LogOut, Save } from "lucide-react";
 import { Clock2 } from "@/components/animate-ui/icons/clock-2";
 import { UserRound } from "@/components/animate-ui/icons/user-round";
@@ -61,7 +54,7 @@ const UserLinks = () => {
   return (
     <div className="w-full md:max-w-[47%]">
       {linksToUse.map(({ icon, to, title }, index) => (
-        <>
+        <div key={index}>
           {title === "Log Out" ? (
             <div
               className="border-neutra-500 group flex cursor-pointer items-center justify-between border-b p-2 transition md:px-4 md:py-5"
@@ -113,7 +106,7 @@ const UserLinks = () => {
               />
             </Link>
           )}
-        </>
+        </div>
       ))}
     </div>
   );

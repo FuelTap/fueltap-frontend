@@ -22,18 +22,6 @@ export const PageLinks = [
   { name: "Account", path: "/user" },
   { name: "Contact us", path: "/contact-us" },
 ];
-// export const orderOptions = [
-//   {
-//     icon: <MdOutlinePersonOutline size={18} />,
-//     label: 'for you',
-//     key: 'personal',
-//   },
-//   {
-//     icon: <HiMiniUsers />,
-//     label: 'for a friend',
-//     key: 'others',
-//   },
-// ];
 
 // fuel type
 

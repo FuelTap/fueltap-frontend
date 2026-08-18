@@ -22,11 +22,11 @@ export default async function UserLayout({
   return (
     <AuthProvider initialUser={initialUser}>
       <main className="flex h-dvh container w-dvw flex-col">
-        <header className="container fixed top-0 z-10 backdrop-blur-lg py-2 mx-auto w-full">
+        <header className="container md:fixed top-0 z-10 backdrop-blur-lg py-2 mx-auto w-full">
           <UserHeader />
         </header>
 
-        <div className="flex-1 pb-6 leading-[100%] tracking-tight mt-18 lg:mt-26">
+        <div className="flex-1 pb-6 leading-[100%] tracking-tight mt-4 md:mt-18 lg:mt-26">
           {children}
         </div>
       </main>

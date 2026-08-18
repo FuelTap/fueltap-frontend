@@ -13,6 +13,7 @@ import { Plus } from "@/components/animate-ui/icons/plus";
 import { AnimateIcon } from "@/components/animate-ui/icons/icon";
 import { formatCurrency } from "@/lib/helpers/help";
 import { useSearchParamsQuery } from "@/hooks/useSearchParams";
+import Link from "next/link";
 
 const Orders = () => {
   const router = useRouter();
@@ -143,13 +144,14 @@ const Orders = () => {
             </div>
           </>
         )}
-        <AnimateIcon
-          animateOnHover={true}
-          className="bg-primary fixed right-[10%] bottom-[7%] z-50! cursor-pointer rounded-full p-2 text-4xl text-white md:right-26 md:bottom-24"
-          onClick={() => router.push("/order")}
-        >
-          <Plus />
-        </AnimateIcon>
+        <Link href={"/user/order"}>
+          <AnimateIcon
+            animateOnHover={true}
+            className="bg-primary fixed right-[10%] bottom-[7%] z-50! cursor-pointer rounded-full p-2 text-4xl text-white md:right-26 md:bottom-24"
+          >
+            <Plus />
+          </AnimateIcon>
+        </Link>
       </main>
     </>
   );
