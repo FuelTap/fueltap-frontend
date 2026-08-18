@@ -1,14 +1,3 @@
-### FuelTap Frontend Codebase
+### Welcome to FuelTap
 
-# Tech Stack
-
-- React Js
-- Redux Tool Kit
-- React-hook forms
-- Tailwind
-- Shadcn
--
-
-## Expanding the ESLint configuration
-
-[Live link](https://fueltap.onrender.com/)
+FuelTap is a platform that allows users to order fuel for delivery to their location. It is a web application that is built with Next.js (BFF) and uses Tailwind CSS for styling. It uses pnpm for package management.
