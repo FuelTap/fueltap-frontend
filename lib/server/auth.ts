@@ -12,7 +12,6 @@ import { syncBackendCookies } from "../helpers/auth-cookies";
 import { authenticatedApiRequest } from "../helpers/fetch/authenticatedApiRequest";
 import { redirect } from "next/navigation";
 import { User } from "@/context/AuthProvider";
-
 // =======================REGISTER===============================
 export async function Register(data: {
   full_name: string;
