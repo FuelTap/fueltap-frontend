@@ -23,6 +23,7 @@ export const bankAccountSchema = z.object({
     message: "field can not be empty!.",
   }),
 });
+export type BankAccountSchemaInput = z.infer<typeof bankAccountSchema>;
 
 export const pinSchema = z
   .object({
