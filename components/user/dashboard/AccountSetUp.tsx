@@ -1,15 +1,14 @@
 "use client";
 import { useState, useRef } from "react";
-// import LinkBank from '../wallet/LinkBank';
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import Link from "next/link";
 import { TriangleAlert, UserRound } from "lucide-react";
 import { useAuth } from "@/context/AuthProvider";
+import LinkBank from "../wallet/LinkBank";
 
 const AccountSetUp = () => {
   const [bankSetup, setBankSetup] = useState(false);
-  //   const { user } = useSelector((store) => store.user);
 
   const { user } = useAuth();
   const kycRef = useRef(null);
@@ -96,7 +95,7 @@ const AccountSetUp = () => {
         )}
       </div>
 
-      {/* {bankSetup && <LinkBank onClose={() => setBankSetup(false)} />} */}
+      {bankSetup && <LinkBank onClose={() => setBankSetup(false)} />}
     </>
   );
 };
