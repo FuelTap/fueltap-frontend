@@ -70,12 +70,16 @@
   --color-secondary-600: #c99901;
 
   --color-gray-100: #f3f4f4;
+  --color-grey-200: #e7e8e8;
   --color-grey-600: #bbbcbc;
   --color-gray-700: #888989;
   --color-grey-800: #595a5a;
 
   --color-green-500: #0ea774;
   --color-error: #df1125;
+
+  --color-neutral-400: #f9fafb;
+  --color-black: #060606;
 }
 
 :root {
@@ -204,6 +208,38 @@ input[type="time"] {
   padding-inline: 1rem;
   width: 100%;
   max-width: 1280px;
+}
+
+.animated-gradient {
+  background:
+    radial-gradient(
+      circle 180px at 40% 45%,
+      rgba(231, 248, 242, 0.9),
+      transparent 100%
+    ),
+    radial-gradient(
+      circle 180px at 55% 55%,
+      rgba(221, 222, 252, 0.9),
+      transparent 100%
+    );
+
+  background-size: 120% 120%;
+
+  animation: gradient-flow 8s ease-in-out infinite alternate;
+}
+
+@keyframes gradient-flow {
+  from {
+    background-position:
+      40% 40%,
+      60% 60%;
+  }
+
+  to {
+    background-position:
+      55% 55%,
+      45% 45%;
+  }
 }
 
 /* custom styles */
