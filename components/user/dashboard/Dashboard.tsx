@@ -37,8 +37,8 @@ export default function Dashboard({ balance }: Props) {
 
       <div className="mt-4 flex flex-col items-start justify-between md:mt-8 md:flex-row">
         {true ? (
-          <section className="flex flex-col md:flex-row w-full gap-4">
-            <div className="w-full md:basis-1/2 lg:basis-[58%] space-y-5">
+          <section className="flex flex-col relative md:items-start md:flex-row w-full  gap-4">
+            <div className="w-full md:sticky top-18! md:basis-1/2 lg:basis-[56%] space-y-5">
               <CashOverview balance={balance} />
               <OrderFuelCard />
 
@@ -52,8 +52,8 @@ export default function Dashboard({ balance }: Props) {
           </section>
         ) : (
           <AccountSetupProps
-            kycDone={user?.kyc}
-            bankExists={user?.bankExists}
+            kycDone={user?.kyc || false}
+            bankExists={user?.bankExists || false}
             pinExists={false}
           />
         )}

@@ -34,7 +34,7 @@ export default function CashOverview({ balance }: Props) {
 
   return (
     <>
-      <div className="bg-neutral-400 border border-grey-200 p-4 lg:rounded-[20px] md:px-7.5 md:py-5 flex flex-col justify-center h-39.75">
+      <div className="bg-neutral-400 border border-grey-200 p-4 rounded-[20px] md:px-7.5 md:py-5 flex flex-col justify-center h-39.75">
         {/* Balance */}
         <div className="flex items-center justify-between mb-7.5 md:mb-10 ">
           <div className="flex flex-col gap-1">

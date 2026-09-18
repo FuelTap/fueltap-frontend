@@ -5,7 +5,7 @@ import Link from "next/link";
 const OrderFuelCard = () => {
   return (
     <div
-      className="h-41.25   p-4 lg:rounded-[20px] md:px-7.5 md:py-5 bg-right bg-no-repeat bg-contain flex flex-col justify-between"
+      className="h-41.25   p-4 rounded-[20px] md:px-7.5 md:py-5 bg-right bg-no-repeat bg-contain flex flex-col justify-between"
       style={{
         backgroundImage: `
           url('/assets/user/fuelPump.png'),

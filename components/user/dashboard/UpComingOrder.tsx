@@ -37,7 +37,9 @@ const UpComingOrder = () => {
         </ul>
       </div>
 
-      <Badge variant={"accent"}>Scheduled</Badge>
+      <Badge variant={"scheduled"} className="w-full p-4 lg:w-fit!">
+        Scheduled
+      </Badge>
     </div>
   );
 };

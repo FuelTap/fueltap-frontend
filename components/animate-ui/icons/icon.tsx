@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import * as React from 'react';
+import * as React from "react";
 import {
   motion,
   useAnimation,
@@ -9,11 +9,14 @@ import {
   type LegacyAnimationControls,
   type Variants,
   type HTMLMotionProps,
-} from 'motion/react';
+} from "motion/react";
 
-import { cn } from '@/lib/utils';
-import { useIsInView } from '@/hooks/use-is-in-view';
-import { Slot, type WithAsChild } from '@/components/animate-ui/primitives/animate/slot';
+import { cn } from "@/lib/utils";
+import { useIsInView } from "@/hooks/use-is-in-view";
+import {
+  Slot,
+  type WithAsChild,
+} from "@/components/animate-ui/primitives/animate/slot";
 
 const staticAnimations = {
   path: {
@@ -22,17 +25,17 @@ const staticAnimations = {
       pathLength: [0.05, 1],
       transition: {
         duration: 0.8,
-        ease: 'easeInOut',
+        ease: "easeInOut",
       },
     },
   } as Variants,
-  'path-loop': {
+  "path-loop": {
     initial: { pathLength: 1 },
     animate: {
       pathLength: [1, 0.05, 1],
       transition: {
         duration: 1.6,
-        ease: 'easeInOut',
+        ease: "easeInOut",
       },
     },
   } as Variants,
@@ -60,7 +63,7 @@ type DefaultIconProps<T = string> = {
   animateOnHover?: TriggerProp<T>;
   animateOnTap?: TriggerProp<T>;
   animateOnView?: TriggerProp<T>;
-  animateOnViewMargin?: UseInViewOptions['margin'];
+  animateOnViewMargin?: UseInViewOptions["margin"];
   animateOnViewOnce?: boolean;
   animation?: T | StaticAnimations;
   loop?: boolean;
@@ -72,7 +75,7 @@ type DefaultIconProps<T = string> = {
 };
 
 type AnimateIconProps<T = string> = WithAsChild<
-  HTMLMotionProps<'span'> &
+  HTMLMotionProps<"span"> &
     DefaultIconProps<T> & {
       children: React.ReactNode;
       asChild?: boolean;
@@ -80,7 +83,7 @@ type AnimateIconProps<T = string> = WithAsChild<
 >;
 
 type IconProps<T> = DefaultIconProps<T> &
-  Omit<SVGMotionProps<SVGSVGElement>, 'animate'> & {
+  Omit<SVGMotionProps<SVGSVGElement>, "animate"> & {
     size?: number;
   };
 
@@ -97,7 +100,7 @@ function useAnimateIconContext() {
   if (!context)
     return {
       controls: undefined,
-      animation: 'default',
+      animation: "default",
       loop: undefined,
       loopDelay: undefined,
       active: undefined,
@@ -129,9 +132,9 @@ function AnimateIcon({
   animateOnHover = false,
   animateOnTap = false,
   animateOnView = false,
-  animateOnViewMargin = '0px',
+  animateOnViewMargin = "0px",
   animateOnViewOnce = true,
-  animation = 'default',
+  animation = "default",
   loop = false,
   loopDelay = 0,
   initialOnAnimateEnd = false,
@@ -149,8 +152,8 @@ function AnimateIcon({
   });
   const [currentAnimation, setCurrentAnimation] = React.useState<
     string | StaticAnimations
-  >(typeof animate === 'string' ? animate : animation);
-  const [status, setStatus] = React.useState<'initial' | 'animate'>('initial');
+  >(typeof animate === "string" ? animate : animation);
+  const [status, setStatus] = React.useState<"initial" | "animate">("initial");
 
   const delayRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const loopDelayRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -168,7 +171,7 @@ function AnimateIcon({
 
   const startAnimation = React.useCallback(
     (trigger: TriggerProp) => {
-      const next = typeof trigger === 'string' ? trigger : animation;
+      const next = typeof trigger === "string" ? trigger : animation;
       bumpGeneration();
       if (delayRef.current) {
         clearTimeout(delayRef.current);
@@ -206,7 +209,7 @@ function AnimateIcon({
 
   React.useEffect(() => {
     if (animate === undefined) return;
-    setCurrentAnimation(typeof animate === 'string' ? animate : animation);
+    setCurrentAnimation(typeof animate === "string" ? animate : animation);
     if (animate) startAnimation(animate as TriggerProp);
     else stopAnimation();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -227,7 +230,7 @@ function AnimateIcon({
   });
 
   const startAnim = React.useCallback(
-    async (anim: 'initial' | 'animate', method: 'start' | 'set' = 'start') => {
+    async (anim: "initial" | "animate", method: "start" | "set" = "start") => {
       try {
         await controls[method](anim);
         setStatus(anim);
@@ -250,7 +253,7 @@ function AnimateIcon({
 
     async function run() {
       if (cancelledRef.current || gen !== runGenRef.current) {
-        await startAnim('initial');
+        await startAnim("initial");
         return;
       }
 
@@ -268,20 +271,20 @@ function AnimateIcon({
         }
         if (!persistOnAnimateEnd) {
           if (cancelledRef.current || gen !== runGenRef.current) {
-            await startAnim('initial');
+            await startAnim("initial");
             return;
           }
-          await startAnim('initial');
+          await startAnim("initial");
         }
         return;
       }
 
       if (loop) {
         if (cancelledRef.current || gen !== runGenRef.current) {
-          await startAnim('initial');
+          await startAnim("initial");
           return;
         }
-        await startAnim('initial', 'set');
+        await startAnim("initial", "set");
       }
 
       isAnimateInProgressRef.current = true;
@@ -294,18 +297,18 @@ function AnimateIcon({
         resolveAnimateEndRef.current?.();
         resolveAnimateEndRef.current = null;
         animateEndPromiseRef.current = null;
-        await startAnim('initial');
+        await startAnim("initial");
         return;
       }
 
-      await startAnim('animate');
+      await startAnim("animate");
 
       if (cancelledRef.current || gen !== runGenRef.current) {
         isAnimateInProgressRef.current = false;
         resolveAnimateEndRef.current?.();
         resolveAnimateEndRef.current = null;
         animateEndPromiseRef.current = null;
-        await startAnim('initial');
+        await startAnim("initial");
         return;
       }
 
@@ -316,10 +319,10 @@ function AnimateIcon({
 
       if (initialOnAnimateEnd) {
         if (cancelledRef.current || gen !== runGenRef.current) {
-          await startAnim('initial');
+          await startAnim("initial");
           return;
         }
-        await startAnim('initial', 'set');
+        await startAnim("initial", "set");
       }
 
       if (loop) {
@@ -332,23 +335,23 @@ function AnimateIcon({
           });
 
           if (cancelledRef.current || gen !== runGenRef.current) {
-            await startAnim('initial');
+            await startAnim("initial");
             return;
           }
           if (!activeRef.current) {
-            if (status !== 'initial' && !persistOnAnimateEnd)
-              await startAnim('initial');
+            if (status !== "initial" && !persistOnAnimateEnd)
+              await startAnim("initial");
             return;
           }
         } else {
           if (!activeRef.current) {
-            if (status !== 'initial' && !persistOnAnimateEnd)
-              await startAnim('initial');
+            if (status !== "initial" && !persistOnAnimateEnd)
+              await startAnim("initial");
             return;
           }
         }
         if (cancelledRef.current || gen !== runGenRef.current) {
-          await startAnim('initial');
+          await startAnim("initial");
           return;
         }
         await run();
@@ -497,7 +500,7 @@ function IconWrapper<T extends string>({
 
     if (hasOverrides) {
       const inheritedAnimate: Trigger = parentActive
-        ? (animationProp ?? parentAnimation ?? 'default')
+        ? (animationProp ?? parentAnimation ?? "default")
         : false;
 
       const finalAnimate: Trigger = (animate ??
@@ -505,12 +508,32 @@ function IconWrapper<T extends string>({
         inheritedAnimate) as Trigger;
 
       return (
-        <AnimateIcon animate={finalAnimate} animateOnHover={animateOnHover} animateOnTap={animateOnTap} animateOnView={animateOnView} animateOnViewMargin={animateOnViewMargin} animateOnViewOnce={animateOnViewOnce} animation={animationProp ?? parentAnimation} loop={loop ?? parentLoop} loopDelay={loopDelay ?? parentLoopDelay} persistOnAnimateEnd={persistOnAnimateEnd ?? parentPersistOnAnimateEnd} initialOnAnimateEnd={initialOnAnimateEnd ?? parentInitialOnAnimateEnd} delay={delay ?? parentDelay} completeOnStop={completeOnStop ?? parentCompleteOnStop} render={<IconComponent size={size} className={cn(
-                        className,
-                        ((animationProp ?? parentAnimation) === 'path' ||
-                          (animationProp ?? parentAnimation) === 'path-loop') &&
-                          pathClassName,
-                      )} {...props} />}></AnimateIcon>
+        <AnimateIcon
+          animate={finalAnimate}
+          animateOnHover={animateOnHover}
+          animateOnTap={animateOnTap}
+          animateOnView={animateOnView}
+          animateOnViewMargin={animateOnViewMargin}
+          animateOnViewOnce={animateOnViewOnce}
+          animation={animationProp ?? parentAnimation}
+          loop={loop ?? parentLoop}
+          loopDelay={loopDelay ?? parentLoopDelay}
+          persistOnAnimateEnd={persistOnAnimateEnd ?? parentPersistOnAnimateEnd}
+          initialOnAnimateEnd={initialOnAnimateEnd ?? parentInitialOnAnimateEnd}
+          delay={delay ?? parentDelay}
+          completeOnStop={completeOnStop ?? parentCompleteOnStop}
+        >
+          <IconComponent
+            size={size}
+            className={cn(
+              className,
+              ((animationProp ?? parentAnimation) === "path" ||
+                (animationProp ?? parentAnimation) === "path-loop") &&
+                pathClassName,
+            )}
+            {...props}
+          />
+        </AnimateIcon>
       );
     }
 
@@ -536,7 +559,7 @@ function IconWrapper<T extends string>({
           size={size}
           className={cn(
             className,
-            (animationToUse === 'path' || animationToUse === 'path-loop') &&
+            (animationToUse === "path" || animationToUse === "path-loop") &&
               pathClassName,
           )}
           {...props}
@@ -553,11 +576,29 @@ function IconWrapper<T extends string>({
     animationProp !== undefined
   ) {
     return (
-      <AnimateIcon animate={animate} animateOnHover={animateOnHover} animateOnTap={animateOnTap} animateOnView={animateOnView} animateOnViewMargin={animateOnViewMargin} animateOnViewOnce={animateOnViewOnce} animation={animationProp} loop={loop} loopDelay={loopDelay} delay={delay} completeOnStop={completeOnStop} render={<IconComponent size={size} className={cn(
-                    className,
-                    (animationProp === 'path' || animationProp === 'path-loop') &&
-                      pathClassName,
-                  )} {...props} />}></AnimateIcon>
+      <AnimateIcon
+        animate={animate}
+        animateOnHover={animateOnHover}
+        animateOnTap={animateOnTap}
+        animateOnView={animateOnView}
+        animateOnViewMargin={animateOnViewMargin}
+        animateOnViewOnce={animateOnViewOnce}
+        animation={animationProp}
+        loop={loop}
+        loopDelay={loopDelay}
+        delay={delay}
+        completeOnStop={completeOnStop}
+      >
+        <IconComponent
+          size={size}
+          className={cn(
+            className,
+            (animationProp === "path" || animationProp === "path-loop") &&
+              pathClassName,
+          )}
+          {...props}
+        />
+      </AnimateIcon>
     );
   }
 
@@ -566,7 +607,7 @@ function IconWrapper<T extends string>({
       size={size}
       className={cn(
         className,
-        (animationProp === 'path' || animationProp === 'path-loop') &&
+        (animationProp === "path" || animationProp === "path-loop") &&
           pathClassName,
       )}
       {...props}
@@ -588,8 +629,8 @@ function getVariants<
     result = {} as T;
     for (const key in animations.default) {
       if (
-        (animationType === 'path' || animationType === 'path-loop') &&
-        key.includes('group')
+        (animationType === "path" || animationType === "path-loop") &&
+        key.includes("group")
       )
         continue;
       result[key] = variant as T[Extract<keyof T, string>];
