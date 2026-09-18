@@ -10,7 +10,6 @@ import { cookies } from "next/headers";
 import { apiRequest } from "../helpers/fetch/typedFetchWrapper";
 import { syncBackendCookies } from "../helpers/auth-cookies";
 import { authenticatedApiRequest } from "../helpers/fetch/authenticatedApiRequest";
-import { redirect } from "next/navigation";
 import { User } from "@/context/AuthProvider";
 // =======================REGISTER===============================
 export async function Register(data: {
@@ -119,8 +118,15 @@ export async function loginAction(credentials: LoginInput) {
     return result;
   }
   await syncBackendCookies(response);
-  // return result;
-  redirect("/user/dashboard");
+  const accessToken = (await cookies()).get("x-access-token")?.value;
+  if (!accessToken) {
+    return {
+      success: false,
+      status: "error",
+      message: "Login succeeded, but no session cookie was received. Please try again.",
+    };
+  }
+  return result;
 }
 
 // ============================================LOGOUT=========================================
