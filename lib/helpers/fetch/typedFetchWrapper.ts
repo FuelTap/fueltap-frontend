@@ -25,7 +25,10 @@ export async function apiRequest<TRequest = unknown, TResponse = unknown>(
   const url = `${process.env.API_URL}/${endpoint.replace(/^\//, "")}`;
 
   const headers = new Headers(customHeaders);
-  if (data && !headers.has("Content-Type")) {
+  const isFormData = data instanceof FormData;
+  if (isFormData) {
+    headers.delete("Content-Type"); // fetch supplies the multipart boundary.
+  } else if (data && !headers.has("Content-Type")) {
     headers.set("Content-Type", "application/json");
   }
 
@@ -33,7 +36,7 @@ export async function apiRequest<TRequest = unknown, TResponse = unknown>(
     const response = await fetch(url, {
       method,
       headers,
-      body: data ? JSON.stringify(data) : undefined,
+      body: isFormData ? data : data ? JSON.stringify(data) : undefined,
       cache: "no-store",
       ...restOptions,
     });
