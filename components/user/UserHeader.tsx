@@ -32,7 +32,7 @@ export default function UserHeader() {
 
   if (showSimpleHeader) {
     return (
-      <header className="inset-x-0 top-0 z-10 w-full bg-linear-to-r from-[#DDDEFC] to-[#E7F8F2] py-2 md:fixed">
+      <header className="relative inset-x-0 top-0 z-10 w-full bg-linear-to-r from-[#DDDEFC] to-[#E7F8F2] py-2 md:fixed after:absolute after:bottom-0 after:left-0 after:h-0.75 after:w-full after:bg-accent after:content-['']">
         <div className="container flex items-center justify-between gap-4">
           <Logo />
           <Button
