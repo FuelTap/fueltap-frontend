@@ -1,16 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import {
-  AlertDialog,
-  AlertDialogPopup,
-  AlertDialogDescription,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/animate-ui/components/base/alert-dialog";
-
 import { Input } from "@/components/ui/input";
-import { useScreenSize } from "@/hooks/useScreenSize";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -23,14 +14,21 @@ import {
   bankAccountSchema,
   BankAccountSchemaInput,
 } from "@/lib/validators/WalletSchema";
-import { X } from "lucide-react";
 import { handleNumericInput, preventInvalidKeys } from "@/lib/utils";
 import bankData from "@/public/banks.json";
 import { SearchableSelect } from "@/components/web/SearchableSelect";
 import { addBankAccount, verifyBankDetails } from "@/lib/server/wallet";
 import { toast } from "@/components/ui/toast";
+import { AnimateIcon } from "@/components/animate-ui/icons/icon";
+import { Check } from "@/components/animate-ui/icons/check";
+import { useRouter } from "next/navigation";
 
-const LinkBank = ({ onClose }: { onClose: () => void }) => {
+interface Props {
+  onComplete: Dispatch<SetStateAction<boolean>>;
+}
+const LinkBankForm = ({ onComplete }: Props) => {
+  const { push } = useRouter();
+
   const form = useForm({
     resolver: zodResolver(bankAccountSchema),
   });
@@ -40,8 +38,10 @@ const LinkBank = ({ onClose }: { onClose: () => void }) => {
   const [isResolving, setIsResolving] = useState(false);
   const [resolved, setResolved] = useState(false);
 
+  const [userAccountName, setUserAccountName] = useState("");
   const bankName = form.watch("bankName");
   const accountNumber = form.watch("accountNumber");
+
   useEffect(() => {
     async function fetchAccountName() {
       if (bankName && accountNumber?.length === 10) {
@@ -58,6 +58,7 @@ const LinkBank = ({ onClose }: { onClose: () => void }) => {
         }
         const fetchedName = res.data.data?.account_name;
         form.setValue("accountName", fetchedName);
+        setUserAccountName(fetchedName);
         setResolved(true);
       } catch (error: any) {
         toast.add({
@@ -74,6 +75,8 @@ const LinkBank = ({ onClose }: { onClose: () => void }) => {
     if (bankName && accountNumber?.length === 10) fetchAccountName();
   }, [bankName, accountNumber, form]);
 
+  const allBankNames = bankData.map((bankObject) => bankObject.name);
+
   const onSubmit = async (payload: BankAccountSchemaInput) => {
     try {
       const res = await addBankAccount(payload);
@@ -88,7 +91,8 @@ const LinkBank = ({ onClose }: { onClose: () => void }) => {
         title: "Success",
         description: "Bank account added successfully",
       });
-      onClose();
+
+      onComplete(true);
     } catch (error: any) {
       const message =
         error.response?.data?.data.message ||
@@ -98,17 +102,7 @@ const LinkBank = ({ onClose }: { onClose: () => void }) => {
     }
   };
 
-  const { isSmallScreen } = useScreenSize(500);
-  const [open, setOpen] = useState(true);
-
-  useEffect(() => {
-    if (!open) onClose();
-  }, [open, onClose]);
-
-  const allBankNames = bankData.map((bankObject) => bankObject.name);
-
-  // 🧠 Shared form layout (used for both mobile + desktop)
-  const formContent = (
+  return (
     <form
       onSubmit={form.handleSubmit(onSubmit)}
       className="flex flex-col space-y-6"
@@ -120,7 +114,7 @@ const LinkBank = ({ onClose }: { onClose: () => void }) => {
           name="bankName"
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="bankName" className="text-lg-medium">
+              <FieldLabel htmlFor="bankName" className="text-sm  font-medium">
                 Bank Name
               </FieldLabel>
 
@@ -128,7 +122,7 @@ const LinkBank = ({ onClose }: { onClose: () => void }) => {
                 items={allBankNames}
                 value={field.value}
                 onChange={field.onChange}
-                placeholder="Select your bank"
+                placeholder="Choose bank name"
               />
 
               {fieldState.error && fieldState.invalid && (
@@ -143,13 +137,17 @@ const LinkBank = ({ onClose }: { onClose: () => void }) => {
           name="accountNumber"
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="accountNumber" className="text-lg-medium">
+              <FieldLabel
+                htmlFor="accountNumber"
+                className="text-sm  font-medium"
+              >
                 Account Number
               </FieldLabel>
 
               <Input
                 type="text"
                 placeholder="Enter your 10 digit number"
+                className="placeholder:text-grey-800 placeholder:text-xs rounded-[999px]!"
                 {...field}
                 onChange={(e) => handleNumericInput(e, field, 10)}
                 onKeyDown={preventInvalidKeys}
@@ -162,11 +160,21 @@ const LinkBank = ({ onClose }: { onClose: () => void }) => {
           )}
         />
 
+        {userAccountName !== "" && (
+          <div className="h-15 bg-gray-100 rounded-[999px] flex items-center justify-between p-3">
+            <h5 className="text-sm font-semibold">{userAccountName}</h5>
+            <AnimateIcon animateOnView>
+              <Check className="bg-green-500 text-white size-7.5 rounded-full p-2" />
+            </AnimateIcon>
+          </div>
+        )}
+
+        {/* hidden input field */}
         <Controller
           control={form.control}
           name="accountName"
           render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
+            <Field data-invalid={fieldState.invalid} className="invisible h-0">
               <FieldLabel htmlFor="accountName" className="text-lg-medium">
                 Account Name
               </FieldLabel>
@@ -187,58 +195,32 @@ const LinkBank = ({ onClose }: { onClose: () => void }) => {
           )}
         />
 
-        <Button size="full" type="submit" disabled={!resolved || isResolving}>
-          {isResolving ? "Verifying..." : "Continue"}
-        </Button>
+        <div className="flex items-center gap-4">
+          <Button
+            variant={"outline"}
+            size={"full"}
+            className={
+              "text-primary border-primary outline-primary basis-[48%]"
+            }
+            type="button"
+            disabled={isResolving}
+            onClick={() => push("/user/dashboard")}
+          >
+            Cancel
+          </Button>
+
+          <Button
+            className={"basis-[48%]"}
+            size={"full"}
+            type="submit"
+            disabled={!resolved || isResolving}
+          >
+            {isResolving ? "Verifying..." : "Continue"}
+          </Button>
+        </div>
       </FieldGroup>
     </form>
   );
-
-  // 🧱 Render different containers for small and large screens
-  if (isSmallScreen) {
-    return (
-      <div
-        className={`fixed inset-0 bg-black/25 backdrop-blur-xs transition-opacity duration-500 ease-in-out ${
-          open ? "opacity-100" : "pointer-events-none opacity-0"
-        }`}
-        onClick={() => setOpen(false)}
-      >
-        <div
-          onClick={(e) => e.stopPropagation()}
-          className={`fixed bottom-0 left-0 flex min-h-100 w-screen transform flex-col justify-between space-y-6 rounded-t-4xl bg-white p-4 text-center shadow-lg transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-            open ? "translate-y-0" : "translate-y-full"
-          }`}
-        >
-          <div className="flex items-center justify-between">
-            <h5 className="text-primary">Link Bank Account</h5>
-            <X onClick={onClose} className="cursor-pointer text-sm" />
-          </div>
-
-          {formContent}
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogPopup className="w-147 text-center md:rounded-xl">
-        <AlertDialogHeader>
-          <AlertDialogTitle className="flex items-start justify-between">
-            <div className="flex flex-col gap-2">
-              <h5 className="text-primary">Link Bank Account</h5>
-              <small className="text-sm font-light">Select your bank</small>
-            </div>
-            <X onClick={onClose} className="cursor-pointer text-sm" />
-          </AlertDialogTitle>
-
-          <AlertDialogDescription className="mt-4">
-            {formContent}
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-      </AlertDialogPopup>
-    </AlertDialog>
-  );
 };
 
-export default LinkBank;
+export default LinkBankForm;

@@ -25,7 +25,7 @@ export default function UserHeader() {
 
   const { back } = useRouter();
 
-  const simpleHeaderPaths = ["/user/kyc", "/user/link-bank"];
+  const simpleHeaderPaths = ["/user/kyc", "/user/link-bank", "/user/set-pin"];
   const showSimpleHeader = simpleHeaderPaths.some(
     (path) => pathname === path || pathname.startsWith(`${path}/`),
   );

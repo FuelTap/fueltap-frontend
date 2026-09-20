@@ -40,7 +40,7 @@ const getVerificationSteps = (
     subText: "Connect your bank to fund your wallet.",
     isCompleted: bankExists,
     icon: <Landmark className="text-green-500" />,
-    actionLink: "/user/bank",
+    actionLink: "/user/link-bank",
     actionText: "Link Bank",
   },
   {
@@ -49,7 +49,7 @@ const getVerificationSteps = (
     subText: "Create a 4-digit PIN to securely approve wallet.",
     isCompleted: pinExists,
     icon: <KeyRound className="text-green-500" />,
-    actionLink: "/user/pin",
+    actionLink: "/user/set-pin",
     actionText: "Set PIN",
   },
 ];
