@@ -25,10 +25,16 @@ export const bankAccountSchema = z.object({
 });
 export type BankAccountSchemaInput = z.infer<typeof bankAccountSchema>;
 
+const pinDigitsSchema = z
+  .string()
+  .regex(/^[0-9]*$/, "PIN must contain only numeric digits")
+  .min(4, "PIN must be at least 4 digits")
+  .max(4, "PIN must be no more than 4 digits");
+
 export const pinSchema = z
   .object({
-    pin: z.string().length(4, "PIN must be 4 digits"),
-    confirmPin: z.string().length(4, "PIN must be 4 digits"),
+    pin: pinDigitsSchema,
+    confirmPin: pinDigitsSchema,
   })
   .refine((data) => data.pin === data.confirmPin, {
     message: "Pins do not match",
