@@ -32,14 +32,14 @@ const RegisterForm = () => {
 
   const router = useRouter();
   function onSubmit(data: registrationInput) {
-    const cleanedPhone = data.phone.startsWith("0")
-      ? data.phone.slice(1)
-      : data.phone;
+    // const cleanedPhone = data.phone.startsWith("0")
+    //   ? data.phone.slice(1)
+    //   : data.phone;
     localStorage.setItem(
       "registration_flow",
       JSON.stringify({
         ...data,
-        phone: cleanedPhone,
+        // phone: cleanedPhone,
         registerAs: registerAs,
       }),
     );
