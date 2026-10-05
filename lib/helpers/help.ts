@@ -6,7 +6,12 @@ export function splitName(name: string): string {
     .slice(0, 2);
 }
 
-export const formatCurrency = (value: number) =>
-  new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN" }).format(
-    value,
-  );
+export const formatCurrency = (
+  value: number,
+  options?: Intl.NumberFormatOptions,
+) =>
+  new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
+    ...options,
+  }).format(value);
