@@ -12,7 +12,6 @@ const links = [
   { name: "Orders", path: "/user/orders" },
   { name: "Price Display", path: "/user/prices" },
   { name: "Wallet", path: "/user/wallet" },
-  { name: "Support", path: "/user/support" },
 ];
 
 export const PageLinks = [
@@ -36,6 +35,14 @@ export const fuelType = [
     text: "Cooking Gas",
   },
 ];
+
+// price display sort
+export const priceSortOptions = [
+  { label: "Low to High", value: "low-high" },
+  { label: "High to Low", value: "high-low" },
+] as const;
+
+export type PriceSortOrder = (typeof priceSortOptions)[number]["value"];
 
 export const fuelLiters = [
   { text: 10 },

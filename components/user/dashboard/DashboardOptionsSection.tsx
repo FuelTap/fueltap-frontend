@@ -20,7 +20,7 @@ const DashboardOptionsSection = () => {
         </h3>
 
         <Link
-          href="/user/"
+          href="/user/prices"
           className={`${buttonVariants({ variant: "link" })} text-base`}
         >
           View all prices
