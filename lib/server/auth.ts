@@ -10,8 +10,54 @@ import { cookies } from "next/headers";
 import { apiRequest } from "../helpers/fetch/typedFetchWrapper";
 import { syncBackendCookies } from "../helpers/auth-cookies";
 import { authenticatedApiRequest } from "../helpers/fetch/authenticatedApiRequest";
-import { redirect } from "next/navigation";
 import { User } from "@/context/AuthProvider";
+type OnboardingResult = {
+  success: boolean;
+  message: string;
+};
+
+async function submitOnboarding(
+  endpoint: string,
+  data: Record<string, string>,
+  successMessage: string,
+  failureMessage: string,
+): Promise<OnboardingResult> {
+  try {
+    const response = await fetch(`${process.env.API_URL}${endpoint}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    const result = await response.json();
+    console.log("result from server: ", result);
+    const status =
+      typeof result?.status === "string"
+        ? result.status.toLowerCase()
+        : undefined;
+    const success =
+      response.ok &&
+      status !== "error" &&
+      status !== "failed" &&
+      status !== "failure";
+    const backendMessage =
+      typeof result?.message === "string" ? result.message.trim() : "";
+    const message =
+      backendMessage || (success ? successMessage : failureMessage);
+
+    if (!success) {
+      console.error(`Onboarding request failed: ${endpoint}`, {
+        status: response.status,
+        message,
+      });
+    }
+
+    return { success, message };
+  } catch (error) {
+    console.error(`Onboarding request failed: ${endpoint}`, error);
+    return { success: false, message: failureMessage };
+  }
+}
+
 // =======================REGISTER===============================
 export async function Register(data: {
   full_name: string;
@@ -20,87 +66,26 @@ export async function Register(data: {
   password: string;
   confirm_password: string;
   role: string;
-}) {
-  try {
-    const response = await fetch(
-      `${process.env.API_URL}/api/v1/auth/register`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      },
-    );
-
-    const result = await response.json();
-
-    if (!response.ok) {
-      return {
-        success: false,
-        error: result.message || "failed to register",
-      };
-    }
-    return {
-      success: true,
-      message: result.message,
-    };
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error("Server-side error:", error);
-      return {
-        success: false,
-        error: error.message || "An unexpected error occurred",
-      };
-    }
-
-    return {
-      success: false,
-      error: "An unexpected error occurred",
-    };
-  }
+}): Promise<OnboardingResult> {
+  return submitOnboarding(
+    "/api/v1/auth/register",
+    data,
+    "Account created. Check your email for your verification code.",
+    "Registration failed. Please try again.",
+  );
 }
 
 // =======================OTP===============================
-export async function verifyOtpAction(data: { email: string; otp: string }) {
-  try {
-    const response = await fetch(
-      `${process.env.API_URL}/api/v1/auth/account-verification`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      },
-    );
-
-    const result = await response.json();
-
-    if (!response.ok) {
-      return {
-        success: false,
-        error: result.message || "failed to verify otp",
-      };
-    }
-    return {
-      success: true,
-      message: result.message,
-    };
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error("Server-side error:", error);
-      return {
-        success: false,
-        error: error.message || "An unexpected error occurred",
-      };
-    }
-
-    return {
-      success: false,
-      error: "An unexpected error occurred",
-    };
-  }
+export async function verifyOtpAction(data: {
+  email: string;
+  otp: string;
+}): Promise<OnboardingResult> {
+  return submitOnboarding(
+    "/api/v1/auth/account-verification",
+    data,
+    "Your email has been verified successfully.",
+    "Email verification failed. Please try again.",
+  );
 }
 
 // =======================LOGIN===============================
@@ -119,8 +104,16 @@ export async function loginAction(credentials: LoginInput) {
     return result;
   }
   await syncBackendCookies(response);
-  // return result;
-  redirect("/user/dashboard");
+  const accessToken = (await cookies()).get("x-access-token")?.value;
+  if (!accessToken) {
+    return {
+      success: false,
+      status: "error",
+      message:
+        "Login succeeded, but no session cookie was received. Please try again.",
+    };
+  }
+  return result;
 }
 
 // ============================================LOGOUT=========================================

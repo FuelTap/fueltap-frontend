@@ -15,7 +15,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Check } from "lucide-react";
+import { Check, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface SearchableSelectProps {
@@ -35,14 +35,17 @@ export function SearchableSelect({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger
-        className={`${buttonVariants({ variant: "outline" })} h-12 px-3 py-1 w-full justify-between`}
+        className={`${buttonVariants({ variant: "outline" })} h-12 px-3 py-1 w-full text-left!  rounded-[999px]! justify-between border-4`}
         role="combobox"
         aria-expanded={open}
       >
         {value ? (
-          <span className="truncate">{value}</span>
+          <span className="truncate text-left">{value}</span>
         ) : (
-          <span className="text-muted-foreground">{placeholder}</span>
+          <div className="flex items-center  text-grey-800 w-full justify-between">
+            <span className="text-xs font-normal">{placeholder}</span>
+            <ChevronDown />
+          </div>
         )}
       </PopoverTrigger>
       <PopoverContent className="w-full p-0">

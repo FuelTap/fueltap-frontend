@@ -20,10 +20,6 @@ import SuccessAnimation from "../web/SuccessAnimation";
 import { toast } from "../ui/toast";
 import { verifyOtpAction } from "@/lib/server/auth";
 
-interface ErrorWithMessage {
-  message: string;
-}
-
 const VerifyEmail = () => {
   const form = useForm<otpInput>({
     resolver: zodResolver(otpSchema),
@@ -32,49 +28,46 @@ const VerifyEmail = () => {
     },
   });
 
-  const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
-  const [showSuccess, setShowSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const currentOtp = form.watch("otp") || "";
 
   const { push } = useRouter();
 
   const onSubmit = async (data: otpInput) => {
-    setShowSuccess(true);
-
     startTransition(async () => {
-      const registration_data = JSON.parse(
-        localStorage.getItem("registration_flow") || "{}",
-      );
-      if (!registration_data || !Object.keys(registration_data).length) {
-        push("/register");
-        return;
-      }
-      const payload = {
-        email: registration_data.email,
-        otp: data.otp,
-      };
       try {
-        const otpResponse = await verifyOtpAction(payload);
-        const { message, success } = otpResponse;
-        if (success) {
-          toast.add({
-            title: "Success",
-            description: message,
-            type: "success",
-          });
-          localStorage.removeItem("registration_flow");
+        const registration_data = JSON.parse(
+          localStorage.getItem("registration_flow") || "{}",
+        );
+        if (!registration_data?.email) {
+          push("/register");
+          return;
         }
-      } catch (error: any) {
-        if (error.code === "ERR_NETWORK") {
-          toast.add({ description: error.message, type: "error" });
-        } else {
+        const { message, success } = await verifyOtpAction({
+          email: registration_data.email,
+          otp: data.otp,
+        });
+        if (!success) {
+          console.error("Email verification failed:", message);
           toast.add({
-            description: error.response.data.message || "Verification failed",
+            title: "Verification failed",
+            description: message,
             type: "error",
           });
+          return;
         }
+        localStorage.removeItem("registration_flow");
+        setSuccessMessage(message);
+        toast.add({ title: "Success", description: message, type: "success" });
+      } catch (error) {
+        console.error("Email verification failed:", error);
+        toast.add({
+          title: "Verification failed",
+          description: "Unable to verify your email. Please try again.",
+          type: "error",
+        });
       }
     });
   };
@@ -122,7 +115,7 @@ const VerifyEmail = () => {
           </div>
         </FieldGroup>
       </form>
-      {showSuccess && <SuccessAnimation link="/login" />}
+      {successMessage && <SuccessAnimation link="/login" info={successMessage} />}
     </>
   );
 };

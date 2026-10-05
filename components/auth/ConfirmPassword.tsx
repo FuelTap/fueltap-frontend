@@ -31,38 +31,45 @@ export default function ConfirmPassword() {
   const { push } = useRouter();
 
   async function onSubmit(data: PasswordInput) {
-    const registration_data = JSON.parse(
-      localStorage.getItem("registration_flow") || "{}",
-    );
-
-    if (!registration_data || !Object.keys(registration_data).length) {
-      push("/register");
-      return;
-    }
-    const { fullName, registerAs, email, phone } = registration_data;
-    const payload = {
-      full_name: fullName,
-      email: email,
-      phone_number: phone,
-      password: data.password,
-      confirm_password: data.confirmPassword,
-      role: registerAs,
-    };
     try {
       setIsSubmitting(true);
-      const registerResponse = await Register(payload);
-      const { message } = registerResponse;
-      toast.add({ title: "Success", description: message, type: "success" });
-      push("/verify-email");
-    } catch (error: any) {
-      if (error.code === "ERR_NETWORK") {
-        toast.add({ description: error.message, type: "error" });
-      } else {
+      const registration_data = JSON.parse(
+        localStorage.getItem("registration_flow") || "{}",
+      );
+
+      if (!registration_data?.email) {
+        push("/register");
+        return;
+      }
+      const { fullName, registerAs, email, phone } = registration_data;
+      const payload = {
+        full_name: fullName,
+        email,
+        phone_number: phone,
+        password: data.password,
+        confirm_password: data.confirmPassword,
+        role: registerAs,
+      };
+      console.log("reg payload", payload);
+      const { message, success } = await Register(payload);
+      if (!success) {
+        console.error("Registration failed:", message);
         toast.add({
-          description: error.response.data.message || "something went wrong",
+          title: "Registration failed",
+          description: message,
           type: "error",
         });
+        return;
       }
+      toast.add({ title: "Success", description: message, type: "success" });
+      push("/verify-email");
+    } catch (error) {
+      console.log("Registration failed:", error);
+      toast.add({
+        title: "Registration failed",
+        description: "Unable to complete registration. Please try again.",
+        type: "error",
+      });
     } finally {
       setIsSubmitting(false);
     }

@@ -36,7 +36,6 @@ export async function setTransactionPin(payload: PinInput) {
   const validatedFields = pinSchema.safeParse(payload);
 
   if (!validatedFields.success) {
-    console.log(validatedFields);
     return {
       success: false,
       message: "validation failed",
@@ -45,8 +44,6 @@ export async function setTransactionPin(payload: PinInput) {
   }
 
   const { pin } = validatedFields.data;
-
-  console.log(validatedFields);
   return await authenticatedApiRequest<{ pin: string }, { success: boolean }>(
     `api/v1/wallet/set-transaction-pin`,
     "POST",
@@ -80,6 +77,7 @@ export async function addBankAccount(payload: BankAccountSchemaInput) {
       errors: validate.error.flatten().fieldErrors,
     };
   }
+  console.log("validate from server", validate);
   revalidateTag("user-profile", "max");
   revalidatePath(`/user`, "layout");
   return await authenticatedApiRequest<BankAccountSchemaInput, void>(

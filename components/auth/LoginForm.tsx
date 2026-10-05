@@ -29,7 +29,7 @@ export default function LoginForm() {
     },
   });
 
-  const { push } = useRouter();
+  const router = useRouter();
   // const dispatch = useDispatch();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -38,12 +38,12 @@ export default function LoginForm() {
     setIsSubmitting(true);
     try {
       const response = await loginAction(data);
-      console.log(response);
       if (response.success) {
         toast.add({
           title: "Login successful!",
           type: "success",
         });
+        router.replace("/user/dashboard");
       } else {
         toast.add({
           title: "Login failed!",
@@ -51,7 +51,6 @@ export default function LoginForm() {
           type: "error",
         });
       }
-      // push("/user/dashboard");
     } catch (error: any) {
       const message =
         error.response?.data?.message || error?.message || "Login failed";
