@@ -58,6 +58,7 @@ export default function SearchAddressInput() {
     <div className="relative w-full">
       <Input
         placeholder="Enter delivery address"
+        className="pl-4! placeholder:pl-4"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onFocus={() => query.length > 2 && setShowResults(true)}

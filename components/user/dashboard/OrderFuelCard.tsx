@@ -23,7 +23,7 @@ const OrderFuelCard = () => {
       <div className="">
         <AnimateIcon animateOnHover={true}>
           <Link
-            href={"/order"}
+            href={"/user/order"}
             className="text-xs w-fit gap-2 flex items-center justify-between rounded-[999px] p-2 text-primary bg-neutra-500"
           >
             <Plus size={14} />

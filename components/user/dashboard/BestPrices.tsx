@@ -38,7 +38,7 @@ const BestPrices = () => {
       <div className="mt-4">
         <AnimateIcon animateOnHover={true}>
           <Link
-            href={"/order"}
+            href={"/user/order"}
             className="text-xs  gap-2 w-full flex items-center justify-center  rounded-[999px] p-2 text-primary bg-neutra-500"
           >
             <Plus size={14} />

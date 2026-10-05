@@ -1,8 +1,8 @@
 "use client";
-import SearchAddressInput from "./SearchAddressInput";
-import { useOrder } from "@/context/OrderProvider";
+import { OrderType, useOrder } from "@/context/OrderProvider";
 import { useRouter } from "next/navigation";
 import { UserRound, UsersRound, Search, Clock } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const orderOptions = [
   {
@@ -17,46 +17,57 @@ const orderOptions = [
   },
 ];
 const Order = () => {
-  const { selectedAddress, setSelectedAddress, orderType, setOrderType } =
-    useOrder();
+  const { orderType, setOrderType } = useOrder();
 
-  const { push } = useRouter();
+  const { push, back } = useRouter();
   return (
-    <div className="w-screen px-3 py-6 max-sm:h-[50dvh] md:w-100 md:p-6 lg:w-119.5 lg:px-8 lg:py-12">
-      <h2 className="mb-4 text-xl">Ready for a refil?</h2>
+    <div className="w-screen bg-neutral-400 border border-gray-100 p-5 max-sm:h-[50dvh] md:w-125 rounded-2xl lg:w-140 md:p-8 ">
+      <div className="space-y-2 mb-4">
+        <h2 className="text-sm md:text-base font-medium lg:text-xl">
+          Who are you ordering for?
+        </h2>
+        <p className="text-grey-800 text-sm lg:text-base font-normal">
+          Choose who will receive this delivery.
+        </p>
+      </div>
 
-      <div className="mb-4 flex items-center">
+      <div className="mb-4 flex items-center h-36.75 md:h-52.25 lg:h-60 gap-4">
         {orderOptions.map(({ key, label, icon }) => (
           <button
-            className={`flex w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border p-3 text-lg ${orderType === key ? "border-primary-400 text-primary-400" : ""}`}
+            className={`flex w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border border-grey-200 p-3  ${orderType === key ? "border-primary-400 text-primary-400 bg-linear-to-br from-[#DDDEFC] to-[#E7F8F2]" : "bg-transparent text-black border-0"} hover:border-primary-400 hover:text-primary-400 hover:bg-linear-to-br hover:from-[#DDDEFC] hover:to-[#E7F8F2] transition-all duration-150 ease-in-out`}
             key={key}
-            onClick={() => setOrderType(key)}
+            onClick={() => setOrderType(key as OrderType)}
           >
-            {icon}
-            {label}
+            <span className="size-12.5 rounded-full flex items-center justify-center bg-linear-to-br from-[#D7DBFA] to-white border border-gray-100 text-primary!">
+              {icon}
+            </span>
+            <span className="text-base  font-medium">{label}</span>
           </button>
         ))}
       </div>
 
-      <div className="relative">
-        <SearchAddressInput />
-        <Search className="text-grey-600 absolute top-1/2 right-0 -translate-1/2" />
-      </div>
-      <div
-        className="mt-4 flex items-center gap-3"
-        onClick={() => {
-          setSelectedAddress((prev: any) => ({
-            ...prev,
-            display_name: "15 ikoyi street",
-          }));
-          push("/user/order/step-2");
-        }}
-      >
-        <Clock />
-        <div>
-          <h5 className="mb-1">5b Ikoyi Road</h5>
-          <small className="text-neutra-900 text-sm">Ikoyi, Nigeria</small>
-        </div>
+      <div className="flex items-center gap-1">
+        <Button
+          variant={"outline"}
+          size={"full"}
+          className={
+            "text-primary border-primary outline-primary max-sm:p-2 basis-1/2"
+          }
+          type="button"
+          onClick={() => back()}
+        >
+          Back
+        </Button>
+
+        <Button
+          className={"max-sm:p-2 basis-1/2"}
+          size={"full"}
+          onClick={() => push("/user/order/location")}
+          type="button"
+          disabled={!orderType}
+        >
+          Next
+        </Button>
       </div>
     </div>
   );

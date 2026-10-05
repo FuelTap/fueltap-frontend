@@ -1,8 +1,6 @@
 "use client";
 import CashOverview from "@/components/user/dashboard/CashOverview";
-import QuickActions from "@/components/user/dashboard/QuickActions";
 import QuickStats from "@/components/user/dashboard/QuickStats";
-import UserLinks from "@/components/user/dashboard/UserLinks";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useTimeOfDay } from "@/hooks/useTimeOfDay";
 import { useAuth } from "@/context/AuthProvider";
@@ -36,23 +34,19 @@ export default function Dashboard({ balance }: Props) {
       </section>
 
       <div className="mt-4 flex flex-col items-start justify-between md:mt-8 md:flex-row">
-        {isVerified ? (
+        {true ? (
           <section className="flex flex-col relative md:items-start md:flex-row w-full  gap-4">
             <div className="w-full md:sticky top-18! md:basis-1/2 lg:basis-[56%] space-y-5">
               <CashOverview balance={balance} />
               <OrderFuelCard />
-
-              {isVerified && <QuickActions />}
-
-              {!isSmallScreen && <QuickStats />}
+              <QuickStats />
             </div>
 
             <DashboardOptionsSection />
-            {/* <UserLinks /> */}
           </section>
         ) : (
           <AccountSetupProps
-            kycDone={user?.kyc || false}
+            kycDone={true}
             bankExists={user?.bankExists || false}
             pinExists={false}
           />

@@ -77,6 +77,7 @@ export async function addBankAccount(payload: BankAccountSchemaInput) {
       errors: validate.error.flatten().fieldErrors,
     };
   }
+  console.log("validate from server", validate);
   revalidateTag("user-profile", "max");
   revalidatePath(`/user`, "layout");
   return await authenticatedApiRequest<BankAccountSchemaInput, void>(

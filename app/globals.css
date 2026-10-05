@@ -58,6 +58,7 @@
   --color-green-500: #0ea774;
 
   --color-primary-50: #ebedfc;
+  --color-primary-100: #d7dbfa;
   --color-primary-400: #4e71e8;
   --color-primary-500: #2e54c0;
   --color-blue-600: #1e3a8a;
@@ -335,6 +336,6 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
-.leaflet-container {
+/* .leaflet-container {
   height: 100dvh;
-}
+} */

@@ -16,7 +16,7 @@ const DashboardOptionsSection = () => {
 
       <div className="flex items-center justify-between">
         <h3 className="text-base font-medium md:text-xl mb-2">
-          Upcoming Orders
+          Best prices near you
         </h3>
 
         <Link

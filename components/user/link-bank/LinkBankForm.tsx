@@ -78,8 +78,10 @@ const LinkBankForm = ({ onComplete }: Props) => {
   const allBankNames = bankData.map((bankObject) => bankObject.name);
 
   const onSubmit = async (payload: BankAccountSchemaInput) => {
+    console.log("bank payload: ", payload);
     try {
       const res = await addBankAccount(payload);
+      // console.log(res);
       if (!res.success) {
         return toast.add({
           title: "Error",

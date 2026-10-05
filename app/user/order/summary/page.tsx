@@ -3,9 +3,18 @@
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ChevronLeft, Fuel, LocateFixed } from "lucide-react";
+import {
+  ChevronLeft,
+  Clock,
+  Fuel,
+  LocateFixed,
+  MapPin,
+  PenLine,
+  Wallet,
+} from "lucide-react";
 import WalletPopup from "@/components/user/wallet/WalletPopUp";
 import SuccessAnimation from "@/components/web/SuccessAnimation";
+import { Button } from "@/components/ui/button";
 
 const OrderSummary = () => {
   const { back } = useRouter();
@@ -24,7 +33,7 @@ const OrderSummary = () => {
 
   if (isSuccessful) {
     return (
-      <SuccessAnimation link={"/user/dashboard"} time={5500}>
+      <SuccessAnimation link={"/user/order/receipt"} time={2500}>
         <div className="flex flex-col items-center justify-center gap-4 text-white">
           <h3 className="text-3xl">Payment Successful</h3>
           <p>Your order is on its way</p>
@@ -34,82 +43,140 @@ const OrderSummary = () => {
   }
   return (
     <>
-      <div className="relative h-[80dvh] max-h-188.75 w-screen overflow-hidden px-3 py-6 hover:overflow-y-scroll md:w-[400px] md:p-6 lg:w-[616px] lg:px-8 lg:py-12">
+      <div className=" flex h-100 w-full flex-col rounded-2xl border border-gray-100 bg-neutral-400 p-2 md:h-120 md:w-125 md:p-8 lg:w-140 2xl:min-h-140">
         {/* header */}
-        <div className="mb-3 flex items-center gap-4 py-3">
-          <ChevronLeft
-            className="cursor-pointer text-2xl"
-            onClick={() => back()}
-          />
-          <h4 className="text-2xl font-semibold md:text-[28px] lg:text-4xl">
-            Order Summary
-          </h4>
-        </div>
-        {/* badges */}
-        <div className="text mb-4 space-x-2.5">
-          <Badge className={"text-white"} variant={"accent"}>
-            One-Time
-          </Badge>
-          <Badge className={"text-white"} variant={"accent"}>
-            Petrol
-          </Badge>
-          <Badge className={"text-white"} variant={"accent"}>
-            10L
-          </Badge>
-        </div>
-        <div className="mb-6 flex items-center justify-between py-3">
-          <h4 className="title font-medium!">5b ikoyi street</h4>
-          <LocateFixed className="text-2xl text-yellow-700" />
-        </div>
-        <div className="mb-6 flex items-center justify-between py-3">
-          <h4 className="title font-medium!">Total Energies</h4>
-          <Fuel className="text-2xl text-yellow-700" />
+        <div className="space-y-2  mb-5">
+          <h2 className="text-sm md:text-base font-medium lg:text-xl">
+            Review your order
+          </h2>
+          <p className="text-grey-800 text-sm lg:text-base font-normal">
+            Check everything looks right before you pay.
+          </p>
         </div>
 
-        {/* summary */}
-        <div className="mt-4 overflow-auto">
-          <table className="w-full table-fixed text-sm">
-            <thead>
-              <tr className="text-primary text-left">
-                <th className="py-2">Item</th>
-                <th className="py-2">Price</th>
-                <th className="py-2">Amount</th>
-                <th className="py-2 text-right">Total</th>
-              </tr>
-            </thead>
-            <tbody className="text-neutra-1000">
-              <tr className="border-t">
-                <td className="py-3">Petrol</td>
-                <td className="py-3">{`₦${petrolPrice.toLocaleString()}/ltr`}</td>
-                <td className="py-3">{amountLiters}L</td>
-                <td className="py-3 text-right font-medium">
-                  {fmt(petrolTotal)}
-                </td>
-              </tr>
-              <tr className="border-t">
-                <td className="py-3">Delivery</td>
-                <td className="py-3">{fmt(deliveryFee)}</td>
-                <td className="py-3">-</td>
-                <td className="py-3 text-right">{fmt(deliveryFee)}</td>
-              </tr>
-              <tr className="border-t">
-                <td className="py-3">Charges</td>
-                <td className="py-3">{fmt(otherCharges)}</td>
-                <td className="py-3">-</td>
-                <td className="py-3 text-right">{fmt(otherCharges)}</td>
-              </tr>
-            </tbody>
-          </table>
+        <div className="p-3 md:px-6 md:py-4 border border-gray-200  rounded-lg shadow-sm mb-4">
+          <div className="mb-4 flex items-center gap-4">
+            <Fuel size={20} className="text-primary hidden md:block" />
 
-          <div className="mt-4 mb-2 flex items-center justify-between rounded-[8px] border-[0.5px] p-2 shadow-lg">
-            <span className="text-lg font-medium">Sum Total</span>
-            <span className="text-lg font-semibold text-green-500">
-              {fmt(grandTotal)}
-            </span>
+            <div className="">
+              <div className="">
+                <div className="flex items-center gap-1">
+                  <h5 className="text-xl md:text-2xl font-semibold uppercase">
+                    20l
+                  </h5>
+                  <span className="flex items-center gap-px">
+                    <span className="size-1 rounded-full bg-grey-800"></span>
+                    <Badge
+                      className={"text-accent text-sm md:text-base"}
+                      variant={"ghost"}
+                    >
+                      Diesel
+                    </Badge>
+                  </span>
+                  <span className="flex items-center gap-px">
+                    <span className="size-1 rounded-full bg-grey-800"></span>
+                    <Badge
+                      className={"text-grey-800 text-sm md:text-base"}
+                      variant={"outline"}
+                    >
+                      One-time
+                    </Badge>
+                  </span>
+                </div>
+                <div className="flex items-center gap-1 ">
+                  <h5 className="text-green-500 text-xs md:text-sm font-medium">
+                    988/ltr
+                  </h5>
+                  <span className="flex items-center gap-px ">
+                    <span className="size-1 rounded-full bg-grey-800"></span>
+                    <Badge
+                      className={"text-grey-800 text-sm md:text-base"}
+                      variant={"ghost"}
+                    >
+                      Total Energies
+                    </Badge>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <PenLine
+              size={20}
+              className="text-primary cursor-pointer ml-auto"
+            />
+          </div>
+
+          <div className="flex flex-col gap-1 md:flex-row justify-between md:items-center">
+            <div className="flex gap-2 max-sm:items-center">
+              <MapPin size={18} className="text-neutra-1000" />
+              <div className="gap-1 max-sm:items-center flex md:flex-col">
+                <h5 className="text-xs text-grey-800">Deliver to</h5>
+                <p className="text-sm font-medium">13 Ikoyi Street</p>
+              </div>
+            </div>
+
+            <div className="flex gap-2 max-sm:items-center">
+              <div className="gap-1 max-sm:items-center flex md:flex-col">
+                <h5 className="text-xs text-grey-800">Est. Delivery Period</h5>
+                <p className="text-sm font-medium">1 hr 30min.</p>
+              </div>
+              <Clock size={18} className="text-neutra-1000 max-sm:-order-1" />
+            </div>
           </div>
         </div>
 
-        <WalletPopup OnPay={() => setIsSuccessful(true)} />
+        <div className=" border border-gray-200  rounded-lg shadow-sm">
+          <div className="md:px-6 md:py-4 p-3">
+            <div className="flex items-center justify-between mb-3 md:mb-4">
+              <small className="text-xs text-grey-800">
+                Petrol · 10L @ ₦980/L
+              </small>
+              <p className="text-xs font-medium md:text-sm">₦19,600</p>
+            </div>
+            <div className="flex items-center justify-between mb-3 md:mb-4">
+              <small className="text-xs text-grey-800">Delivery fee</small>
+              <p className="text-xs font-medium md:text-sm">₦2,500</p>
+            </div>
+            <div className="flex items-center justify-between mb-3 ">
+              <small className="text-xs text-grey-800">Service charge</small>
+              <p className="text-xs font-medium md:text-sm">₦50</p>
+            </div>
+          </div>
+          {/* total */}
+          <div className="border-dotted border-t h-1 border-gray-400"></div>
+          <div className="px-6 flex items-center justify-between mb-3 md:mb-6">
+            <p className="text-sm font-medium text-grey-800">Service charge</p>
+            <p className="text-sm font-semibold">₦22,150</p>
+          </div>
+        </div>
+
+        <div className="mt-6">
+          <div className="flex items-center justify-between mb-4">
+            <span className="flex items-center gap-2">
+              <Wallet size={14} />
+              <h5 className="text-xs text-grey-800 font-medium md:text-sm">
+                Wallet Balance
+              </h5>
+            </span>
+
+            <h5 className="text-xs font-semibold md:text-sm">₦45,350</h5>
+          </div>
+
+          <div className="flex items-center gap-1 mt-auto!">
+            <Button
+              variant={"outline"}
+              size={"full"}
+              className={
+                "text-primary border-primary outline-primary max-sm:p-2 basis-1/2"
+              }
+              type="button"
+              onClick={() => back()}
+            >
+              Back
+            </Button>
+
+            <WalletPopup OnPay={() => setIsSuccessful(true)} />
+          </div>
+        </div>
       </div>
     </>
   );
