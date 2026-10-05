@@ -43,7 +43,6 @@ export default function Dashboard({ balance }: Props) {
             </div>
 
             <DashboardOptionsSection />
-            {/* <UserLinks /> */}
           </section>
         ) : (
           <AccountSetupProps

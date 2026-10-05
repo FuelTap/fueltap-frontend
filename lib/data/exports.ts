@@ -33,7 +33,7 @@ export const fuelType = [
     text: "Diesel",
   },
   {
-    text: "LPG",
+    text: "Cooking Gas",
   },
 ];
 

@@ -4,10 +4,12 @@ import { useState } from "react";
 import { Fuel, Plus } from "lucide-react";
 import { formatCurrency } from "@/lib/helpers/help";
 import TransactionDetails from "./TransactionDetails";
+import type { ReceiptTransaction } from "@/lib/helpers/receipt";
 
 const history = [
   {
     date: "Oct 16 2025",
+    receiptDate: "2025-10-16",
     transactions: [
       { id: 1, tnxType: "Account Top-up", title: "Bank Transfer", amt: 5000 },
       { id: 2, tnxType: "Petro Purchase", title: "Total Energies", amt: 2500 },
@@ -15,6 +17,7 @@ const history = [
   },
   {
     date: "Oct 15 2025",
+    receiptDate: "2025-10-15",
     transactions: [
       {
         id: 3,
@@ -27,6 +30,7 @@ const history = [
   },
   {
     date: "Oct 14 2025",
+    receiptDate: "2025-10-14",
     transactions: [
       { id: 5, tnxType: "Account Top-up", title: "Bank Transfer", amt: 10000 },
       {
@@ -41,16 +45,13 @@ const history = [
 ];
 
 const TransactionBody = () => {
-  const [selectedTxn, setSelectedTxn] = useState<{
-    id: string | number;
-    tnxType: string;
-    title: string;
-    amt: number;
-  } | null>(null);
+  const [selectedTxn, setSelectedTxn] = useState<
+    (ReceiptTransaction & { amt: number }) | null
+  >(null);
   return (
     <div className="md:p-4">
       {/* one transaction date */}
-      {history.map(({ date, transactions }, index) => (
+      {history.map(({ date, receiptDate, transactions }, index) => (
         <div className="mt-6 md:mt-4 md:p-4" key={index}>
           <h4 className="border-b pb-2 font-medium text-black md:pb-4 md:text-2xl">
             {date}
@@ -60,7 +61,19 @@ const TransactionBody = () => {
             {transactions.map(({ id, tnxType, title, amt }, idx) => (
               <li
                 onClick={() => {
-                  setSelectedTxn({ id, tnxType, title, amt });
+                  setSelectedTxn({
+                    id,
+                    tnxType,
+                    title,
+                    amt,
+                    date: receiptDate,
+                    // Placeholder payment fields for the static history records.
+                    paymentStatus: "successful",
+                    customerName: "John Doe",
+                    paymentMethod: tnxType === "Account Top-up" ? title : "FuelTap Wallet",
+                    paymentReference: `FT-PAY-${id}`,
+                    walletCredit: tnxType === "Account Top-up" ? amt : undefined,
+                  });
                 }}
                 className="border-neutra-500 flex items-center justify-between border-b p-3 md:px-2 md:py-4"
                 key={idx}

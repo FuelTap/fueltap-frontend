@@ -34,17 +34,17 @@ const OrderMap = () => {
   }, [position]);
 
   return (
-    <MapContainer center={mapPosition} zoom={18} className="h-full w-full">
+    <MapContainer center={mapPosition} zoom={18} className="h-full! w-full">
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <MapUpdater center={mapPosition} />
-      <GeoCoder
+      {/* <GeoCoder
         onResult={(coords) => {
           setMapPosition([coords.lat, coords.lng]);
         }}
-      />
+      /> */}
     </MapContainer>
   );
 };

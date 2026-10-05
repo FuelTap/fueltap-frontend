@@ -1,8 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { formatCurrency } from "@/lib/helpers/help";
 import { MapPinHouse } from "lucide-react";
-import Link from "next/link";
-
 const UpComingOrder = () => {
   return (
     <div className="bg-neutra-400 py-5 px-4  border border-grey-200 rounded-2xl flex flex-col lg:flex-row lg:items-center lg:justify-between">
