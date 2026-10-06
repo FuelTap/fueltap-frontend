@@ -37,12 +37,16 @@ export function AuthProvider({
   const handleLogout = async () => {
     if (user?.id) {
       const runLogout = async () => {
-        const res = await logoutAction(user.id);
+        const res = await logoutAction(
+          user.id,
+          window.location.pathname + window.location.search + window.location.hash,
+        );
 
         if (!res || !res.success) {
           throw new Error("Could not log out.");
         }
 
+        setUser(null);
         replace("/login");
       };
       toast.promise(runLogout(), {
@@ -52,8 +56,6 @@ export function AuthProvider({
           return "Could not log out.";
         },
       });
-
-      setUser(null);
     } else {
       toast.add({
         description: "You are not logged in",
