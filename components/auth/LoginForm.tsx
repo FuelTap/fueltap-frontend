@@ -43,7 +43,11 @@ export default function LoginForm() {
           title: "Login successful!",
           type: "success",
         });
-        router.replace("/user/dashboard");
+        router.replace(
+          "redirectTo" in response && typeof response.redirectTo === "string"
+            ? response.redirectTo
+            : "/user/dashboard",
+        );
       } else {
         toast.add({
           title: "Login failed!",

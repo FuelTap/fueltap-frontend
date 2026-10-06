@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import {
   apiRequest,
   ApiRequestOptions,
@@ -16,10 +17,12 @@ export async function authenticatedApiRequest<
   endpoint: string,
   method: "POST" | "GET" | "PUT" | "DELETE" | "PATCH" = "GET",
   data?: TRequest,
-  options: ApiRequestOptions = {},
+  options: ApiRequestOptions & { skipAuthRedirect?: boolean } = {},
 ): Promise<ApiResponse<TResponse>> {
+  // Logout must finish clearing cookies even when the session has expired.
+  const { skipAuthRedirect = false, ...requestOptions } = options;
   const cookieStore = await cookies();
-  let accessToken = cookieStore.get("x-access-token")?.value;
+  const accessToken = cookieStore.get("x-access-token")?.value;
 
   // Build outbound headers with available access token
   const headers = new Headers(options.headers);
@@ -28,12 +31,12 @@ export async function authenticatedApiRequest<
   }
 
   // 1. Initial Attempt
-  let { response, result } = await apiRequest<TRequest, TResponse>(
+  const { response, result } = await apiRequest<TRequest, TResponse>(
     endpoint,
     method,
     data,
     {
-      ...options,
+      ...requestOptions,
       headers,
     },
   );
@@ -57,16 +60,22 @@ export async function authenticatedApiRequest<
           method,
           data,
           {
-            ...options,
+            ...requestOptions,
             headers: retryHeaders,
             skipRefresh: true, // Prevent secondary retries
           },
         );
 
+        if (retry.response.status === 401 && !skipAuthRedirect) {
+          redirect("/login");
+        }
         return retry.result;
       }
     }
   }
 
+  if (response.status === 401 && !skipAuthRedirect) {
+    redirect("/login");
+  }
   return result;
 }
