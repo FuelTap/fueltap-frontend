@@ -11,6 +11,13 @@ import { apiRequest } from "../helpers/fetch/typedFetchWrapper";
 import { syncBackendCookies } from "../helpers/auth-cookies";
 import { authenticatedApiRequest } from "../helpers/fetch/authenticatedApiRequest";
 import { User } from "@/context/AuthProvider";
+import {
+  AUTH_RETURN_COOKIE,
+  authReturnCookieOptions,
+  createAuthReturn,
+  readAuthReturn,
+} from "@/lib/helpers/auth-return";
+
 type OnboardingResult = {
   success: boolean;
   message: string;
@@ -113,14 +120,19 @@ export async function loginAction(credentials: LoginInput) {
         "Login succeeded, but no session cookie was received. Please try again.",
     };
   }
-  return result;
+  const cookieStore = await cookies();
+  const redirectTo = readAuthReturn(cookieStore.get(AUTH_RETURN_COOKIE)?.value);
+  cookieStore.delete(AUTH_RETURN_COOKIE);
+  return { ...result, redirectTo };
 }
 
 // ============================================LOGOUT=========================================
 
-export async function logoutAction(userId: string) {
+export async function logoutAction(userId: string, returnPath?: string) {
   try {
-    await authenticatedApiRequest("api/v1/auth/logout", "POST", { userId });
+    await authenticatedApiRequest("api/v1/auth/logout", "POST", { userId }, {
+      skipAuthRedirect: true,
+    });
   } catch (error) {
     return { success: false, error: "Backend request failed" };
   }
@@ -128,6 +140,12 @@ export async function logoutAction(userId: string) {
   const cookieStore = await cookies();
   cookieStore.delete("x-access-token");
   cookieStore.delete("x-refresh-token");
+  const saved = returnPath ? createAuthReturn(returnPath) : null;
+  if (saved) {
+    cookieStore.set(AUTH_RETURN_COOKIE, saved, authReturnCookieOptions);
+  } else {
+    cookieStore.delete(AUTH_RETURN_COOKIE);
+  }
 
   return { success: true };
 }
