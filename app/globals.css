@@ -211,38 +211,6 @@ input[type="time"] {
   max-width: 1280px;
 }
 
-.animated-gradient {
-  background:
-    radial-gradient(
-      circle 180px at 40% 45%,
-      rgba(231, 248, 242, 0.9),
-      transparent 100%
-    ),
-    radial-gradient(
-      circle 180px at 55% 55%,
-      rgba(221, 222, 252, 0.9),
-      transparent 100%
-    );
-
-  background-size: 120% 120%;
-
-  animation: gradient-flow 8s ease-in-out infinite alternate;
-}
-
-@keyframes gradient-flow {
-  from {
-    background-position:
-      40% 40%,
-      60% 60%;
-  }
-
-  to {
-    background-position:
-      55% 55%,
-      45% 45%;
-  }
-}
-
 /* custom styles */
 
 .text-lg-medium {

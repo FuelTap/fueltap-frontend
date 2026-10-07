@@ -22,14 +22,21 @@ export default async function UserLayout({
   console.log(initialUser);
   return (
     <AuthProvider initialUser={initialUser}>
-      <UserHeader />
-      <main className="flex h-dvh container w-dvw bg-neutral-400 flex-col relative animated-gradient">
-        {/* <div className="fixed top-1/2 left-1/2 -translate-1/2 w-90 h-90 opacity-70  pointer-events-none rounded-full bg-linear-to-br from-[#E7F8F2] to-[#DDDEFC]  animated-gradient"></div> */}
-
-        <div className="flex-1 pb-6 leading-[100%] tracking-tight mt-4 md:mt-18 lg:mt-26">
-          {children}
-        </div>
-      </main>
+      <div className="relative isolate min-h-dvh bg-neutral-400">
+        <UserHeader />
+        <main className="container relative flex min-h-dvh flex-col">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none fixed inset-x-0 top-20 bottom-0 -z-10 bg-[url('/images/user-background-gradient.svg')] bg-center bg-no-repeat"
+            style={{
+              backgroundSize: "min(600px, 90vw, calc(100dvh - 5rem)) auto",
+            }}
+          />
+          <div className="mt-4 flex-1 pb-6 leading-[100%] tracking-tight md:mt-18 lg:mt-26">
+            {children}
+          </div>
+        </main>
+      </div>
     </AuthProvider>
   );
 }
