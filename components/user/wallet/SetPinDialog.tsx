@@ -17,23 +17,23 @@ import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { PinInput, pinSchema } from "@/lib/validators/WalletSchema";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { setTransactionPin } from "@/lib/server/wallet";
-// import useAxiosPrivate from '@/hooks/useAxiosPrivate';
-
 type SetPinDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  setPinUpdate?: (prop: boolean) => void;
 };
 
 export default function SetPinDialog({
   open,
   onOpenChange,
+  setPinUpdate,
 }: SetPinDialogProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  //   const axiosPrivate = useAxiosPrivate();
 
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<PinInput>({
     resolver: zodResolver(pinSchema),
@@ -44,8 +44,6 @@ export default function SetPinDialog({
   });
 
   async function onSubmit(data: PinInput) {
-    const { pin } = data;
-
     try {
       setIsSubmitting(true);
       const response = await setTransactionPin(data);
@@ -57,12 +55,13 @@ export default function SetPinDialog({
           type: "error",
         });
       }
-      toast.add({
-        title: "Success",
-        description: response.message || "PIN set successfully",
-        type: "success",
-      });
+      // toast.add({
+      //   title: "Success",
+      //   description: response.message || "PIN set successfully",
+      //   type: "success",
+      // });
       onOpenChange(false); // CLOSE DIALOG
+      setPinUpdate?.(true);
     } catch (error: any) {
       toast.add({
         title: "Error",
@@ -208,13 +207,31 @@ export default function SetPinDialog({
             />
           </div>
 
-          <Button
-            type="submit"
-            disabled={isSubmitting}
-            className="mt-6 h-12 w-full text-lg"
-          >
-            Set PIN
-          </Button>
+          <div className=" flex items-center gap-1 mt-8!">
+            <Button
+              variant={"outline"}
+              size={"full"}
+              className={
+                "text-primary border-primary outline-primary max-sm:p-2 basis-1/2"
+              }
+              type="button"
+              onClick={() => {
+                reset();
+                onOpenChange(false);
+              }}
+            >
+              Back
+            </Button>
+
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              size={"full"}
+              className={`max-sm:p-2 basis-1/2`}
+            >
+              Set Pin
+            </Button>
+          </div>
         </form>
       </AlertDialogPopup>
     </AlertDialog>

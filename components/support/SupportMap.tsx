@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Clock2 } from "../animate-ui/icons/clock-2";
-import { Button, buttonVariants } from "../ui/button";
+import { buttonVariants } from "../ui/button";
 
 interface IProps {
   title: string;
