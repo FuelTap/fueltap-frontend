@@ -5,14 +5,16 @@ import successAnim from "@/public/assets/animations/success2.json";
 import Lottie from "lottie-react";
 import Link from "next/link";
 
-const SuccessModalFunction = ({
+// same as SuccessModal but uses functions to close the modal instead of navigating
+
+const SuccessModal = ({
   title,
   text,
-  href = "/user/dashboard",
+  onClick,
 }: {
   title: string;
   text: string;
-  href?: string;
+  onClick: any;
 }) => {
   return (
     <main className="w-screen h-screen fixed top-0 left-0 z-100 flex items-center justify-center">
@@ -24,15 +26,15 @@ const SuccessModalFunction = ({
           <p className="text-sm md:text-base text-grey-800">{text}</p>
         </div>
 
-        <Link
+        <button
           className={`${buttonVariants({ size: "full" })} rounded-[999px]!`}
-          href={href}
+          onClick={() => onClick()}
         >
           Okay
-        </Link>
+        </button>
       </article>
     </main>
   );
 };
 
-export default SuccessModalFunction;
+export default SuccessModal;
