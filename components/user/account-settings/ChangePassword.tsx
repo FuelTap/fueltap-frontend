@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/field";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Eye, EyeClosed } from "lucide-react";
@@ -17,16 +17,29 @@ import {
 } from "@/lib/validators/authSchema";
 import { toast } from "@/components/ui/toast";
 import { changePassword } from "@/lib/server/auth";
+import { useAuth } from "@/context/AuthProvider";
 
 interface ChangePasswordProps {
   onCancel: () => void;
+  setPassUpdate: (prop: boolean) => void;
 }
 
-const ChangePassword = ({ onCancel }: ChangePasswordProps) => {
+const ChangePassword = ({ onCancel, setPassUpdate }: ChangePasswordProps) => {
+  const { logout } = useAuth();
   const form = useForm<ChangePasswordSchemaInput>({
     resolver: zodResolver(changePasswordSchema),
     defaultValues: {},
   });
+
+  const password = form.watch("new_password") || "";
+
+  const rules = {
+    length: password.length > 7 && password.length <= 20,
+    uppercase: /[A-Z]/.test(password),
+    lowercase: /[a-z]/.test(password),
+    number: /[0-9]/.test(password),
+    special: /[^A-Za-z0-9]/.test(password),
+  };
 
   const [isPending, startTransition] = useTransition();
   async function onSubmit(payload: ChangePasswordSchemaInput) {
@@ -40,12 +53,14 @@ const ChangePassword = ({ onCancel }: ChangePasswordProps) => {
             description: res.message || "Something went wrong",
           });
         } else {
-          toast.add({
-            type: "success",
-            description: res.message || "Password changed successfully",
-          });
+          // toast.add({
+          //   type: "success",
+          //   description: res.message || "Password changed successfully",
+          // });
+          setPassUpdate(true);
           form.reset();
           onCancel();
+          await logout();
         }
       } catch (error) {
         console.log(error);
@@ -68,17 +83,17 @@ const ChangePassword = ({ onCancel }: ChangePasswordProps) => {
   return (
     <form
       onSubmit={form.handleSubmit(onSubmit)}
-      className="flex h-[65vh] flex-col space-y-6 md:h-full"
+      className="flex min-h-100  flex-col space-y-6 "
       id="change-password-form"
     >
-      <FieldGroup>
+      <FieldGroup className="h-full">
         <Controller
           control={form.control}
           name="current_password"
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor="oldPassword" className={"text-lg-medium"}>
-                Old Password
+                Current Password
               </FieldLabel>
 
               <div className="relative">
@@ -115,7 +130,7 @@ const ChangePassword = ({ onCancel }: ChangePasswordProps) => {
           render={({ field, fieldState }) => (
             <Field>
               <FieldLabel htmlFor="newPassword" className={"text-lg-medium"}>
-                Create Password
+                New Password
               </FieldLabel>
 
               <div className="relative">
@@ -147,6 +162,26 @@ const ChangePassword = ({ onCancel }: ChangePasswordProps) => {
             </Field>
           )}
         />
+
+        {/* messages */}
+        <ul className="list-disc space-y-1 px-4">
+          <li className={rules.length ? "text-green-600" : "text-gray-500"}>
+            Password should be 8-20 characters long
+          </li>
+          <li className={rules.uppercase ? "text-green-600" : "text-gray-500"}>
+            At least one uppercase letter
+          </li>
+          <li className={rules.lowercase ? "text-green-600" : "text-gray-500"}>
+            At least one lowercase letter
+          </li>
+          <li className={rules.number ? "text-green-600" : "text-gray-500"}>
+            At least one number
+          </li>
+          <li className={rules.special ? "text-green-600" : "text-gray-500"}>
+            At least one special character: @ ! # $ % & =
+          </li>
+        </ul>
+
         <Controller
           control={form.control}
           name="confirm_password"
@@ -156,7 +191,7 @@ const ChangePassword = ({ onCancel }: ChangePasswordProps) => {
                 htmlFor="confirmPassword"
                 className={"text-lg-medium"}
               >
-                Confirm Password
+                Confirm New Password
               </FieldLabel>
 
               <div className="relative">
@@ -188,19 +223,24 @@ const ChangePassword = ({ onCancel }: ChangePasswordProps) => {
           )}
         />
 
-        <div className="">
+        <div className="justify-self-end flex items-center gap-1 mt-auto!">
           <Button
+            variant={"outline"}
+            size={"full"}
+            className={
+              "text-primary border-primary outline-primary max-sm:p-2 basis-1/2"
+            }
             type="button"
             onClick={onCancel}
-            className={"bg-transparent text-black hover:bg-transparent"}
           >
-            Cancel
+            Back
           </Button>
+
           <Button
             type="submit"
-            variant={"secondary"}
             disabled={isPending}
-            className={"text-md-medium"}
+            size={"full"}
+            className={`max-sm:p-2 basis-1/2`}
           >
             Update
           </Button>

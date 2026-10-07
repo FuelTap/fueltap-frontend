@@ -130,9 +130,14 @@ export async function loginAction(credentials: LoginInput) {
 
 export async function logoutAction(userId: string, returnPath?: string) {
   try {
-    await authenticatedApiRequest("api/v1/auth/logout", "POST", { userId }, {
-      skipAuthRedirect: true,
-    });
+    await authenticatedApiRequest(
+      "api/v1/auth/logout",
+      "POST",
+      { userId },
+      {
+        skipAuthRedirect: true,
+      },
+    );
   } catch (error) {
     return { success: false, error: "Backend request failed" };
   }
@@ -176,6 +181,7 @@ export async function forgotPassword(data: { email: string }) {
 
     const result = await response.json();
 
+    console.log("result", result);
     if (!response.ok) {
       return {
         success: false,
@@ -274,24 +280,25 @@ export async function changePassword(payload: ChangePasswordSchemaInput) {
 // ========================================== DELETE ACCOUNT===========================================
 
 export async function deleteAccount() {
-  // const valdiate = deleteAccountSchema.safeParse(payload);
-
-  // if (!valdiate.success) {
-  //   console.log(valdiate.error?.message);
-  //   return {
-  //     success: false,
-  //     message: "failed to validate user account details",
-  //     error: valdiate.error?.message || "Invalid account details",
-  //   };
-  // }
-
-  return await authenticatedApiRequest<
+  const result = await authenticatedApiRequest<
     void,
-    {
-      status: string;
-      message: string;
-    }
-  >("/api/v1/auth/delete-account", "DELETE");
+    { status: string; message: string }
+  >("/api/v1/auth/delete-account", "DELETE", undefined, {
+    skipAuthRedirect: true,
+  });
+
+  if (
+    !result.success ||
+    ["error", "failed", "failure"].includes(result.status.toLowerCase())
+  ) {
+    return { ...result, success: false };
+  }
+
+  const cookieStore = await cookies();
+  cookieStore.delete("x-access-token");
+  cookieStore.delete("x-refresh-token");
+  cookieStore.delete(AUTH_RETURN_COOKIE);
+  return result;
 }
 
 // ==========================================UPDATE COOKIES===========================================

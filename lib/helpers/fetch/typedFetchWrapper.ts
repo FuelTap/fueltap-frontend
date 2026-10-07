@@ -41,6 +41,15 @@ export async function apiRequest<TRequest = unknown, TResponse = unknown>(
       ...restOptions,
     });
 
+    // if (endpoint.replace(/^\//, "") === "api/v1/auth/delete-account") {
+    //   console.log("Delete-account backend response:", {
+    //     endpoint,
+    //     method,
+    //     status: response.status,
+    //     body: await response.clone().text().catch(() => "Unable to read response body"),
+    //   });
+    // }
+
     // Safely attempt to parse JSON
     let result: ApiResponse<TResponse>;
     try {
