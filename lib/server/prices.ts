@@ -4,7 +4,7 @@
 // data. When the endpoint exists, replace the bodies with
 // authenticatedApiRequest calls and keep the return types unchanged.
 
-export type FuelType = "Petrol" | "Diesel" | "LPG";
+export type FuelType = "Petrol" | "Diesel" | "Cooking Gas";
 
 export type SupplierPrice = {
   id: string;
@@ -53,7 +53,7 @@ const mockStations = [
     logoUrl: "/assets/user/total.png",
     location: "VI, Lagos",
     deliveryTime: "1-2hrs",
-    prices: { Petrol: 980, Diesel: 1150, LPG: 1250 },
+    prices: { Petrol: 980, Diesel: 1150, "Cooking Gas": 1250 },
   },
   {
     key: "mobil",
@@ -61,7 +61,7 @@ const mockStations = [
     logoUrl: null,
     location: "VI, Lagos",
     deliveryTime: "1-2hrs",
-    prices: { Petrol: 985, Diesel: 1140, LPG: 1270 },
+    prices: { Petrol: 985, Diesel: 1140, "Cooking Gas": 1270 },
   },
   {
     key: "sobaz",
@@ -69,7 +69,7 @@ const mockStations = [
     logoUrl: null,
     location: "Lekki, Lagos",
     deliveryTime: "1-2hrs",
-    prices: { Petrol: 982, Diesel: 1160, LPG: 1240 },
+    prices: { Petrol: 982, Diesel: 1160, "Cooking Gas": 1240 },
   },
   {
     key: "nnpc",
@@ -77,7 +77,7 @@ const mockStations = [
     logoUrl: null,
     location: "Ikoyi, Lagos",
     deliveryTime: "2-3hrs",
-    prices: { Petrol: 990, Diesel: 1135, LPG: 1260 },
+    prices: { Petrol: 990, Diesel: 1135, "Cooking Gas": 1260 },
   },
   {
     key: "conoil",
@@ -85,7 +85,7 @@ const mockStations = [
     logoUrl: null,
     location: "Ajah, Lagos",
     deliveryTime: "2-3hrs",
-    prices: { Petrol: 995, Diesel: 1170, LPG: 1255 },
+    prices: { Petrol: 995, Diesel: 1170, "Cooking Gas": 1255 },
   },
   {
     key: "oando",
@@ -93,7 +93,7 @@ const mockStations = [
     logoUrl: null,
     location: "Yaba, Lagos",
     deliveryTime: "1-2hrs",
-    prices: { Petrol: 987, Diesel: 1155, LPG: 1265 },
+    prices: { Petrol: 987, Diesel: 1155, "Cooking Gas": 1265 },
   },
 ] satisfies {
   key: string;
@@ -109,7 +109,7 @@ function buildMockSuppliers(): SupplierPrice[] {
 
   return mockStations.flatMap((station) =>
     (Object.keys(station.prices) as FuelType[]).map((fuelType) => ({
-      id: `${station.key}-${fuelType.toLowerCase()}`,
+      id: `${station.key}-${fuelType.toLowerCase().replace(" ", "-")}`,
       supplierName: station.supplierName,
       logoUrl: station.logoUrl,
       fuelType,
