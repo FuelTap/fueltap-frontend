@@ -1,24 +1,8 @@
 "use client";
 import { splitName } from "@/lib/helpers/help";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Logo from "../web/Logo";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTrigger,
-} from "../ui/drawer";
-import {
-  Bell,
-  Bug,
-  ChevronDown,
-  LifeBuoy,
-  LogOut,
-  Menu,
-  Search,
-  Settings,
-  X,
-} from "lucide-react";
+import { Bell, ChevronDown, Menu, X } from "lucide-react";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { links } from "@/lib/data/exports";
@@ -28,18 +12,32 @@ import { useAuth } from "@/context/AuthProvider";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 
+const accountItemClassName =
+  "flex w-full cursor-pointer items-center px-6 py-3 text-left text-sm text-black transition-colors hover:bg-gray-100 md:px-7 md:py-3.5 md:text-base";
+
 export default function UserHeader() {
   const { user, logout } = useAuth();
   const initials = splitName?.(user?.full_name || "user");
 
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
 
   const { back } = useRouter();
 
   const isActive = (path: string) =>
     pathname === path || pathname.startsWith(`${path}/`);
   const activeLink = links.find((link) => isActive(link.path));
+
+  // Close the nav menu with the Escape key.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [menuOpen]);
 
   const simpleHeaderPaths = ["/user/kyc", "/user/link-bank", "/user/set-pin"];
   const showSimpleHeader = simpleHeaderPaths.some(
@@ -65,93 +63,26 @@ export default function UserHeader() {
   }
 
   return (
-    <header className="inset-x-0 top-0 z-10 w-full border-b border-gray-100 bg-white md:fixed">
+    <header
+      className={cn(
+        "relative inset-x-0 top-0 w-full border-b border-gray-100 bg-white md:fixed",
+        // Sit above page content (e.g. the order map) while the menu overlay is open.
+        menuOpen ? "z-1100" : "z-10",
+      )}
+    >
       <div className="container flex items-center justify-between gap-4 py-3 xl:py-4">
-        {/* ===== Menu + current page (below xl) ===== */}
+        {/* ===== Menu toggle + current page (below xl) ===== */}
         <div className="flex flex-1 items-center gap-4 xl:hidden">
-          <Drawer open={open} onOpenChange={setOpen} swipeDirection="left">
-            <DrawerTrigger
-              aria-label="Open menu"
-              className="cursor-pointer"
-              onClick={() => setOpen(true)}
-            >
-              <Menu size={24} />
-            </DrawerTrigger>
-
-            <DrawerContent className="pt-6 [&>button]:hidden">
-              <DrawerHeader className="border-b pb-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex min-w-0 items-center gap-3">
-                    <UserAvatar initials={initials} />
-                    <div className="min-w-0">
-                      <h5 className="text-[15px] font-medium text-black capitalize">
-                        {user?.full_name}
-                      </h5>
-                      <p className="truncate text-sm text-neutral-500">
-                        {user?.email}
-                      </p>
-                    </div>
-                  </div>
-                  <button
-                    aria-label="Close menu"
-                    className="rounded-md p-2 hover:bg-gray-100"
-                    onClick={() => setOpen(false)}
-                  >
-                    <X size={22} />
-                  </button>
-                </div>
-              </DrawerHeader>
-
-              {/* ✅ Search Input */}
-              <div className="relative px-1">
-                <input
-                  type="text"
-                  tabIndex={-1}
-                  placeholder="Search..."
-                  className="focus:border-primary w-full rounded-xl border border-neutral-300 py-2.5 pr-10 pl-4 text-[15px] outline-none"
-                />
-                <Search
-                  size={20}
-                  className="absolute top-1/2 right-3 -translate-y-1/2 text-neutral-500"
-                />
-              </div>
-
-              {/* ✅ Nav Links */}
-              <div className="mt-2 flex flex-col gap-1">
-                {links.map((link) => (
-                  <Link
-                    onClick={() => setOpen(false)}
-                    key={link.path}
-                    href={link.path}
-                    className={`rounded-lg rounded-l-none py-2 pl-4 text-[15px] capitalize transition-all ${
-                      isActive(link.path)
-                        ? "border-primary text-primary border-l-8 font-medium"
-                        : "text-neutra-800 hover:text-black"
-                    }`}
-                  >
-                    {link.name}
-                  </Link>
-                ))}
-              </div>
-
-              {/* report */}
-              <div className="mt-auto mb-4 flex flex-col items-center justify-center justify-self-end gap-2">
-                <div className="flex items-center gap-2">
-                  <span>Report an issue</span>
-                  <Bug />
-                </div>
-
-                <button
-                  type="button"
-                  className="text-error flex cursor-pointer items-center gap-2"
-                  onClick={() => logout()}
-                >
-                  <LogOut />
-                  <span>Log Out</span>
-                </button>
-              </div>
-            </DrawerContent>
-          </Drawer>
+          <button
+            type="button"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            aria-controls="header-nav-menu"
+            className="cursor-pointer text-black"
+            onClick={() => setMenuOpen((prev) => !prev)}
+          >
+            {menuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
 
           {activeLink && (
             <span className="text-primary-500 hidden text-base font-medium md:inline">
@@ -167,21 +98,7 @@ export default function UserHeader() {
 
         {/* ===== Desktop Links ===== */}
         <nav className="hidden items-center gap-8 xl:flex">
-          {links.map((link) => (
-            <Link
-              key={link.path}
-              href={link.path}
-              aria-current={isActive(link.path) ? "page" : undefined}
-              className={cn(
-                "text-base transition-colors",
-                isActive(link.path)
-                  ? "text-primary-500 font-medium"
-                  : "text-grey-800 hover:text-black",
-              )}
-            >
-              {link.name}
-            </Link>
-          ))}
+          <NavLinks isActive={isActive} />
         </nav>
 
         {/* ===== Notifications + account ===== */}
@@ -194,7 +111,13 @@ export default function UserHeader() {
             <Bell size={22} />
           </button>
 
-          <Popover>
+          <Popover
+            open={accountOpen}
+            onOpenChange={(open) => {
+              setAccountOpen(open);
+              if (open) setMenuOpen(false);
+            }}
+          >
             <PopoverTrigger
               aria-label="Account menu"
               className="flex cursor-pointer items-center gap-2 text-left"
@@ -208,44 +131,105 @@ export default function UserHeader() {
                 </span>
               </span>
               <UserAvatar initials={initials} />
-              <ChevronDown size={20} className="text-black" />
+              <ChevronDown
+                size={20}
+                className={cn(
+                  "text-black transition-transform duration-200",
+                  accountOpen && "rotate-180",
+                )}
+              />
             </PopoverTrigger>
 
-            <PopoverContent align="end" className="w-60 gap-1 p-2">
-              <div className="border-b border-gray-100 px-2 pt-1 pb-2 md:hidden">
-                <p className="truncate font-medium text-black capitalize">
-                  {user?.full_name}
-                </p>
-                <p className="text-grey-800 truncate text-xs">{user?.email}</p>
-              </div>
+            <PopoverContent
+              align="end"
+              sideOffset={8}
+              className="w-60 gap-0 divide-y divide-gray-100 overflow-hidden rounded-xl p-0 md:w-94"
+            >
               <Link
                 href="/user/account-settings"
-                className="flex items-center gap-2 rounded-md px-2 py-2 text-black hover:bg-gray-100"
+                className={accountItemClassName}
+                onClick={() => setAccountOpen(false)}
               >
-                <Settings size={16} />
                 Account Settings
               </Link>
-              <Link
-                href="/support"
-                className="flex items-center gap-2 rounded-md px-2 py-2 text-black hover:bg-gray-100"
-              >
-                <LifeBuoy size={16} />
-                Help & Support
-              </Link>
+              {/* The bell is hidden on mobile, so notifications live here instead. */}
               <button
                 type="button"
-                onClick={() => logout()}
-                className="text-error flex cursor-pointer items-center gap-2 rounded-md px-2 py-2 text-left hover:bg-red-50"
+                className={cn(accountItemClassName, "md:hidden")}
+                onClick={() => setAccountOpen(false)}
               >
-                <LogOut size={16} />
+                Notification
+              </button>
+              <button
+                type="button"
+                className={accountItemClassName}
+                onClick={() => {
+                  setAccountOpen(false);
+                  logout();
+                }}
+              >
                 Log Out
               </button>
+              <Link
+                href="/support"
+                className={accountItemClassName}
+                onClick={() => setAccountOpen(false)}
+              >
+                Help & Support
+              </Link>
             </PopoverContent>
           </Popover>
         </div>
       </div>
+
+      {/* ===== Nav menu overlay (below xl) ===== */}
+      {menuOpen && (
+        <div
+          id="header-nav-menu"
+          className="absolute inset-x-0 top-full h-dvh bg-black/25 xl:hidden"
+          onClick={() => setMenuOpen(false)}
+        >
+          <div className="container pt-2">
+            <nav
+              aria-label="Main"
+              className="flex w-full items-center justify-between gap-4 rounded-full bg-white px-6 py-3 shadow-sm md:w-fit md:justify-start md:gap-6 md:px-7"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <NavLinks
+                isActive={isActive}
+                onNavigate={() => setMenuOpen(false)}
+              />
+            </nav>
+          </div>
+        </div>
+      )}
     </header>
   );
+}
+
+function NavLinks({
+  isActive,
+  onNavigate,
+}: {
+  isActive: (path: string) => boolean;
+  onNavigate?: () => void;
+}) {
+  return links.map((link) => (
+    <Link
+      key={link.path}
+      href={link.path}
+      onClick={onNavigate}
+      aria-current={isActive(link.path) ? "page" : undefined}
+      className={cn(
+        "text-sm whitespace-nowrap transition-colors md:text-base",
+        isActive(link.path)
+          ? "text-primary-500 font-medium"
+          : "text-grey-800 hover:text-black",
+      )}
+    >
+      {link.name}
+    </Link>
+  ));
 }
 
 function UserAvatar({ initials }: { initials: string }) {
