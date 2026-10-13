@@ -30,15 +30,15 @@ const ProfileForm = () => {
   const form = useForm<registrationInput>({
     resolver: zodResolver(registerationSchema),
     defaultValues: {
-      fullName: user?.full_name,
-      phone: user?.phone_number,
+      fullName: user?.profile.fullName,
+      phone: user?.profile.phoneNumber,
     },
   });
   function onSubmit(data: registrationInput) {
     return null;
   }
 
-  const name = user?.full_name;
+  const name = user?.profile.fullName;
 
   return (
     <article className="bg-yellow-100 border-[0.5px] rounded-2xl border-yellow-200 p-5 md:p-8 mb-3">
@@ -49,7 +49,7 @@ const ProfileForm = () => {
             <AvatarFallback
               className={"text-white bg-primary text-lg font-medium"}
             >
-              {splitName(user?.full_name || "")}
+              {splitName(user?.profile.fullName || "")}
             </AvatarFallback>
           </Avatar>
         </div>
@@ -147,11 +147,13 @@ const ProfileForm = () => {
           <div className="flex flex-1 items-center justify-between">
             <div className="flex flex-col gap-1">
               <h2 className="text-base md:text-xl font-medium">
-                {user?.full_name}
+                {user?.profile.fullName}
               </h2>
-              <h5 className="text-xs md:text-sm font-normal">{user?.email}</h5>
+              <h5 className="text-xs md:text-sm font-normal">
+                {user?.profile.email}
+              </h5>
               <h4 className="text-secondary-600 text-xs md:text-sm font-normal">
-                {user?.phone_number}
+                {user?.profile.phoneNumber}
               </h4>
             </div>
 
