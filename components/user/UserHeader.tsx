@@ -11,6 +11,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthProvider";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
+import { useScrollLock } from "@/hooks/useScrollLock";
 
 const accountItemClassName =
   "flex w-full cursor-pointer items-center px-6 py-3 text-left text-sm text-black transition-colors hover:bg-gray-100 md:px-7 md:py-3.5 md:text-base";
@@ -28,6 +29,13 @@ export default function UserHeader() {
   const isActive = (path: string) =>
     pathname === path || pathname.startsWith(`${path}/`);
   const activeLink = links.find((link) => isActive(link.path));
+
+  // The header only stays pinned from md up, so on mobile an open menu or
+  // dropdown would scroll away with the page. Lock scrolling while they're open.
+  useScrollLock(
+    menuOpen ||
+      (accountOpen && window.matchMedia("(max-width: 767px)").matches),
+  );
 
   // Close the nav menu with the Escape key.
   useEffect(() => {
