@@ -16,7 +16,7 @@ import Logo from "./Logo";
 export default function Navbar() {
   //   const { isAuthenticated, user } = useSelector((store) => store.user);
 
-  //   const name = user?.full_name;
+  //   const name = user?.profile.fullName;
   // ✨ Get initials dynamically
 
   //   const navigate = useNavigate();
