@@ -1,7 +1,6 @@
 "use client";
 import CashOverview from "@/components/user/dashboard/CashOverview";
 import QuickStats from "@/components/user/dashboard/QuickStats";
-import { useScreenSize } from "@/hooks/useScreenSize";
 import { useTimeOfDay } from "@/hooks/useTimeOfDay";
 import { useAuth } from "@/context/AuthProvider";
 import AccountSetupProps from "./AccountSetupProps";
@@ -14,12 +13,24 @@ interface Props {
 
 export default function Dashboard({ balance }: Props) {
   const { user } = useAuth();
-  const pinExists = false;
-  const isVerified = user?.kyc && user?.bankExists && pinExists;
-  const fV = false;
-  const { isSmallScreen } = useScreenSize();
 
-  const firstName = user?.full_name?.split(" ")[0];
+  const kycSubmitted =
+    user?.kyc.overallKycStatus.toLowerCase() !== "not submitted";
+
+  const isVerified = (): boolean => {
+    const {
+      bank: { bankExists },
+      wallet: { walletExists },
+    } = user!;
+
+    if (!bankExists || !walletExists || kycSubmitted) {
+      return false;
+    }
+
+    return true;
+  };
+
+  const firstName = user?.profile.fullName?.split(" ")[0];
   const { timeOfDay } = useTimeOfDay();
 
   return (
@@ -34,7 +45,7 @@ export default function Dashboard({ balance }: Props) {
       </section>
 
       <div className="mt-4 flex flex-col items-start justify-between md:mt-8 md:flex-row">
-        {true ? (
+        {!isVerified() ? (
           <section className="flex flex-col relative md:items-start md:flex-row w-full  gap-4">
             <div className="w-full md:sticky top-18! md:basis-1/2 lg:basis-[56%] space-y-5">
               <CashOverview balance={balance} />
@@ -46,9 +57,9 @@ export default function Dashboard({ balance }: Props) {
           </section>
         ) : (
           <AccountSetupProps
-            kycDone={true}
-            bankExists={user?.bankExists || false}
-            pinExists={false}
+            kycDone={true} //kycSubmitted
+            bankExists={user!.bank.bankExists}
+            pinExists={user!.wallet.walletExists}
           />
         )}
       </div>

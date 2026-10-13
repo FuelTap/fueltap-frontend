@@ -1,4 +1,3 @@
-// components/providers/auth-provider.tsx
 "use client";
 
 import React, { createContext, useContext, useState } from "react";
@@ -6,14 +5,45 @@ import { logoutAction } from "@/lib/server/auth";
 import { useRouter } from "next/navigation";
 import { toast } from "@/components/ui/toast";
 
+type Profile = {
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+};
+type Account = {
+  role: string[];
+};
+
+type Documents = {
+  bvn: string | null;
+  nin: string | null;
+};
+
+type Status = "pending" | "approved" | "rejected";
+
+type KYC = {
+  overallKycStatus: "not submitted" | "unverified" | "in-progress" | "verified";
+  verification: {
+    idverification: Status;
+    addressVerification: Status;
+    livenessVerisfication: Status;
+  };
+};
+
+type Wallet = {
+  walletExists: boolean;
+};
+type Bank = {
+  bankExists: boolean;
+};
 export type User = {
   id: string;
-  full_name: string;
-  email: string;
-  phone_number: string;
-  role: string[];
-  kyc: boolean;
-  bankExists: boolean;
+  profile: Profile;
+  account: Account;
+  documents: Documents;
+  kyc: KYC;
+  wallet: Wallet;
+  bank: Bank;
 };
 
 type AuthContextType = {
@@ -39,7 +69,9 @@ export function AuthProvider({
       const runLogout = async () => {
         const res = await logoutAction(
           user.id,
-          window.location.pathname + window.location.search + window.location.hash,
+          window.location.pathname +
+            window.location.search +
+            window.location.hash,
         );
 
         if (!res || !res.success) {

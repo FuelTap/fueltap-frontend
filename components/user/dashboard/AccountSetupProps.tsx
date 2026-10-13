@@ -30,7 +30,7 @@ const getVerificationSteps = (
     type: "kyc",
     header: "Verify your identity (Kyc temporarily set to true)",
     subText: "Complete KYC to secure your account.",
-    isCompleted: true, // kycDone,
+    isCompleted: kycDone, // kycDone,
     lockedReason: undefined,
     icon: <ShieldCheck className="text-green-500" />,
     actionLink: "/user/kyc",
@@ -84,6 +84,7 @@ const SetupCard = ({
 }: SetupCardProps) => {
   const isLocked = !isCompleted && Boolean(lockedReason);
 
+  console.log(lockedReason);
   return (
     <div
       className={`rounded-2xl mb-4 border-2 p-4 flex items-center justify-between transition-colors ${

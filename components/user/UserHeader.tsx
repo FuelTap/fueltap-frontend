@@ -18,7 +18,7 @@ const accountItemClassName =
 
 export default function UserHeader() {
   const { user, logout } = useAuth();
-  const initials = splitName?.(user?.full_name || "user");
+  const initials = splitName?.(user?.profile.fullName || "user");
 
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -132,10 +132,10 @@ export default function UserHeader() {
             >
               <span className="hidden max-w-40 flex-col md:flex">
                 <span className="truncate text-base text-black capitalize">
-                  {user?.full_name}
+                  {user?.profile.fullName}
                 </span>
                 <span className="text-grey-800 truncate text-sm">
-                  {user?.email}
+                  {user?.profile.email}
                 </span>
               </span>
               <UserAvatar initials={initials} />
