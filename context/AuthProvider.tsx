@@ -28,6 +28,7 @@ type KYC = {
     addressVerification: Status;
     livenessVerisfication: Status;
   };
+  documents: Documents;
 };
 
 type Wallet = {
@@ -40,7 +41,6 @@ export type User = {
   id: string;
   profile: Profile;
   account: Account;
-  documents: Documents;
   kyc: KYC;
   wallet: Wallet;
   bank: Bank;
@@ -70,8 +70,8 @@ export function AuthProvider({
         const res = await logoutAction(
           user.id,
           window.location.pathname +
-            window.location.search +
-            window.location.hash,
+          window.location.search +
+          window.location.hash,
         );
 
         if (!res || !res.success) {
