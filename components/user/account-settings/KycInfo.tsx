@@ -1,8 +1,18 @@
+"use client"
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/context/AuthProvider";
 import { CheckCheck, IdCard, Plus } from "lucide-react";
 
 const KycInfo = () => {
+  const { user } = useAuth()
+
+  const isApproved = () => {
+
+    return user?.kyc.verification.idverification === "approved"
+  }
+
+  console.log(user)
   return (
     <div className="border border-gray-100 bg-[#FDFDFE] p-5 md:p-8 mb-4">
       <h2 className="text-base md:text-lg font-semibold mb-8">
@@ -19,13 +29,13 @@ const KycInfo = () => {
             <h3 className="text-sm md:text-base font-medium">
               Bank Verification Number
             </h3>
-            <p className="text-sm text-grey-800 md:text-base">100***116</p>
+            <p className="text-sm text-grey-800 md:text-base">{user?.kyc.documents?.bvn}</p>
           </div>
         </div>
 
-        <Badge className="max-sm:self-end bg-green-50 text-green-400 text-sm md:text-base font-semibold py-3! flex items-center gap-2.5 px-5">
+        <Badge className={`max-sm:self-end ${isApproved() ? "bg-green-50 text-green-400" : "bg-yellow-50 text-yellow-400"}  text-sm md:text-base font-semibold py-3! flex items-center gap-2.5 px-5`}>
           {" "}
-          <span>Verified</span> <CheckCheck size={24} />
+          <span> {isApproved() ? "Verified" : "Pending"}</span> {isApproved() && <CheckCheck size={24} />}
         </Badge>
       </div>
 
@@ -39,7 +49,7 @@ const KycInfo = () => {
             <h3 className="text-sm md:text-base font-medium">
               National Identification Number
             </h3>
-            <p className="text-sm text-grey-800 md:text-base">---</p>
+            <p className="text-sm text-grey-800 md:text-base">{user?.kyc.documents?.nin}</p>
           </div>
         </div>
 
