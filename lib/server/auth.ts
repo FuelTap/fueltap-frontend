@@ -75,7 +75,7 @@ export async function Register(data: {
   role: string;
 }): Promise<OnboardingResult> {
   return submitOnboarding(
-    "/api/v1/auth/register",
+    "/api/v1/customer/auth/register",
     data,
     "Account created. Check your email for your verification code.",
     "Registration failed. Please try again.",
@@ -88,7 +88,7 @@ export async function verifyOtpAction(data: {
   otp: string;
 }): Promise<OnboardingResult> {
   return submitOnboarding(
-    "/api/v1/auth/account-verification",
+    "/api/v1/customer/auth/verify-otp",
     data,
     "Your email has been verified successfully.",
     "Email verification failed. Please try again.",
@@ -98,7 +98,7 @@ export async function verifyOtpAction(data: {
 // =======================LOGIN===============================
 export async function loginAction(credentials: LoginInput) {
   const { response, result } = await apiRequest(
-    "/api/v1/auth/login",
+    "/api/v1/customer/auth/login",
     "POST",
     credentials,
     {
